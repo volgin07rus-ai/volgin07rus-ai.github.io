@@ -2,11 +2,33 @@ import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useLang } from '../i18n'
-import ArtCard from '../components/ArtCard'
 
 gsap.registerPlugin(ScrollTrigger)
 
 const ROTATIONS = [-4, 3, -2, 5, -3, 2]
+
+/** Кадры реальных проектов (public/gallery) */
+const SHOTS = [
+  { file: 'g1.jpg', alt: 'SynapseX' },
+  { file: 'g2.jpg', alt: 'Домик' },
+  { file: 'g3.jpg', alt: 'Asme' },
+  { file: 'g4.jpg', alt: 'TerraElix' },
+  { file: 'g5.jpg', alt: 'Veldara' },
+  { file: 'g6.jpg', alt: 'Nook' },
+]
+
+function Shot({ i }: { i: number }) {
+  const s = SHOTS[i]
+  return (
+    <img
+      src={`${import.meta.env.BASE_URL}gallery/${s.file}`}
+      alt={s.alt}
+      loading="lazy"
+      decoding="async"
+      className="w-full h-full object-cover object-top"
+    />
+  )
+}
 
 export default function Explorations() {
   const { t } = useLang()
@@ -112,7 +134,7 @@ export default function Explorations() {
                 className="w-full max-w-[320px] aspect-square rounded-2xl overflow-hidden border border-stroke ml-auto"
                 style={{ transform: `rotate(${ROTATIONS[i]}deg)` }}
               >
-                <ArtCard index={i} />
+                <Shot i={i} />
               </div>
             ))}
           </div>
@@ -124,7 +146,7 @@ export default function Explorations() {
                 className="w-full max-w-[320px] aspect-square rounded-2xl overflow-hidden border border-stroke"
                 style={{ transform: `rotate(${ROTATIONS[i]}deg)` }}
               >
-                <ArtCard index={i} />
+                <Shot i={i} />
               </div>
             ))}
           </div>

@@ -61,15 +61,17 @@ const ru = {
     eyebrow: 'Журнал',
     headingLead: 'Недавние',
     headingItalic: 'мысли',
-    subtext: 'Заметки о дизайне, коде и о том, как рождаются продукты.',
+    subtext:
+      'Разборы решений из моих проектов — почему сделано именно так, а не иначе.',
     viewAll: 'Все записи',
     readTime: (m: number) => `${m} мин чтения`,
-    items: [
-      { title: 'Как детали формируют доверие к продукту', min: 6, date: '12 марта 2026' },
-      { title: 'Анимация как способ объяснить систему', min: 4, date: '28 февраля 2026' },
-      { title: 'Дизайн-система, которая не мешает', min: 8, date: '5 февраля 2026' },
-      { title: 'Почему сначала нужно писать текст', min: 5, date: '19 января 2026' },
-    ],
+  },
+
+  article: {
+    back: 'Ко всем работам',
+    notFound: 'Статья не найдена',
+    projectLine: 'Разбор по проекту',
+    openProject: 'Открыть проект',
   },
 
   explorations: {
@@ -145,15 +147,17 @@ const en: typeof ru = {
     eyebrow: 'Journal',
     headingLead: 'Recent',
     headingItalic: 'thoughts',
-    subtext: 'Notes on design, code and how products come to life.',
+    subtext:
+      'Write-ups of decisions from my own projects — why it was built this way and not another.',
     viewAll: 'View all',
     readTime: (m: number) => `${m} min read`,
-    items: [
-      { title: 'How small details build product trust', min: 6, date: 'Mar 12, 2026' },
-      { title: 'Motion as a way to explain a system', min: 4, date: 'Feb 28, 2026' },
-      { title: "A design system that doesn't get in the way", min: 8, date: 'Feb 5, 2026' },
-      { title: 'Why you should write the copy first', min: 5, date: 'Jan 19, 2026' },
-    ],
+  },
+
+  article: {
+    back: 'Back to all work',
+    notFound: 'Article not found',
+    projectLine: 'A write-up from',
+    openProject: 'Open project',
   },
 
   explorations: {

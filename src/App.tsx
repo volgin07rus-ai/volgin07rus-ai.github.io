@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { LanguageProvider, useLang } from './i18n'
+import { useRoute } from './lib/useRoute'
 import LoadingScreen from './components/LoadingScreen'
 import Navbar from './components/Navbar'
+import ArticlePage from './pages/ArticlePage'
 import Hero from './sections/Hero'
 import Works from './sections/Works'
 import Journal from './sections/Journal'
@@ -11,7 +13,10 @@ import Stats from './sections/Stats'
 import Contact from './sections/Contact'
 
 function Site() {
-  const [isLoading, setIsLoading] = useState(true)
+  const route = useRoute()
+  // Экран загрузки показываем только на главной: на статью посетитель
+  // приходит по прямой ссылке и ждать интро не должен
+  const [isLoading, setIsLoading] = useState(() => route.name === 'home')
   const { lang } = useLang()
 
   return (
@@ -22,20 +27,26 @@ function Site() {
 
       <Navbar />
 
-      {/* Плавный переход при смене языка */}
-      <motion.main
-        key={lang}
+      {/* Плавный переход при смене языка и страницы */}
+      <motion.div
+        key={`${lang}-${route.name === 'article' ? route.slug : 'home'}`}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.45, ease: 'easeOut' }}
       >
-        <Hero />
-        <Works />
-        <Journal />
-        <Explorations />
-        <Stats />
-        <Contact />
-      </motion.main>
+        {route.name === 'article' ? (
+          <ArticlePage slug={route.slug} />
+        ) : (
+          <main>
+            <Hero />
+            <Works />
+            <Journal />
+            <Explorations />
+            <Stats />
+            <Contact />
+          </main>
+        )}
+      </motion.div>
     </>
   )
 }

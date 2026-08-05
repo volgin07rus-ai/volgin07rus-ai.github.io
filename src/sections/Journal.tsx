@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { useLang } from '../i18n'
-import ArtCard from '../components/ArtCard'
+import { ARTICLES } from '../data/articles'
+import { articleHref } from '../lib/useRoute'
 
 const reveal = {
   initial: { opacity: 0, y: 30 },
@@ -10,7 +11,7 @@ const reveal = {
 }
 
 export default function Journal() {
-  const { t } = useLang()
+  const { t, lang } = useLang()
 
   return (
     <section id="journal" className="bg-bg py-16 md:py-24">
@@ -23,66 +24,58 @@ export default function Journal() {
             </span>
           </div>
 
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-            <div>
-              <h2 className="text-4xl md:text-6xl tracking-tight leading-[1.05] mb-4">
-                {t.journal.headingLead}{' '}
-                <span className="font-display italic">
-                  {t.journal.headingItalic}
-                </span>
-              </h2>
-              <p className="text-sm md:text-base text-muted max-w-md">
-                {t.journal.subtext}
-              </p>
-            </div>
-
-            <a
-              href="#journal"
-              className="group relative hidden md:inline-flex rounded-full shrink-0"
-            >
-              <span
-                className="absolute rounded-full opacity-0 group-hover:opacity-100 transition-opacity gradient-ring"
-                style={{ inset: '-2px' }}
-              />
-              <span className="relative rounded-full bg-bg border border-stroke group-hover:border-transparent text-sm px-6 py-3 text-text-primary inline-flex items-center gap-2 whitespace-nowrap transition-colors">
-                {t.journal.viewAll}
-                <span aria-hidden="true">→</span>
-              </span>
-            </a>
-          </div>
+          <h2 className="text-4xl md:text-6xl tracking-tight leading-[1.05] mb-4">
+            {t.journal.headingLead}{' '}
+            <span className="font-display italic">
+              {t.journal.headingItalic}
+            </span>
+          </h2>
+          <p className="text-sm md:text-base text-muted max-w-lg">
+            {t.journal.subtext}
+          </p>
         </motion.div>
 
         {/* Записи */}
         <div className="flex flex-col gap-4">
-          {t.journal.items.map((item, i) => (
-            <motion.a
-              key={item.title}
-              href="#journal"
-              {...reveal}
-              transition={{ ...reveal.transition, delay: i * 0.06 }}
-              className="group flex items-center gap-4 sm:gap-6 p-4 rounded-[40px] sm:rounded-full bg-surface/30 hover:bg-surface border border-stroke transition-colors"
-            >
-              <span className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden shrink-0">
-                <ArtCard index={i + 2} />
-              </span>
+          {ARTICLES.map((a, i) => {
+            const text = a[lang]
+            const date = lang === 'ru' ? a.dateRu : a.dateEn
 
-              <span className="flex-1 min-w-0">
-                <span className="block text-base sm:text-lg text-text-primary leading-snug group-hover:text-text-primary transition-colors">
-                  {item.title}
-                </span>
-                <span className="block text-xs sm:text-sm text-muted mt-1">
-                  {t.journal.readTime(item.min)} · {item.date}
-                </span>
-              </span>
-
-              <span
-                aria-hidden="true"
-                className="text-muted group-hover:text-text-primary transition-colors pr-2 shrink-0"
+            return (
+              <motion.a
+                key={a.slug}
+                href={articleHref(a.slug)}
+                {...reveal}
+                transition={{ ...reveal.transition, delay: i * 0.06 }}
+                className="group flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 p-5 sm:p-6 rounded-3xl sm:rounded-[40px] bg-surface/30 hover:bg-surface border border-stroke transition-colors"
               >
-                →
-              </span>
-            </motion.a>
-          ))}
+                <span className="flex-1 min-w-0">
+                  <span className="block text-lg sm:text-xl text-text-primary leading-snug mb-1.5">
+                    {text.title}
+                  </span>
+                  <span className="block text-sm text-muted leading-relaxed line-clamp-2 mb-2.5">
+                    {text.excerpt}
+                  </span>
+                  <span className="flex flex-wrap items-center gap-x-2 text-xs text-muted">
+                    <span className="uppercase tracking-[0.2em]">
+                      {a.project}
+                    </span>
+                    <span aria-hidden="true">·</span>
+                    <span>{date}</span>
+                    <span aria-hidden="true">·</span>
+                    <span>{t.journal.readTime(a.minutes)}</span>
+                  </span>
+                </span>
+
+                <span
+                  aria-hidden="true"
+                  className="text-muted group-hover:text-text-primary transition-colors shrink-0 self-end sm:self-center"
+                >
+                  →
+                </span>
+              </motion.a>
+            )
+          })}
         </div>
       </div>
     </section>
