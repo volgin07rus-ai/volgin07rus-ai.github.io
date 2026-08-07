@@ -107,7 +107,7 @@ export default function Works() {
                           <span className="absolute inline-flex w-full h-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
                           <span className="relative inline-flex w-1.5 h-1.5 rounded-full bg-emerald-400" />
                         </span>
-                        {p.kind === 'site' ? t.works.site : t.works.live}
+                        {p.kind === 'email' ? t.works.email : t.works.site}
                       </span>
                     ) : (
                       <span className="inline-flex items-center rounded-full bg-bg/80 backdrop-blur-md border border-stroke px-3 py-1.5 text-[11px] text-muted">
@@ -142,7 +142,12 @@ export default function Works() {
                         rel="noreferrer"
                         className="relative z-20 inline-flex rounded-full bg-text-primary text-bg px-4 py-2 text-xs font-medium whitespace-nowrap hover:opacity-90 transition-opacity"
                       >
-                        {p.kind === 'app' ? t.works.download : t.works.view} ↗
+                        {/* «Скачать» — только там, где ссылка ведёт на релиз,
+                            а не просто у всего с меткой «Приложение» */}
+                        {p.live.includes('/releases')
+                          ? t.works.download
+                          : t.works.view}{' '}
+                        ↗
                       </a>
                     </div>
                   )}

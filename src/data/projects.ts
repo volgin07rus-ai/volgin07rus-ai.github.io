@@ -1,7 +1,7 @@
 export type Project = {
   slug: string
-  /** 'app' — готовое приложение, 'site' — рабочий сайт, 'demo' — учебная сборка */
-  kind?: 'app' | 'site' | 'demo'
+  /** 'app' — приложение, 'site' — сайт, 'email' — вёрстка письма для рассылки */
+  kind?: 'app' | 'site' | 'email'
   /** Год проекта. Не указываем там, где точная дата неизвестна. */
   year?: string
   tech: string[]
@@ -61,7 +61,7 @@ export const PROJECTS: Project[] = [
     kind: 'site',
     year: '2026',
     tech: ['HTML', 'CSS', 'GSAP'],
-    live: 'https://volgin07rus-ai.github.io/domik-cafe/prototype/home.html',
+    live: 'https://volgin07rus-ai.github.io/domik-cafe/',
     repo: 'https://github.com/volgin07rus-ai/domik-cafe',
     tint: 'rgba(205,165,120,0.30)',
     ru: {
@@ -73,9 +73,10 @@ export const PROJECTS: Project[] = [
       desc: 'A site for a city coffee shop in central Moscow — “a place where time runs slower”. Menu, interior gallery and warm textures: brick, wood and soft light.',
     },
   },
-  // Свежие демо идут первыми: они собраны целиком, со всеми секциями и состояниями.
+  // Свежие работы идут первыми: они собраны целиком, со всеми секциями и состояниями.
   {
     slug: 'lumora',
+    kind: 'site',
     year: '2026',
     tech: ['HTML', 'CSS', 'Lenis'],
     live: page('lumora'),
@@ -91,6 +92,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: 'baseline',
+    kind: 'site',
     year: '2026',
     tech: ['HTML', 'CSS', 'Lenis'],
     live: page('baseline'),
@@ -106,6 +108,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: 'raketa',
+    kind: 'email',
     year: '2026',
     tech: ['React', 'TypeScript', 'Tailwind'],
     live: page('raketa'),
@@ -121,6 +124,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: 'mesta',
+    kind: 'app',
     year: '2026',
     tech: ['HTML', 'CSS', 'JavaScript'],
     live: page('mesta'),
@@ -136,6 +140,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: 'synapsex',
+    kind: 'site',
     year: '2026',
     tech: ['React', 'TypeScript', 'Framer Motion'],
     live: 'https://volgin07rus-ai.github.io/synapsex/',
@@ -152,6 +157,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: 'studio-agency',
+    kind: 'site',
     year: '2026',
     tech: ['React', 'Tailwind', 'Framer Motion'],
     live: 'https://volgin07rus-ai.github.io/studio-agency/',
@@ -168,6 +174,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: 'asme',
+    kind: 'site',
     year: '2026',
     tech: ['React', 'Vite', 'Framer Motion'],
     live: 'https://volgin07rus-ai.github.io/asme/',
@@ -184,6 +191,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: 'mindloop',
+    kind: 'site',
     year: '2026',
     tech: ['React', 'hls.js', 'Framer Motion'],
     live: 'https://volgin07rus-ai.github.io/mindloop/',
@@ -200,6 +208,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: 'linkflow',
+    kind: 'site',
     year: '2026',
     tech: ['React', 'Canvas', 'Tailwind'],
     live: 'https://volgin07rus-ai.github.io/linkflow/',
@@ -216,6 +225,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: 'veldara',
+    kind: 'site',
     year: '2026',
     tech: ['Vite', 'CSS Animations'],
     live: 'https://volgin07rus-ai.github.io/veldara/',
@@ -232,6 +242,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: 'terraelix',
+    kind: 'site',
     year: '2026',
     tech: ['React', 'Tailwind'],
     live: 'https://volgin07rus-ai.github.io/terraelix/',
@@ -248,6 +259,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: 'creative-studio',
+    kind: 'site',
     year: '2026',
     tech: ['HTML', 'CSS', 'Vite'],
     live: 'https://volgin07rus-ai.github.io/creative-studio/',
