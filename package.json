@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "sync:demos": "node scripts/sync-demos.mjs",
+    "build": "npm run sync:demos && tsc && vite build",
     "preview": "vite preview"
   },
   "dependencies": {

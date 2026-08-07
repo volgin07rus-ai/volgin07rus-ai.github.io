@@ -2,8 +2,9 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
-  // На GitHub Pages сайт живёт по адресу /volgin-portfolio/, локально — по /
-  base: process.env.GITHUB_ACTIONS ? '/volgin-portfolio/' : '/',
+  // Репозиторий называется volgin07rus-ai.github.io — это пользовательский сайт,
+  // он отдаётся с корня домена. Отдельный base для Pages больше не нужен.
+  base: '/',
   plugins: [react()],
   server: {
     host: '127.0.0.1',

@@ -13,6 +13,16 @@ export type Project = {
   en: { title: string; desc: string }
 }
 
+/**
+ * Демо, которые живут внутри этого же репозитория — в public/demo/<slug>/.
+ * Отдельный репозиторий им не нужен: открываются как страницы портфолио.
+ * Раскладывает их скрипт npm run sync:demos (запускается перед сборкой).
+ *
+ * Путь указан до index.html: dev-сервер Vite на «голую» папку отдаёт
+ * не демо, а сам портфолио (SPA-fallback), а с явным файлом всё честно.
+ */
+const page = (slug: string) => `${import.meta.env.BASE_URL}demo/${slug}/index.html`
+
 export const PROJECTS: Project[] = [
   {
     slug: 'nook',
@@ -63,6 +73,67 @@ export const PROJECTS: Project[] = [
       desc: 'A site for a city coffee shop in central Moscow — “a place where time runs slower”. Menu, interior gallery and warm textures: brick, wood and soft light.',
     },
   },
+  // Свежие демо идут первыми: они собраны целиком, со всеми секциями и состояниями.
+  {
+    slug: 'lumora',
+    year: '2026',
+    tech: ['HTML', 'CSS', 'Lenis'],
+    live: page('lumora'),
+    tint: 'rgba(215,150,95,0.28)',
+    ru: {
+      title: 'Lumora',
+      desc: 'Сайт студии рекламной съёмки: плавный скролл, галерея кадров с перелистыванием, живые часы и форма заявки. Тёплый свет и крупная типографика.',
+    },
+    en: {
+      title: 'Lumora',
+      desc: 'A commercial photography studio site: smooth scrolling, a swipeable frame gallery, a live clock and an enquiry form. Warm light and bold typography.',
+    },
+  },
+  {
+    slug: 'baseline',
+    year: '2026',
+    tech: ['HTML', 'CSS', 'Lenis'],
+    live: page('baseline'),
+    tint: 'rgba(120,180,140,0.28)',
+    ru: {
+      title: 'Baseline',
+      desc: 'Сайт теннисного клуба и академии: корты, тренеры с переключением карточек, расписание и контакты. Мобильное меню и раскрытие блоков по скроллу.',
+    },
+    en: {
+      title: 'Baseline',
+      desc: 'A tennis club and academy site: courts, switchable coach cards, schedule and contacts. Mobile menu and scroll-driven reveals.',
+    },
+  },
+  {
+    slug: 'raketa',
+    year: '2026',
+    tech: ['React', 'TypeScript', 'Tailwind'],
+    live: page('raketa'),
+    tint: 'rgba(200,215,110,0.28)',
+    ru: {
+      title: 'Ракета',
+      desc: 'Письмо-лендинг для email-рассылки: курс о внедрении ИИ. Формат письма шириной 640 px, видео вместо статичных баннеров и лаймовые призывы к действию.',
+    },
+    en: {
+      title: 'Raketa',
+      desc: 'An email-style landing page for a newsletter: a course on leading AI adoption. A 640px email layout, video instead of static banners and lime call-to-action blocks.',
+    },
+  },
+  {
+    slug: 'mesta',
+    year: '2026',
+    tech: ['HTML', 'CSS', 'JavaScript'],
+    live: page('mesta'),
+    tint: 'rgba(140,160,200,0.28)',
+    ru: {
+      title: 'Места',
+      desc: 'Витрина двух экранов мобильного приложения: онбординг и подписка. Корпуса iPhone свёрстаны вручную, видеофон и появление блоков по очереди.',
+    },
+    en: {
+      title: 'Mesta',
+      desc: 'A showcase of two mobile app screens: onboarding and subscription. Hand-built iPhone frames, video backgrounds and staggered entrance animations.',
+    },
+  },
   {
     slug: 'synapsex',
     year: '2026',
@@ -87,12 +158,12 @@ export const PROJECTS: Project[] = [
     repo: 'https://github.com/volgin07rus-ai/studio-agency',
     tint: 'rgba(190,200,215,0.26)',
     ru: {
-      title: 'Студия',
-      desc: 'Сайт дизайн-агентства с эффектом жидкого стекла, кинематографичным видеофоном и плавным появлением текста.',
+      title: 'Дом',
+      desc: 'Сайт парфюмерного дома: эффект жидкого стекла, кинематографичный видеофон и плавное появление текста по буквам.',
     },
     en: {
-      title: 'Studio',
-      desc: 'A design agency site with a liquid-glass effect, cinematic video background and smooth blur-in typography.',
+      title: 'Maison',
+      desc: 'A perfume house site: a liquid-glass effect, cinematic video background and smooth letter-by-letter blur-in typography.',
     },
   },
   {
@@ -183,12 +254,12 @@ export const PROJECTS: Project[] = [
     repo: 'https://github.com/volgin07rus-ai/creative-studio',
     tint: 'rgba(200,175,160,0.26)',
     ru: {
-      title: 'Креативная студия',
-      desc: 'Портфолио моушн-дизайнера: крупная типографика, работа со светом и аккуратные микровзаимодействия.',
+      title: 'Кубики',
+      desc: 'Сайт инди-игровой студии: воксельный герой на весь экран, крупная типографика и аккуратные микровзаимодействия.',
     },
     en: {
-      title: 'Creative Studio',
-      desc: 'A motion designer portfolio: bold typography, work with light and careful micro-interactions.',
+      title: 'Kubiki',
+      desc: 'An indie game studio site: a full-screen voxel character, bold typography and careful micro-interactions.',
     },
   },
 ]
