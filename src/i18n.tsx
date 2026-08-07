@@ -75,11 +75,11 @@ const ru = {
   },
 
   explorations: {
-    eyebrow: 'Крупным планом',
-    headingLead: 'Детали,',
-    headingItalic: 'из которых всё',
+    eyebrow: 'Детали',
+    headingLead: 'С чего собраны',
+    headingItalic: 'проекты',
     subtext:
-      'Свет, движение и типографика вблизи — то, из чего складываются проекты выше.',
+      'Кромка стекла, курсив антиквы, воксельный герой — то, что не разглядеть на общем плане.',
     cta: 'Написать мне',
   },
 
@@ -159,11 +159,11 @@ const en: typeof ru = {
   },
 
   explorations: {
-    eyebrow: 'Up close',
-    headingLead: 'The details',
-    headingItalic: 'behind it all',
+    eyebrow: 'Details',
+    headingLead: 'What projects',
+    headingItalic: 'are made of',
     subtext:
-      'Light, motion and typography up close — what the projects above are made of.',
+      'A glass edge, an italic serif, a voxel hero — what a full screenshot never shows.',
     cta: 'Get in touch',
   },
 

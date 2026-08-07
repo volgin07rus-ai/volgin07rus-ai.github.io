@@ -7,14 +7,17 @@ gsap.registerPlugin(ScrollTrigger)
 
 const ROTATIONS = [-4, 3, -2, 5, -3, 2]
 
-/** Кадры реальных проектов (public/gallery) */
+/**
+ * Макрокадры фрагментов (public/gallery) — не скриншоты целиком:
+ * их уже показывает блок работ выше. Здесь то, что на общем плане не видно.
+ */
 const SHOTS = [
-  { file: 'g1.jpg', alt: 'SynapseX' },
-  { file: 'g2.jpg', alt: 'Домик' },
-  { file: 'g3.jpg', alt: 'Asme' },
-  { file: 'g4.jpg', alt: 'TerraElix' },
-  { file: 'g5.jpg', alt: 'Veldara' },
-  { file: 'g6.jpg', alt: 'Nook' },
+  { file: 'd1.jpg', alt: 'Кромка жидкого стекла на карточке парфюмерного дома' },
+  { file: 'd4.jpg', alt: 'Макропортрет из съёмочной студии Lumora' },
+  { file: 'd2.jpg', alt: 'Лаймовая кнопка со стрелкой в письме «Ракета»' },
+  { file: 'd3.jpg', alt: 'Воксельный герой инди-студии «Кубики»' },
+  { file: 'd5.jpg', alt: 'Трёхмерный цветок с промо-страницы Veldara' },
+  { file: 'd6.jpg', alt: 'Зелёный градиент и крупная типографика TerraElix' },
 ]
 
 function Shot({ i }: { i: number }) {
@@ -101,13 +104,15 @@ export default function Explorations() {
             {t.explorations.eyebrow}
           </span>
         </div>
-        <h2 className="text-4xl md:text-6xl lg:text-7xl tracking-tight leading-[1.05] mb-4">
+        {/* Ширина ограничена намеренно: центр должен помещаться в просвет
+            между колонками, иначе карточки наезжают на текст */}
+        <h2 className="text-4xl md:text-5xl lg:text-6xl tracking-tight leading-[1.05] mb-4 max-w-[340px] lg:max-w-[520px]">
           {t.explorations.headingLead}{' '}
           <span className="font-display italic">
             {t.explorations.headingItalic}
           </span>
         </h2>
-        <p className="text-sm md:text-base text-muted max-w-md mb-8">
+        <p className="text-sm md:text-base text-muted max-w-[320px] lg:max-w-[460px] mb-8">
           {t.explorations.subtext}
         </p>
         <a
@@ -126,12 +131,18 @@ export default function Explorations() {
 
       {/* Слой 2 — параллакс-колонки */}
       <div className="md:absolute md:inset-0 z-20 flex items-start justify-center px-6 mt-16 md:mt-0 pointer-events-none">
-        <div className="w-full max-w-[1400px] grid grid-cols-2 gap-12 md:gap-40">
-          <div ref={colARef} className="flex flex-col gap-12 md:gap-24 md:pt-[20vh]">
+        {/* На широких экранах колонки разведены к краям, а не поставлены
+            сеткой с фиксированным зазором: раньше просвет всегда был 160px,
+            и текст в центре перекрывался карточками на любой ширине. */}
+        <div className="w-full max-w-[1500px] grid grid-cols-2 gap-12 md:flex md:justify-between md:gap-8">
+          <div
+            ref={colARef}
+            className="flex flex-col gap-12 md:gap-24 md:pt-[20vh] md:shrink-0"
+          >
             {[0, 1, 2].map((i) => (
               <div
                 key={i}
-                className="w-full max-w-[320px] aspect-square rounded-2xl overflow-hidden border border-stroke ml-auto"
+                className="w-full md:w-[19vw] max-w-[320px] md:max-w-[260px] xl:max-w-[300px] aspect-square rounded-2xl overflow-hidden border border-stroke ml-auto"
                 style={{ transform: `rotate(${ROTATIONS[i]}deg)` }}
               >
                 <Shot i={i} />
@@ -139,11 +150,14 @@ export default function Explorations() {
             ))}
           </div>
 
-          <div ref={colBRef} className="flex flex-col gap-12 md:gap-24 md:pt-[45vh]">
+          <div
+            ref={colBRef}
+            className="flex flex-col gap-12 md:gap-24 md:pt-[45vh] md:shrink-0"
+          >
             {[3, 4, 5].map((i) => (
               <div
                 key={i}
-                className="w-full max-w-[320px] aspect-square rounded-2xl overflow-hidden border border-stroke"
+                className="w-full md:w-[19vw] max-w-[320px] md:max-w-[260px] xl:max-w-[300px] aspect-square rounded-2xl overflow-hidden border border-stroke"
                 style={{ transform: `rotate(${ROTATIONS[i]}deg)` }}
               >
                 <Shot i={i} />
