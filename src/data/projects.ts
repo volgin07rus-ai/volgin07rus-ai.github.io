@@ -61,7 +61,7 @@ export const PROJECTS: Project[] = [
     kind: 'site',
     year: '2026',
     tech: ['HTML', 'CSS', 'GSAP'],
-    live: 'https://volgin07rus-ai.github.io/domik-cafe/',
+    live: 'https://domicafe.ru/',
     repo: 'https://github.com/volgin07rus-ai/domik-cafe',
     tint: 'rgba(205,165,120,0.30)',
     ru: {
