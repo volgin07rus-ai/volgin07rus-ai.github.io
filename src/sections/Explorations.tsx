@@ -111,7 +111,7 @@ export default function Explorations() {
           {t.explorations.subtext}
         </p>
         <a
-          href="#work"
+          href="#contact"
           className="group relative inline-flex rounded-full pointer-events-auto"
         >
           <span

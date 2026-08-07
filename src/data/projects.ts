@@ -62,7 +62,6 @@ export const PROJECTS: Project[] = [
     year: '2026',
     tech: ['HTML', 'CSS', 'GSAP'],
     live: 'https://domicafe.ru/',
-    repo: 'https://github.com/volgin07rus-ai/domik-cafe',
     tint: 'rgba(205,165,120,0.30)',
     ru: {
       title: 'Домик',
@@ -143,8 +142,7 @@ export const PROJECTS: Project[] = [
     kind: 'site',
     year: '2026',
     tech: ['React', 'TypeScript', 'Framer Motion'],
-    live: 'https://volgin07rus-ai.github.io/synapsex/',
-    repo: 'https://github.com/volgin07rus-ai/synapsex',
+    live: page('synapsex'),
     tint: 'rgba(137,170,204,0.30)',
     ru: {
       title: 'SynapseX',
@@ -160,8 +158,7 @@ export const PROJECTS: Project[] = [
     kind: 'site',
     year: '2026',
     tech: ['React', 'Tailwind', 'Framer Motion'],
-    live: 'https://volgin07rus-ai.github.io/studio-agency/',
-    repo: 'https://github.com/volgin07rus-ai/studio-agency',
+    live: page('studio-agency'),
     tint: 'rgba(190,200,215,0.26)',
     ru: {
       title: 'Дом',
@@ -177,8 +174,7 @@ export const PROJECTS: Project[] = [
     kind: 'site',
     year: '2026',
     tech: ['React', 'Vite', 'Framer Motion'],
-    live: 'https://volgin07rus-ai.github.io/asme/',
-    repo: 'https://github.com/volgin07rus-ai/asme',
+    live: page('asme'),
     tint: 'rgba(150,185,170,0.26)',
     ru: {
       title: 'Asme',
@@ -194,8 +190,7 @@ export const PROJECTS: Project[] = [
     kind: 'site',
     year: '2026',
     tech: ['React', 'hls.js', 'Framer Motion'],
-    live: 'https://volgin07rus-ai.github.io/mindloop/',
-    repo: 'https://github.com/volgin07rus-ai/mindloop',
+    live: page('mindloop'),
     tint: 'rgba(170,170,180,0.24)',
     ru: {
       title: 'Mindloop',
@@ -211,8 +206,7 @@ export const PROJECTS: Project[] = [
     kind: 'site',
     year: '2026',
     tech: ['React', 'Canvas', 'Tailwind'],
-    live: 'https://volgin07rus-ai.github.io/linkflow/',
-    repo: 'https://github.com/volgin07rus-ai/linkflow',
+    live: page('linkflow'),
     tint: 'rgba(133,171,139,0.28)',
     ru: {
       title: 'LinkFlow',
@@ -228,8 +222,7 @@ export const PROJECTS: Project[] = [
     kind: 'site',
     year: '2026',
     tech: ['Vite', 'CSS Animations'],
-    live: 'https://volgin07rus-ai.github.io/veldara/',
-    repo: 'https://github.com/volgin07rus-ai/veldara',
+    live: page('veldara'),
     tint: 'rgba(160,150,200,0.26)',
     ru: {
       title: 'Veldara',
@@ -245,8 +238,7 @@ export const PROJECTS: Project[] = [
     kind: 'site',
     year: '2026',
     tech: ['React', 'Tailwind'],
-    live: 'https://volgin07rus-ai.github.io/terraelix/',
-    repo: 'https://github.com/volgin07rus-ai/terraelix',
+    live: page('terraelix'),
     tint: 'rgba(150,180,150,0.26)',
     ru: {
       title: 'TerraElix',
@@ -262,8 +254,7 @@ export const PROJECTS: Project[] = [
     kind: 'site',
     year: '2026',
     tech: ['HTML', 'CSS', 'Vite'],
-    live: 'https://volgin07rus-ai.github.io/creative-studio/',
-    repo: 'https://github.com/volgin07rus-ai/creative-studio',
+    live: page('creative-studio'),
     tint: 'rgba(200,175,160,0.26)',
     ru: {
       title: 'Кубики',

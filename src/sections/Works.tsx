@@ -18,7 +18,6 @@ const SPAN_PATTERN = [
   'md:col-span-7',
 ]
 
-const GITHUB = 'https://github.com/volgin07rus-ai'
 
 export default function Works() {
   const { t, lang } = useLang()
@@ -48,21 +47,6 @@ export default function Works() {
               </p>
             </div>
 
-            <a
-              href={GITHUB}
-              target="_blank"
-              rel="noreferrer"
-              className="group relative hidden md:inline-flex rounded-full shrink-0"
-            >
-              <span
-                className="absolute rounded-full opacity-0 group-hover:opacity-100 transition-opacity gradient-ring"
-                style={{ inset: '-2px' }}
-              />
-              <span className="relative rounded-full bg-bg border border-stroke group-hover:border-transparent text-sm px-6 py-3 text-text-primary inline-flex items-center gap-2 whitespace-nowrap transition-colors">
-                {t.works.viewAll}
-                <span aria-hidden="true">→</span>
-              </span>
-            </a>
           </div>
         </motion.div>
 

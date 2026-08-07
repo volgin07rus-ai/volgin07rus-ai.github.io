@@ -6,12 +6,15 @@ import { useLang } from '../i18n'
 const HLS_URL =
   'https://stream.mux.com/Aa02T7oM1wH5Mk5EEVDYhbZ1ChcdhRsS2m1NYyx4Ua1g.m3u8'
 
-const EMAIL = 'hello@volgin.dev'
+/* Контакты в одном месте — менять только здесь.
+   TELEGRAM пустой: ссылку ждём от владельца сайта. Пока пусто —
+   кнопка просто не выводится, битых ссылок на сайте не будет. */
+const EMAIL = 'volgin07rus@gmail.com'
+const TELEGRAM = ''
+
 const SOCIALS: { label: string; href: string }[] = [
-  { label: 'GitHub', href: 'https://github.com/volgin07rus-ai' },
-  { label: 'Twitter', href: '#contact' },
-  { label: 'LinkedIn', href: '#contact' },
-  { label: 'Dribbble', href: '#contact' },
+  ...(TELEGRAM ? [{ label: 'Telegram', href: TELEGRAM }] : []),
+  { label: EMAIL, href: `mailto:${EMAIL}` },
 ]
 
 export default function Contact() {

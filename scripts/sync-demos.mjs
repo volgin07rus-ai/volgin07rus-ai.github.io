@@ -23,6 +23,14 @@ const DEMOS = [
   { slug: 'baseline', dir: 'baseline', kind: 'static', files: ['index.html'] },
   { slug: 'raketa', dir: 'raketa', kind: 'vite' },
   { slug: 'mesta', dir: 'mesta', kind: 'static', files: ['index.html'] },
+  { slug: 'synapsex', dir: 'synapsex', kind: 'vite' },
+  { slug: 'studio-agency', dir: 'studio-agency', kind: 'vite' },
+  { slug: 'asme', dir: 'asme', kind: 'vite' },
+  { slug: 'mindloop', dir: 'mindloop', kind: 'vite' },
+  { slug: 'linkflow', dir: 'linkflow', kind: 'vite' },
+  { slug: 'veldara', dir: 'veldara', kind: 'vite' },
+  { slug: 'terraelix', dir: 'terraelix', kind: 'vite' },
+  { slug: 'creative-studio', dir: 'creative-studio', kind: 'vite' },
 ]
 
 const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm'
@@ -46,8 +54,14 @@ for (const demo of DEMOS) {
 
   if (demo.kind === 'vite') {
     console.log(`  сборка ${demo.slug}…`)
+    // --base=./ переопределяет базовый путь, не трогая vite.config сайта:
+    // внутри public/demo/<slug>/ ссылки должны быть относительными.
     // shell: true обязателен — Node на Windows отказывается запускать .cmd напрямую
-    execFileSync(npm, ['run', 'build'], { cwd: src, stdio: 'inherit', shell: true })
+    execFileSync(npm, ['run', 'build', '--', '--base=./'], {
+      cwd: src,
+      stdio: 'inherit',
+      shell: true,
+    })
     await cp(join(src, 'dist'), dest, { recursive: true })
   } else {
     await mkdir(dest, { recursive: true })

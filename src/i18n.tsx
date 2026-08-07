@@ -47,7 +47,6 @@ const ru = {
     headingItalic: 'проекты',
     subtext:
       'Подборка проектов, над которыми я работал — от идеи до запуска.',
-    viewAll: 'Все работы на GitHub',
     view: 'Открыть',
     download: 'Скачать',
     app: 'Приложение',
@@ -63,7 +62,6 @@ const ru = {
     headingItalic: 'мысли',
     subtext:
       'Разборы решений из моих проектов — почему сделано именно так, а не иначе.',
-    viewAll: 'Все записи',
     readTime: (m: number) => `${m} мин чтения`,
   },
 
@@ -75,17 +73,17 @@ const ru = {
   },
 
   explorations: {
-    eyebrow: 'Эксперименты',
-    headingLead: 'Визуальная',
-    headingItalic: 'площадка',
+    eyebrow: 'Крупным планом',
+    headingLead: 'Детали,',
+    headingItalic: 'из которых всё',
     subtext:
-      'Пространство для свободных экспериментов с формой, светом и движением.',
-    cta: 'Смотреть на Dribbble',
+      'Свет, движение и типографика вблизи — то, из чего складываются проекты выше.',
+    cta: 'Написать мне',
   },
 
   stats: [
-    { value: '11', label: 'Проектов в портфолио' },
-    { value: '10', label: 'Сайтов онлайн' },
+    { value: '15', label: 'Проектов в портфолио' },
+    { value: '14', label: 'Работ открывается онлайн' },
     { value: '100%', label: 'Адаптивная вёрстка' },
   ],
 
@@ -133,7 +131,6 @@ const en: typeof ru = {
     headingLead: 'Featured',
     headingItalic: 'projects',
     subtext: "A selection of projects I've worked on, from concept to launch.",
-    viewAll: 'All work on GitHub',
     view: 'Open',
     download: 'Download',
     app: 'App',
@@ -149,7 +146,6 @@ const en: typeof ru = {
     headingItalic: 'thoughts',
     subtext:
       'Write-ups of decisions from my own projects — why it was built this way and not another.',
-    viewAll: 'View all',
     readTime: (m: number) => `${m} min read`,
   },
 
@@ -161,17 +157,17 @@ const en: typeof ru = {
   },
 
   explorations: {
-    eyebrow: 'Explorations',
-    headingLead: 'Visual',
-    headingItalic: 'playground',
+    eyebrow: 'Up close',
+    headingLead: 'The details',
+    headingItalic: 'behind it all',
     subtext:
-      'A space for free experiments with form, light and movement.',
-    cta: 'View on Dribbble',
+      'Light, motion and typography up close — what the projects above are made of.',
+    cta: 'Get in touch',
   },
 
   stats: [
-    { value: '11', label: 'Projects in portfolio' },
-    { value: '10', label: 'Sites online' },
+    { value: '15', label: 'Projects in portfolio' },
+    { value: '14', label: 'Open online' },
     { value: '100%', label: 'Responsive layouts' },
   ],
 
