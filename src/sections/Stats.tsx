@@ -24,6 +24,11 @@ export default function Stats() {
               className="text-center sm:text-left"
             >
               <div className="text-5xl md:text-7xl font-display text-text-primary leading-none mb-3 tabular-nums">
+                {s.prefix && (
+                  <span className="mr-2 text-2xl md:text-3xl text-text-primary/70">
+                    {s.prefix}
+                  </span>
+                )}
                 {num}
                 {unit && (
                   <span className="ml-2 text-2xl md:text-3xl text-text-primary/70">

@@ -84,9 +84,9 @@ const ru = {
   },
 
   stats: [
-    { value: '7', label: 'Лет в разработке' },
-    { value: '15', label: 'Проектов в портфолио' },
-    { value: '2 дня', label: 'Средний ответ на заявку' },
+    { prefix: '', value: '7', label: 'Лет в разработке' },
+    { prefix: '', value: '60+', label: 'Проектов сделано' },
+    { prefix: 'от', value: '7 дней', label: 'До запуска сайта' },
   ],
 
   contact: {
@@ -168,9 +168,9 @@ const en: typeof ru = {
   },
 
   stats: [
-    { value: '7', label: 'Years building' },
-    { value: '15', label: 'Projects in portfolio' },
-    { value: '2 days', label: 'Average reply time' },
+    { prefix: '', value: '7', label: 'Years building' },
+    { prefix: '', value: '60+', label: 'Projects delivered' },
+    { prefix: 'from', value: '7 days', label: 'To launch' },
   ],
 
   contact: {
