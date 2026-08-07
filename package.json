@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "sync:demos": "node scripts/sync-demos.mjs",
-    "build": "npm run sync:demos && tsc && vite build",
+    "build": "tsc && vite build",
     "preview": "vite preview"
   },
   "dependencies": {

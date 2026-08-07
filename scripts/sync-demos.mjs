@@ -27,17 +27,22 @@ const DEMOS = [
 
 const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm'
 
-await rm(OUT, { recursive: true, force: true })
+// Скрипт запускается ТОЛЬКО локально и вручную (npm run sync:demos).
+// В сборку его подключать нельзя: на GitHub чекаутится один репозиторий,
+// соседних папок с исходниками демо там нет — и public/demo/ уедет пустой.
+// Готовые файлы в public/demo/ закоммичены, для CI они и есть источник правды.
 await mkdir(OUT, { recursive: true })
 
 for (const demo of DEMOS) {
   const src = join(SITES, demo.dir)
   if (!existsSync(src)) {
-    console.warn(`  пропуск: ${demo.slug} — папки ${src} нет`)
+    console.warn(`  пропуск: ${demo.slug} — папки ${src} нет, уже собранное не трогаем`)
     continue
   }
 
   const dest = join(OUT, demo.slug)
+  // Чистим только ту папку, для которой реально нашёлся исходник
+  await rm(dest, { recursive: true, force: true })
 
   if (demo.kind === 'vite') {
     console.log(`  сборка ${demo.slug}…`)
