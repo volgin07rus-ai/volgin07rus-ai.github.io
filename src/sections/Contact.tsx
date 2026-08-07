@@ -6,14 +6,12 @@ import { useLang } from '../i18n'
 const HLS_URL =
   'https://stream.mux.com/Aa02T7oM1wH5Mk5EEVDYhbZ1ChcdhRsS2m1NYyx4Ua1g.m3u8'
 
-/* Контакты в одном месте — менять только здесь.
-   TELEGRAM пустой: ссылку ждём от владельца сайта. Пока пусто —
-   кнопка просто не выводится, битых ссылок на сайте не будет. */
-const EMAIL = 'volgin07rus@gmail.com'
-const TELEGRAM = ''
+/* Контакты в одном месте — менять только здесь */
+export const EMAIL = 'volgin03rus@gmail.com'
+export const TELEGRAM = 'https://t.me/D1maVolgin'
 
 const SOCIALS: { label: string; href: string }[] = [
-  ...(TELEGRAM ? [{ label: 'Telegram', href: TELEGRAM }] : []),
+  { label: 'Telegram', href: TELEGRAM },
   { label: EMAIL, href: `mailto:${EMAIL}` },
 ]
 
