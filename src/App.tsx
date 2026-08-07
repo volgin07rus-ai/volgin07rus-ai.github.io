@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { LanguageProvider, useLang } from './i18n'
+import { LanguageProvider, useLang, LANG_FADE_MS } from './i18n'
 import { useRoute } from './lib/useRoute'
 import LoadingScreen from './components/LoadingScreen'
 import Navbar from './components/Navbar'
@@ -17,7 +17,7 @@ function Site() {
   // Экран загрузки показываем только на главной: на статью посетитель
   // приходит по прямой ссылке и ждать интро не должен
   const [isLoading, setIsLoading] = useState(() => route.name === 'home')
-  const { lang } = useLang()
+  const { switching } = useLang()
 
   return (
     <>
@@ -27,12 +27,18 @@ function Site() {
 
       <Navbar />
 
-      {/* Плавный переход при смене языка и страницы */}
+      {/* Смена языка гасит контент и проявляет обратно — без пересборки дерева,
+          иначе на каждом переключении перезапускались бы видео и скролл-триггеры.
+          Меню наверху остаётся вне этого блока и не гаснет вместе с ним.
+          Гасим только прозрачностью: filter сломал бы закрепление секций GSAP. */}
       <motion.div
-        key={`${lang}-${route.name === 'article' ? route.slug : 'home'}`}
+        key={route.name === 'article' ? route.slug : 'home'}
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.45, ease: 'easeOut' }}
+        animate={{ opacity: switching ? 0.12 : 1 }}
+        transition={{
+          duration: switching ? LANG_FADE_MS / 1000 : 0.45,
+          ease: 'easeOut',
+        }}
       >
         {route.name === 'article' ? (
           <ArticlePage slug={route.slug} />

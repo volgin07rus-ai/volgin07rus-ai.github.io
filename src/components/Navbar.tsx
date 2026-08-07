@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import { useLang } from '../i18n'
 
 const TARGETS = ['#home', '#work', '#journal']
@@ -58,14 +59,32 @@ export default function Navbar() {
 
         <span className="hidden sm:block w-px h-5 bg-stroke mx-1" />
 
-        {/* Переключатель языка */}
-        <button
+        {/* Переключатель языка: подпись уезжает вверх, новая приходит снизу */}
+        <motion.button
           onClick={toggle}
           aria-label={t.langToggle.aria}
-          className="text-xs sm:text-sm rounded-full px-3 py-1.5 sm:py-2 text-muted hover:text-text-primary hover:bg-stroke/50 transition-colors font-medium"
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.9 }}
+          transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+          className="relative overflow-hidden text-xs sm:text-sm rounded-full px-3 py-1.5 sm:py-2 text-muted hover:text-text-primary hover:bg-stroke/50 transition-colors font-medium"
         >
-          {t.langToggle.label}
-        </button>
+          {/* Ширину держим невидимым близнецом, чтобы кнопка не дёргалась */}
+          <span className="invisible" aria-hidden="true">
+            {t.langToggle.label}
+          </span>
+          <AnimatePresence mode="popLayout" initial={false}>
+            <motion.span
+              key={t.langToggle.label}
+              initial={{ y: '110%', opacity: 0 }}
+              animate={{ y: '0%', opacity: 1 }}
+              exit={{ y: '-110%', opacity: 0 }}
+              transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+              className="absolute inset-0 flex items-center justify-center"
+            >
+              {t.langToggle.label}
+            </motion.span>
+          </AnimatePresence>
+        </motion.button>
 
         {/* Кнопка «Написать» */}
         <a

@@ -1,8 +1,10 @@
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from 'react'
@@ -82,9 +84,9 @@ const ru = {
   },
 
   stats: [
+    { value: '7', label: 'Лет в разработке' },
     { value: '15', label: 'Проектов в портфолио' },
-    { value: '14', label: 'Работ открывается онлайн' },
-    { value: '100%', label: 'Адаптивная вёрстка' },
+    { value: '2 дня', label: 'Средний ответ на заявку' },
   ],
 
   contact: {
@@ -166,9 +168,9 @@ const en: typeof ru = {
   },
 
   stats: [
+    { value: '7', label: 'Years building' },
     { value: '15', label: 'Projects in portfolio' },
-    { value: '14', label: 'Open online' },
-    { value: '100%', label: 'Responsive layouts' },
+    { value: '2 days', label: 'Average reply time' },
   ],
 
   contact: {
@@ -192,9 +194,13 @@ export type Dict = typeof ru
 /*  Контекст                                                           */
 /* ------------------------------------------------------------------ */
 
-type LangCtx = { lang: Lang; t: Dict; toggle: () => void }
+/** switching — язык меняется прямо сейчас: контент на это время гаснет */
+type LangCtx = { lang: Lang; t: Dict; toggle: () => void; switching: boolean }
 
 const LanguageContext = createContext<LangCtx | null>(null)
+
+/** Сколько контент гаснет перед подменой слов */
+export const LANG_FADE_MS = 260
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [lang, setLang] = useState<Lang>(() => {
@@ -203,6 +209,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     if (saved === 'ru' || saved === 'en') return saved
     return navigator.language?.toLowerCase().startsWith('ru') ? 'ru' : 'en'
   })
+  const [switching, setSwitching] = useState(false)
+  const busy = useRef(false)
 
   useEffect(() => {
     window.localStorage.setItem(STORAGE_KEY, lang)
@@ -211,13 +219,25 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       lang === 'ru' ? 'Дмитрий Волгин — Портфолио' : 'Dmitry Volgin — Portfolio'
   }, [lang])
 
+  const toggle = useCallback(() => {
+    // Повторные клики во время смены игнорируем, иначе язык «моргает»
+    if (busy.current) return
+    busy.current = true
+    setSwitching(true)
+
+    window.setTimeout(() => {
+      setLang((l) => (l === 'ru' ? 'en' : 'ru'))
+      // Даём кадр на перерисовку с новыми словами и только потом проявляем
+      requestAnimationFrame(() => {
+        setSwitching(false)
+        busy.current = false
+      })
+    }, LANG_FADE_MS)
+  }, [])
+
   const value = useMemo<LangCtx>(
-    () => ({
-      lang,
-      t: DICTS[lang],
-      toggle: () => setLang((l) => (l === 'ru' ? 'en' : 'ru')),
-    }),
-    [lang]
+    () => ({ lang, t: DICTS[lang], toggle, switching }),
+    [lang, toggle, switching]
   )
 
   return (

@@ -72,11 +72,19 @@ export default function Contact() {
         <div className="overflow-hidden py-6 mb-12 md:mb-16">
           <div ref={marqueeRef} className="flex w-max whitespace-nowrap">
             {Array.from({ length: 10 }).map((_, i) => (
+              // Точка — отдельным знаком между фразами: одинаковый отступ с
+              // обеих сторон и выключенный курсив, иначе она липнет к тексту
               <span
                 key={i}
-                className="text-3xl md:text-5xl font-display italic text-text-primary/70 px-6"
+                className="flex items-center text-3xl md:text-5xl font-display italic text-text-primary/70"
               >
-                {t.contact.marquee} •
+                {t.contact.marquee}
+                <span
+                  aria-hidden="true"
+                  className="not-italic mx-8 md:mx-12 text-[0.45em] leading-none text-text-primary/40"
+                >
+                  ●
+                </span>
               </span>
             ))}
           </div>
