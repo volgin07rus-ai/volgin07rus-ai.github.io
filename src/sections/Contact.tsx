@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import Hls from 'hls.js'
 import { useLang } from '../i18n'
-import Magnet from '../components/Magnet'
 
 const HLS_URL =
   'https://stream.mux.com/Aa02T7oM1wH5Mk5EEVDYhbZ1ChcdhRsS2m1NYyx4Ua1g.m3u8'
@@ -93,21 +92,6 @@ export default function Contact() {
 
         {/* Призыв к действию */}
         <div className="max-w-[1200px] mx-auto px-6 md:px-10 lg:px-16 text-center">
-          {/* Голова тянется за курсором — последний человеческий жест перед
-              тем, как посетитель решит написать */}
-          <Magnet className="flex justify-center mb-2 md:mb-4" padding={160} strength={4}>
-            <img
-              src={`${import.meta.env.BASE_URL}head.png`}
-              alt={t.hero.name}
-              width={600}
-              height={600}
-              loading="lazy"
-              decoding="async"
-              draggable={false}
-              className="w-[150px] md:w-[210px] lg:w-[240px] h-auto select-none pointer-events-none"
-            />
-          </Magnet>
-
           <h2 className="text-4xl md:text-6xl lg:text-7xl tracking-tight leading-[1.05] mb-5">
             {t.contact.headingLead}{' '}
             <span className="font-display italic">
