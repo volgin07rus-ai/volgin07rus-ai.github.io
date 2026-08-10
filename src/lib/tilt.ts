@@ -24,6 +24,14 @@ const СГЛАЖИВАНИЕ = 0.12
 
 const зажать = (v: number) => Math.min(Math.max(v, -1), 1)
 
+/**
+ * Показания датчика в доли −1…1: вбок и от себя. Отсюда считают наклон
+ * и карточки работ, и карточка профиля — иначе они кренятся вразнобой.
+ */
+export function наклонВДолях(beta: number, gamma: number) {
+  return { x: зажать(gamma / ДИАПАЗОН), y: зажать((БАЗА - beta) / ДИАПАЗОН) }
+}
+
 let доступ = false
 const ждущие = new Set<() => void>()
 
@@ -60,8 +68,9 @@ export function startDeviceTilt(): () => void {
   const наклон = (e: DeviceOrientationEvent) => {
     const { beta, gamma } = e
     if (beta == null || gamma == null) return
-    целY = зажать(gamma / ДИАПАЗОН) * МАКС
-    целX = зажать((БАЗА - beta) / ДИАПАЗОН) * МАКС
+    const доли = наклонВДолях(beta, gamma)
+    целY = доли.x * МАКС
+    целX = доли.y * МАКС
   }
 
   const цикл = () => {

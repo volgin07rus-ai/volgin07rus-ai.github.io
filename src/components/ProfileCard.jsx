@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useCallback, useMemo } from 'react'
 import './ProfileCard.css'
-import { onOrientationReady } from '../lib/tilt'
+import { onOrientationReady, наклонВДолях } from '../lib/tilt'
 
 const DEFAULT_INNER_GRADIENT = 'linear-gradient(145deg,#60496e8c 0%,#71C4FF44 100%)'
 
@@ -216,14 +216,17 @@ const ProfileCardComponent = ({
       const { beta, gamma } = event
       if (beta == null || gamma == null) return
 
-      const centerX = shell.clientWidth / 2
-      const centerY = shell.clientHeight / 2
-      const x = clamp(centerX + gamma * mobileTiltSensitivity, 0, shell.clientWidth)
-      const y = clamp(
-        centerY + (beta - ANIMATION_CONFIG.DEVICE_BETA_OFFSET) * mobileTiltSensitivity,
-        0,
-        shell.clientHeight
-      )
+      // Исходник переводил показания датчика в точку по-своему, и карточка
+      // кренилась в другую сторону, чем карточки работ, да ещё и стояла
+      // наклонённой, когда телефон держат обычным образом. Берём общий
+      // расчёт наклона и переводим его в точку, которую ждёт движок.
+      //
+      // Долю по горизонтали разворачиваем: угол поворота движок считает от
+      // точки с обратным знаком. Множители 0.45 и 0.36 подобраны так, чтобы
+      // на краю выходили те же девять градусов, что и у карточек работ.
+      const доли = наклонВДолях(beta, gamma)
+      const x = clamp((0.5 - доли.x * 0.45) * shell.clientWidth, 0, shell.clientWidth)
+      const y = clamp((0.5 + доли.y * 0.36) * shell.clientHeight, 0, shell.clientHeight)
 
       tiltEngine.setTarget(x, y)
     },
