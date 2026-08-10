@@ -2,6 +2,13 @@ import { CrossCorners } from '../components/Cross'
 import GridLines from '../components/GridLines'
 import ProfileCard from '../components/ProfileCard'
 import { useLang } from '../lib/lang'
+// Узор и зерно карточка подставляет в CSS-переменные, а оттуда — в url().
+// Ссылка внутри стилей считается от самого файла стилей, а он лежит в
+// assets: относительный путь из public превращался бы в assets/... и не
+// находился. Поэтому эти два файла импортируются — сборщик сам проставит
+// верный адрес.
+import grainUrl from '../assets/grain.webp'
+import iconUrl from '../assets/iconpattern.png'
 
 export default function About() {
   const { t } = useLang()
@@ -35,8 +42,8 @@ export default function About() {
           <div className="shrink-0">
             <ProfileCard
               avatarUrl={`${import.meta.env.BASE_URL}portrait-card.png`}
-              iconUrl={`${import.meta.env.BASE_URL}iconpattern.png`}
-              grainUrl={`${import.meta.env.BASE_URL}grain.webp`}
+              iconUrl={iconUrl}
+              grainUrl={grainUrl}
               name={t.about.cardName}
               title={t.about.cardTitle}
               showUserInfo={false}
