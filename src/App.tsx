@@ -1,66 +1,61 @@
-import { useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
-import { LanguageProvider, useLang, LANG_FADE_MS } from './i18n'
-import { useRoute } from './lib/useRoute'
-import LoadingScreen from './components/LoadingScreen'
+import { useEffect } from 'react'
+import Lenis from 'lenis'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import CursorTag from './components/CursorTag'
+import PageCurtain from './components/PageCurtain'
 import Navbar from './components/Navbar'
-import ArticlePage from './pages/ArticlePage'
 import Hero from './sections/Hero'
-import Works from './sections/Works'
-import Journal from './sections/Journal'
-import Explorations from './sections/Explorations'
-import Stats from './sections/Stats'
-import Contact from './sections/Contact'
+import About from './sections/About'
+import Services from './sections/Services'
+import Work from './sections/Work'
+import Footer from './sections/Footer'
+import { useLang } from './lib/lang'
 
-function Site() {
-  const route = useRoute()
-  // Экран загрузки показываем только на главной: на статью посетитель
-  // приходит по прямой ссылке и ждать интро не должен
-  const [isLoading, setIsLoading] = useState(() => route.name === 'home')
-  const { switching } = useLang()
+gsap.registerPlugin(ScrollTrigger)
+
+export default function App() {
+  const { lang } = useLang()
+
+  // От языка меняется длина текстов, а значит и высоты секций. Привязки
+  // прокрутки посчитаны по старым высотам, поэтому пересчитываем — но не
+  // сразу: сначала должна встать вёрстка и догрузиться шрифт.
+  useEffect(() => {
+    const id = window.setTimeout(() => ScrollTrigger.refresh(), 120)
+    document.fonts?.ready.then(() => ScrollTrigger.refresh())
+    return () => window.clearTimeout(id)
+  }, [lang])
+
+  useEffect(() => {
+    // При выключенных анимациях родную прокрутку не подменяем
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    const lenis = new Lenis({ smoothWheel: true })
+    // Без этой связки ScrollTrigger считает позиции по нативному скроллу
+    // и все привязки разъезжаются с плавной прокруткой
+    lenis.on('scroll', ScrollTrigger.update)
+    const raf = (time: number) => lenis.raf(time * 1000)
+    gsap.ticker.add(raf)
+    gsap.ticker.lagSmoothing(0)
+
+    return () => {
+      gsap.ticker.remove(raf)
+      lenis.destroy()
+    }
+  }, [])
 
   return (
     <>
-      <AnimatePresence>
-        {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
-      </AnimatePresence>
-
+      <PageCurtain />
+      <CursorTag />
       <Navbar />
-
-      {/* Смена языка гасит контент и проявляет обратно — без пересборки дерева,
-          иначе на каждом переключении перезапускались бы видео и скролл-триггеры.
-          Меню наверху остаётся вне этого блока и не гаснет вместе с ним.
-          Гасим только прозрачностью: filter сломал бы закрепление секций GSAP. */}
-      <motion.div
-        key={route.name === 'article' ? route.slug : 'home'}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: switching ? 0.12 : 1 }}
-        transition={{
-          duration: switching ? LANG_FADE_MS / 1000 : 0.45,
-          ease: 'easeOut',
-        }}
-      >
-        {route.name === 'article' ? (
-          <ArticlePage slug={route.slug} />
-        ) : (
-          <main>
-            <Hero />
-            <Works />
-            <Journal />
-            <Explorations />
-            <Stats />
-            <Contact />
-          </main>
-        )}
-      </motion.div>
+      <main>
+        <Hero />
+        <About />
+        <Work />
+        <Services />
+      </main>
+      <Footer />
     </>
-  )
-}
-
-export default function App() {
-  return (
-    <LanguageProvider>
-      <Site />
-    </LanguageProvider>
   )
 }

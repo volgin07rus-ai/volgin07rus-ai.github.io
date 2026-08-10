@@ -1,149 +1,234 @@
 import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
-import Hls from 'hls.js'
-import { useLang } from '../i18n'
+import HeroSequence from '../components/HeroSequence'
+import { useLang } from '../lib/lang'
 
-const HLS_URL =
-  'https://stream.mux.com/Aa02T7oM1wH5Mk5EEVDYhbZ1ChcdhRsS2m1NYyx4Ua1g.m3u8'
+/**
+ * Первый экран — длинная секция с липким содержимым.
+ *
+ * Слои снизу вверх:
+ *   0 — градиент фона, от темноты сверху к свету снизу;
+ *   1 — заголовок с mix-blend-mode: difference, он инвертирует этот градиент
+ *       и потому сам выглядит переходом от тёмного к светлому;
+ *  10 — канвас с кадрами и mix-blend-mode: multiply, лежит поверх заголовка,
+ *       поэтому монитор закрывает буквы;
+ *  20 — навигация и подписи, обычным наложением.
+ */
+/**
+ * Наклон последней строки за курсором — как в оригинале.
+ *
+ * Там это не поворот, а ось наклона переменного шрифта: у слова в конце
+ * заголовка slnt ходит примерно от нуля до −16, а первая строка стоит
+ * прямо. Ось родная, поэтому буквы не перекашиваются, а действительно
+ * перерисовываются наклонными.
+ *
+ * Значение догоняем плавно: мышь стреляет часто, и прямая подстановка
+ * дёргала бы слово. Кадры крутим только пока первый экран виден.
+ */
+const SLANT_MAX = -16
+
+function useSlantOnPointer(el: React.RefObject<HTMLElement>) {
+  useEffect(() => {
+    const node = el.current
+    if (!node) return
+    if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    let цель = 0
+    let текущий = 0
+    let frame = 0
+    let живой = false
+
+    const onMove = (e: PointerEvent) => {
+      цель = (e.clientX / innerWidth) * SLANT_MAX
+    }
+
+    const loop = () => {
+      текущий += (цель - текущий) * 0.07
+      node.style.fontVariationSettings = `"slnt" ${текущий.toFixed(2)}`
+      frame = requestAnimationFrame(loop)
+    }
+
+    const io = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting === живой) return
+      живой = entry.isIntersecting
+      if (живой) {
+        window.addEventListener('pointermove', onMove, { passive: true })
+        frame = requestAnimationFrame(loop)
+      } else {
+        window.removeEventListener('pointermove', onMove)
+        cancelAnimationFrame(frame)
+      }
+    })
+    io.observe(node)
+
+    return () => {
+      io.disconnect()
+      window.removeEventListener('pointermove', onMove)
+      cancelAnimationFrame(frame)
+    }
+  }, [el])
+}
 
 export default function Hero() {
-  const { t, lang } = useLang()
-  const videoRef = useRef<HTMLVideoElement>(null)
-  const rootRef = useRef<HTMLElement>(null)
-  const [roleIndex, setRoleIndex] = useState(0)
+  const root = useRef<HTMLElement>(null)
+  const tail = useRef<HTMLSpanElement>(null)
+  const [clock, setClock] = useState('')
+  const { t } = useLang()
 
-  // Фоновое видео через HLS
+  useSlantOnPointer(tail)
+
   useEffect(() => {
-    const video = videoRef.current
-    if (!video) return
-
-    if (Hls.isSupported()) {
-      const hls = new Hls()
-      hls.loadSource(HLS_URL)
-      hls.attachMedia(video)
-      return () => hls.destroy()
-    }
-    if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      video.src = HLS_URL
-    }
-  }, [])
-
-  // Смена роли каждые 2 секунды
-  useEffect(() => {
-    setRoleIndex(0)
-    const id = window.setInterval(
-      () => setRoleIndex((i) => (i + 1) % t.hero.roles.length),
-      2000
-    )
+    const fmt = new Intl.DateTimeFormat(t.locale, {
+      hour: '2-digit',
+      minute: '2-digit',
+      timeZone: 'Europe/Moscow',
+      hour12: false,
+    })
+    const tick = () => setClock(fmt.format(new Date()))
+    tick()
+    const id = window.setInterval(tick, 30_000)
     return () => window.clearInterval(id)
-  }, [t.hero.roles.length, lang])
+  }, [t.locale])
 
-  // Появление через GSAP
   useEffect(() => {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
-      tl.fromTo(
-        '.name-reveal',
-        { opacity: 0, y: 50 },
-        { opacity: 1, y: 0, duration: 1.2, delay: 0.1 }
-      ).fromTo(
-        '.blur-in',
-        { opacity: 0, filter: 'blur(10px)', y: 20 },
-        {
-          opacity: 1,
-          filter: 'blur(0px)',
-          y: 0,
-          duration: 1,
-          stagger: 0.1,
-        },
-        0.3
-      )
-    }, rootRef)
+      gsap
+        .timeline({ defaults: { ease: 'expo.out' } })
+        .fromTo('.warp-wrap', { opacity: 0, scale: 0.985 }, { opacity: 1, scale: 1, duration: 1.4 }, 0.1)
+        .fromTo('.hero-up', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.9, stagger: 0.07 }, 0.45)
+    }, root)
     return () => ctx.revert()
   }, [])
 
   return (
-    <section
-      id="home"
-      ref={rootRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
-    >
-      {/* Фоновое видео */}
-      <video
-        ref={videoRef}
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="absolute top-1/2 left-1/2 min-w-full min-h-full object-cover -translate-x-1/2 -translate-y-1/2"
-      />
-      <div className="absolute inset-0 bg-black/20" />
-      <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-bg to-transparent" />
+    // z-10 обязателен: без него секция не создаёт контекст наложения, и
+    // приклеенная сетка полос (z-1) проступает поверх первого экрана
+    <section id="home" ref={root} className="relative z-10 text-fog" style={{ height: '300vh' }}>
+      <div className="sticky top-0 h-screen overflow-hidden flex flex-col">
+        {/* Фон: сверху темнота, снизу свет. Он держит оба режима наложения —
+            умножение проявляет монитор только на светлом, а difference
+            заголовка инвертирует именно этот градиент. */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 z-0"
+          style={{
+            background:
+              'linear-gradient(to bottom, #0a0a0a 0%, #161616 22%, #4a484d 55%, #b9b7bb 80%, #f1f1f1 100%)',
+          }}
+        />
 
-      {/* Контент */}
-      <div className="relative z-10 flex flex-col items-center text-center px-6 pt-28 pb-24">
-        <span className="blur-in text-xs text-muted uppercase tracking-[0.3em] mb-8">
-          {t.hero.eyebrow}
-        </span>
+        {/* ---------- Монумент: слой 1, под монитором ----------
+            Обычный текст, без шейдера: наложение difference инвертирует
+            градиент фона, и заголовок сам оказывается переходом от тёмного
+            к светлому — ровно то, что раньше рисовалось в WebGL. */}
+        {/* Заливка градиентом поверх difference: наложение и так переворачивает
+            фон, а собственный перепад от белого к серому усиливает его —
+            надпись уходит в темноту к низу, как в оригинале.
 
-        <h1 className="name-reveal text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-display italic leading-[0.95] md:leading-[0.9] tracking-tight text-text-primary mb-6 max-w-[15ch]">
-          {t.hero.name}
+            Внутренний отступ сверху и вниз с равной отрицательной внешней
+            прибавкой: заливка рисуется только внутри рамки, а полукруг над
+            «Й» выступает за неё и оставался бы непрокрашенным — буква
+            выглядела бы срезанной. Отступ даёт заливке запас, отрицательная
+            прибавка не даёт съехать вёрстке. */}
+        {/* На телефоне заголовок стоит в потоке, сразу под шапкой, а подписи
+            идут прямо за ним — как в оригинале. На широком экране он, как
+            и раньше, вынесен из потока и висит на своей высоте.
+
+            Наложение и z-index обязаны быть на одном элементе, поэтому
+            обёртки для позиционирования тут нет: всё на самом заголовке. */}
+        <h1
+          className="warp-wrap hero-mark relative md:absolute inset-x-0 md:top-[15vh] z-[1] px-4 pt-[0.16em] mt-[calc(9vh-0.16em)] md:-mt-[0.16em] font-monument font-black uppercase text-center leading-[0.95] tracking-[-0.025em] bg-clip-text text-transparent"
+          style={
+            {
+              mixBlendMode: 'difference',
+              '--mark-size': t.hero.headlineSize,
+              '--mark-width': t.hero.headlineWidth,
+              '--mark-size-mob': t.hero.headlineSizeMob,
+              '--mark-width-mob': t.hero.headlineWidthMob,
+              backgroundImage: 'linear-gradient(180deg, #ffffff 0%, #cfced3 52%, #75747a 100%)',
+            } as React.CSSProperties
+          }
+        >
+          {t.hero.headline.split('\n').map((line, i, all) => (
+            <span
+              key={i}
+              // Наклон живёт только на последней строке — у оригинала так же
+              ref={i === all.length - 1 ? tail : undefined}
+              className="block"
+            >
+              {line}
+            </span>
+          ))}
         </h1>
 
-        <p className="blur-in text-base md:text-lg text-muted mb-4">
-          {t.hero.roleLine(
-            <span
-              key={`${lang}-${roleIndex}`}
-              className="font-display italic text-text-primary animate-role-fade-in inline-block"
+        {/* ---------- Кадры: слой 10, поверх заголовка ---------- */}
+        <HeroSequence />
+
+        {/* Подложка под нижние подписи: по ходу прокрутки низ кадра меняется
+            от светлой стены до тёмной тумбы, и текст любого фиксированного
+            цвета где-нибудь да пропадёт. Слой 15 — выше кадра, ниже подписей. */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 bottom-0 h-[38%] z-[15] pointer-events-none"
+          style={{
+            background:
+              'linear-gradient(to bottom, rgba(10,10,10,0) 0%, rgba(10,10,10,.55) 55%, rgba(10,10,10,.8) 100%)',
+          }}
+        />
+
+
+        {/* На телефоне пустое место уходит вниз, под подписи: там стоит
+            монитор. На широком экране распорка, как и раньше, прижимает
+            подписи к низу экрана. */}
+        <div className="flex-1 order-last md:order-none" />
+
+        {/* ---------- Подписи: слой 20, на светлом низу — тёмным ----------
+            На телефоне это два столбца сразу под заголовком, как в
+            оригинале: слева род занятий и часы, справа короткая роль.
+            Длинная строка там не помещается и остаётся широкому экрану. */}
+        <div className="relative z-20 px-6 md:px-10 pt-5 md:pt-0 pb-0 md:pb-14">
+          <div className="mx-auto max-w-page flex flex-row items-start justify-center gap-8 md:items-end md:justify-between">
+            <div
+              className="hero-up font-mono uppercase tracking-[0.1em] text-white/80 leading-[1.7] text-right md:text-left"
+              style={{ fontSize: 'clamp(11px, 1.05vw, 19px)' }}
             >
-              {t.hero.roles[roleIndex]}
-            </span>
-          )}
-        </p>
+              <div>{t.hero.role}</div>
+              <div className="flex items-center gap-2">
+                <span>{t.hero.code}</span>
+                {/* Глобус нарисован, а не набран: символьный вариант в разных
+                    системах выглядит по-разному, вплоть до цветной эмодзи */}
+                <svg
+                  className="w-[1.05em] h-[1.05em] shrink-0"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  aria-hidden="true"
+                >
+                  <circle cx="12" cy="12" r="9.2" />
+                  <ellipse cx="12" cy="12" rx="4.2" ry="9.2" />
+                  <path d="M2.9 12h18.2M4.4 7h15.2M4.4 17h15.2" />
+                </svg>
+                <span className="tabular-nums ml-2">{clock}</span>
+                <span>{t.hero.zone}</span>
+              </div>
+            </div>
 
-        <p className="blur-in text-sm md:text-base text-muted max-w-md mb-12">
-          {t.hero.description}
-        </p>
+            {/* Короткая роль — только на телефоне */}
+            <div
+              className="hero-up md:hidden font-mono uppercase tracking-[0.1em] text-white/80 leading-[1.7] whitespace-pre-line"
+              style={{ fontSize: 'clamp(11px, 1.05vw, 19px)' }}
+            >
+              {t.hero.role2}
+            </div>
 
-        <div className="blur-in inline-flex flex-wrap justify-center gap-4">
-          {/* Основная кнопка */}
-          <a
-            href="#work"
-            className="group relative inline-flex rounded-full transition-transform hover:scale-105"
-          >
-            <span
-              className="absolute rounded-full opacity-0 group-hover:opacity-100 transition-opacity gradient-ring"
-              style={{ inset: '-2px' }}
-            />
-            <span className="relative rounded-full text-sm px-7 py-3.5 bg-text-primary text-bg group-hover:bg-bg group-hover:text-text-primary transition-colors whitespace-nowrap">
-              {t.hero.ctaWorks}
-            </span>
-          </a>
-
-          {/* Вторичная кнопка */}
-          <a
-            href="#contact"
-            className="group relative inline-flex rounded-full transition-transform hover:scale-105"
-          >
-            <span
-              className="absolute rounded-full opacity-0 group-hover:opacity-100 transition-opacity gradient-ring"
-              style={{ inset: '-2px' }}
-            />
-            <span className="relative rounded-full text-sm px-7 py-3.5 border-2 border-stroke group-hover:border-transparent bg-bg text-text-primary transition-colors whitespace-nowrap">
-              {t.hero.ctaReach}…
-            </span>
-          </a>
+            <p className="hero-up hidden md:block text-body-sm md:text-body-lg text-white/85 max-w-[34ch] md:text-right">
+              {t.hero.lead}
+            </p>
+          </div>
         </div>
-      </div>
-
-      {/* Индикатор прокрутки */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-10">
-        <span className="text-xs text-muted uppercase tracking-[0.2em]">
-          {t.hero.scroll}
-        </span>
-        <span className="relative w-px h-10 bg-stroke overflow-hidden">
-          <span className="absolute inset-x-0 h-1/2 bg-text-primary/70 animate-scroll-down" />
-        </span>
       </div>
     </section>
   )

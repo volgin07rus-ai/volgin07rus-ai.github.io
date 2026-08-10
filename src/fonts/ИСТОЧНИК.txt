@@ -1,0 +1,17 @@
+ABC Gravity Cyrillic Variable — заголовочная гарнитура сайта.
+
+Файл gravity-trial.woff2 собран из ABCGravityCyrillicVariable-Trial.ttf
+(архив «ABC Gravity Cyrillic Font Family.zip» с рабочего стола):
+
+  pyftsubset ABCGravityCyrillicVariable-Trial.ttf \
+    --output-file=gravity-trial.woff2 --flavor=woff2 --layout-features='*' \
+    --unicodes="U+0020-007E,U+00A0-00FF,U+0400-04FF,U+2010-2015,U+2018-201F,U+2026,U+2116,U+2122,U+2190-2193"
+
+Оси: wght 900 (одна), wdth 50…150, slnt 0…-16. Наклонный хвост подписи
+в подвале берётся из оси наклона, а не подделывается браузером.
+
+ВНИМАНИЕ. Это ПРОБНЫЙ файл: в имени семейства так и записано
+«Unlicensed Trial». Пробные шрифты Dinamo годятся для макетов и вёрстки,
+но не для публикации. Перед выкладкой заменить на лицензионный веб-шрифт
+из личного кабинета Dinamo: положить сюда под тем же именем — правило
+@font-face в src/index.css менять не придётся.

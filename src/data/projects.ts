@@ -1,268 +1,36 @@
+/** Категория в ярлыке карточки — как «DESIGN» у оригинала.
+ *  Хранится ключом, а не подписью: подпись зависит от языка. */
+export type Tag = 'site' | 'app' | 'email'
+
 export type Project = {
   slug: string
-  /** 'app' — приложение, 'site' — сайт, 'email' — вёрстка письма для рассылки */
-  kind?: 'app' | 'site' | 'email'
-  /** Год проекта. Не указываем там, где точная дата неизвестна. */
-  year?: string
-  tech: string[]
-  live?: string
-  repo?: string
-  /** Оттенок обложки (rgba) — чтобы карточки различались, оставаясь в тёмной гамме */
-  tint: string
-  ru: { title: string; desc: string }
-  en: { title: string; desc: string }
+  /** Название не переводится: это имя проекта, а не текст интерфейса */
+  title: string
+  tag: Tag
+  year: string
+  href: string
+  /** Крупные карточки занимают две колонки, мелкие — одну */
+  wide?: boolean
+  /** Свежая работа помечается оранжевым ярлыком */
+  fresh?: boolean
 }
 
-/**
- * Демо, которые живут внутри этого же репозитория — в public/demo/<slug>/.
- * Отдельный репозиторий им не нужен: открываются как страницы портфолио.
- * Раскладывает их скрипт npm run sync:demos (запускается перед сборкой).
- *
- * Путь указан до index.html: dev-сервер Vite на «голую» папку отдаёт
- * не демо, а сам портфолио (SPA-fallback), а с явным файлом всё честно.
- */
-const page = (slug: string) => `${import.meta.env.BASE_URL}demo/${slug}/index.html`
+const SITE = 'https://volgin.site'
 
 export const PROJECTS: Project[] = [
-  {
-    slug: 'nook',
-    kind: 'app',
-    year: '2026',
-    tech: ['Tauri', 'Rust', 'React', 'TypeScript'],
-    live: 'https://github.com/volgin07rus-ai/nook/releases/latest',
-    repo: 'https://github.com/volgin07rus-ai/nook',
-    tint: 'rgba(150,175,205,0.30)',
-    ru: {
-      title: 'Nook',
-      desc: 'Личный менеджер задач для Windows и Android: задачи с подзадачами и повторами, напоминания, блокнот и виджет на рабочем столе. Всё хранится локально — без аккаунтов и облака.',
-    },
-    en: {
-      title: 'Nook',
-      desc: 'A personal task manager for Windows and Android: tasks with subtasks and recurrence, reminders, a notepad and a desktop widget. Everything is stored locally — no accounts, no cloud.',
-    },
-  },
-  {
-    slug: 'partner-group',
-    kind: 'site',
-    tech: ['React'],
-    live: 'https://prgr.pro',
-    tint: 'rgba(175,190,210,0.28)',
-    ru: {
-      title: 'Партнёр Групп',
-      desc: 'Корпоративный сайт консалтинговой компании: стратегия и управление изменениями, реструктуризация бизнеса, привлечение инвестиций. Строгая типографика и сдержанная палитра.',
-    },
-    en: {
-      title: 'Partner Group',
-      desc: 'A corporate site for a consulting firm: strategy and change management, business restructuring, investment. Strict typography and a restrained palette.',
-    },
-  },
-  {
-    slug: 'domik-cafe',
-    kind: 'site',
-    year: '2026',
-    tech: ['HTML', 'CSS', 'GSAP'],
-    live: 'https://domicafe.ru/',
-    tint: 'rgba(205,165,120,0.30)',
-    ru: {
-      title: 'Домик',
-      desc: 'Сайт городской кофейни в центре Москвы — «место, где время идёт медленнее». Меню, галерея интерьеров и тёплая фактура: кирпич, дерево, приглушённый свет.',
-    },
-    en: {
-      title: 'Domik',
-      desc: 'A site for a city coffee shop in central Moscow — “a place where time runs slower”. Menu, interior gallery and warm textures: brick, wood and soft light.',
-    },
-  },
-  // Свежие работы идут первыми: они собраны целиком, со всеми секциями и состояниями.
-  {
-    slug: 'lumora',
-    kind: 'site',
-    year: '2026',
-    tech: ['HTML', 'CSS', 'Lenis'],
-    live: page('lumora'),
-    tint: 'rgba(215,150,95,0.28)',
-    ru: {
-      title: 'Lumora',
-      desc: 'Сайт студии рекламной съёмки: плавный скролл, галерея кадров с перелистыванием, живые часы и форма заявки. Тёплый свет и крупная типографика.',
-    },
-    en: {
-      title: 'Lumora',
-      desc: 'A commercial photography studio site: smooth scrolling, a swipeable frame gallery, a live clock and an enquiry form. Warm light and bold typography.',
-    },
-  },
-  {
-    slug: 'baseline',
-    kind: 'site',
-    year: '2026',
-    tech: ['HTML', 'CSS', 'Lenis'],
-    live: page('baseline'),
-    tint: 'rgba(120,180,140,0.28)',
-    ru: {
-      title: 'Baseline',
-      desc: 'Сайт теннисного клуба и академии: корты, тренеры с переключением карточек, расписание и контакты. Мобильное меню и раскрытие блоков по скроллу.',
-    },
-    en: {
-      title: 'Baseline',
-      desc: 'A tennis club and academy site: courts, switchable coach cards, schedule and contacts. Mobile menu and scroll-driven reveals.',
-    },
-  },
-  {
-    slug: 'raketa',
-    kind: 'email',
-    year: '2026',
-    tech: ['React', 'TypeScript', 'Tailwind'],
-    live: page('raketa'),
-    tint: 'rgba(200,215,110,0.28)',
-    ru: {
-      title: 'Ракета',
-      desc: 'Письмо-лендинг для email-рассылки: курс о внедрении ИИ. Формат письма шириной 640 px, видео вместо статичных баннеров и лаймовые призывы к действию.',
-    },
-    en: {
-      title: 'Raketa',
-      desc: 'An email-style landing page for a newsletter: a course on leading AI adoption. A 640px email layout, video instead of static banners and lime call-to-action blocks.',
-    },
-  },
-  {
-    slug: 'mesta',
-    kind: 'app',
-    year: '2026',
-    tech: ['HTML', 'CSS', 'JavaScript'],
-    live: page('mesta'),
-    tint: 'rgba(140,160,200,0.28)',
-    ru: {
-      title: 'Места',
-      desc: 'Витрина двух экранов мобильного приложения: онбординг и подписка. Корпуса iPhone свёрстаны вручную, видеофон и появление блоков по очереди.',
-    },
-    en: {
-      title: 'Mesta',
-      desc: 'A showcase of two mobile app screens: onboarding and subscription. Hand-built iPhone frames, video backgrounds and staggered entrance animations.',
-    },
-  },
-  {
-    slug: 'synapsex',
-    kind: 'site',
-    year: '2026',
-    tech: ['React', 'TypeScript', 'Framer Motion'],
-    live: page('synapsex'),
-    tint: 'rgba(137,170,204,0.30)',
-    ru: {
-      title: 'SynapseX',
-      desc: 'Лендинг об эволюции интерфейсов: скролл-анимации, эффект расшифровки текста и крупный типографический водяной знак.',
-    },
-    en: {
-      title: 'SynapseX',
-      desc: 'A landing page about the evolution of interfaces: scroll animations, text-scramble effect and a bold typographic watermark.',
-    },
-  },
-  {
-    slug: 'studio-agency',
-    kind: 'site',
-    year: '2026',
-    tech: ['React', 'Tailwind', 'Framer Motion'],
-    live: page('studio-agency'),
-    tint: 'rgba(190,200,215,0.26)',
-    ru: {
-      title: 'Дом',
-      desc: 'Сайт парфюмерного дома: эффект жидкого стекла, кинематографичный видеофон и плавное появление текста по буквам.',
-    },
-    en: {
-      title: 'Maison',
-      desc: 'A perfume house site: a liquid-glass effect, cinematic video background and smooth letter-by-letter blur-in typography.',
-    },
-  },
-  {
-    slug: 'asme',
-    kind: 'site',
-    year: '2026',
-    tech: ['React', 'Vite', 'Framer Motion'],
-    live: page('asme'),
-    tint: 'rgba(150,185,170,0.26)',
-    ru: {
-      title: 'Asme',
-      desc: 'Медиа-лендинг с полноэкранным видео, бесшовным циклом и стеклянными карточками поверх движущегося фона.',
-    },
-    en: {
-      title: 'Asme',
-      desc: 'A media landing page with full-screen video, a seamless loop and glass cards layered over moving footage.',
-    },
-  },
-  {
-    slug: 'mindloop',
-    kind: 'site',
-    year: '2026',
-    tech: ['React', 'hls.js', 'Framer Motion'],
-    live: page('mindloop'),
-    tint: 'rgba(170,170,180,0.24)',
-    ru: {
-      title: 'Mindloop',
-      desc: 'Тёмная монохромная платформа для рассылок: пословное проявление текста по скроллу и потоковое HLS-видео.',
-    },
-    en: {
-      title: 'Mindloop',
-      desc: 'A dark monochrome newsletter platform: scroll-driven word-by-word text reveal and HLS video streaming.',
-    },
-  },
-  {
-    slug: 'linkflow',
-    kind: 'site',
-    year: '2026',
-    tech: ['React', 'Canvas', 'Tailwind'],
-    live: page('linkflow'),
-    tint: 'rgba(133,171,139,0.28)',
-    ru: {
-      title: 'LinkFlow',
-      desc: 'Продукт для автоматизации процессов. Фон — видео-«бумеранг»: кадры пишутся в canvas и играют вперёд-назад.',
-    },
-    en: {
-      title: 'LinkFlow',
-      desc: 'A workflow automation product. The background is a video boomerang: frames are captured to canvas and played back and forth.',
-    },
-  },
-  {
-    slug: 'veldara',
-    kind: 'site',
-    year: '2026',
-    tech: ['Vite', 'CSS Animations'],
-    live: page('veldara'),
-    tint: 'rgba(160,150,200,0.26)',
-    ru: {
-      title: 'Veldara',
-      desc: 'Промо-страница движка для 3D-миров в вебе: скролл-сцены, видеофон и последовательное раскрытие карточек.',
-    },
-    en: {
-      title: 'Veldara',
-      desc: 'A promo page for a web 3D-worlds engine: scroll scenes, video background and sequentially revealed cards.',
-    },
-  },
-  {
-    slug: 'terraelix',
-    kind: 'site',
-    year: '2026',
-    tech: ['React', 'Tailwind'],
-    live: page('terraelix'),
-    tint: 'rgba(150,180,150,0.26)',
-    ru: {
-      title: 'TerraElix',
-      desc: 'Лендинг велнес-бренда. Заголовок раскрывается по словам через маску — с точной настройкой межстрочных интервалов.',
-    },
-    en: {
-      title: 'TerraElix',
-      desc: 'A wellness brand landing page. The headline reveals word by word through a mask, with carefully tuned line heights.',
-    },
-  },
-  {
-    slug: 'creative-studio',
-    kind: 'site',
-    year: '2026',
-    tech: ['HTML', 'CSS', 'Vite'],
-    live: page('creative-studio'),
-    tint: 'rgba(200,175,160,0.26)',
-    ru: {
-      title: 'Кубики',
-      desc: 'Сайт инди-игровой студии: воксельный герой на весь экран, крупная типографика и аккуратные микровзаимодействия.',
-    },
-    en: {
-      title: 'Kubiki',
-      desc: 'An indie game studio site: a full-screen voxel character, bold typography and careful micro-interactions.',
-    },
-  },
+  { slug: 'nook', title: 'Nook', tag: 'app', year: '2026', href: 'https://github.com/volgin07rus-ai/nook/releases/latest', wide: true },
+  { slug: 'partner-group', title: 'Партнёр Групп', tag: 'site', year: '2026', href: 'https://prgr.pro' },
+  { slug: 'domik-cafe', title: 'Домик', tag: 'site', year: '2026', href: 'https://domicafe.ru/' },
+  { slug: 'lumora', title: 'Lumora', tag: 'site', year: '2026', href: `${SITE}/demo/lumora/index.html`, wide: true },
+  { slug: 'baseline', title: 'Baseline', tag: 'site', year: '2026', href: `${SITE}/demo/baseline/index.html` },
+  { slug: 'raketa', title: 'Ракета', tag: 'email', year: '2026', href: `${SITE}/demo/raketa/index.html` },
+  { slug: 'mesta', title: 'Места', tag: 'app', year: '2026', href: `${SITE}/demo/mesta/index.html`, wide: true },
+  { slug: 'synapsex', title: 'SynapseX', tag: 'site', year: '2026', href: `${SITE}/demo/synapsex/index.html` },
+  { slug: 'studio-agency', title: 'Aura', tag: 'site', year: '2026', href: `${SITE}/demo/studio-agency/index.html` },
+  { slug: 'asme', title: 'Asme', tag: 'site', year: '2026', href: `${SITE}/demo/asme/index.html`, wide: true },
+  { slug: 'mindloop', title: 'Mindloop', tag: 'site', year: '2026', href: `${SITE}/demo/mindloop/index.html` },
+  { slug: 'linkflow', title: 'LinkFlow', tag: 'site', year: '2026', href: `${SITE}/demo/linkflow/index.html` },
+  { slug: 'veldara', title: 'Veldara', tag: 'site', year: '2026', href: `${SITE}/demo/veldara/index.html`, wide: true },
+  { slug: 'terraelix', title: 'TerraElix', tag: 'site', year: '2026', href: `${SITE}/demo/terraelix/index.html` },
+  { slug: 'creative-studio', title: 'Кубики', tag: 'site', year: '2026', href: `${SITE}/demo/creative-studio/index.html` },
 ]

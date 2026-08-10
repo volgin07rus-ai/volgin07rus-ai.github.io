@@ -1,106 +1,188 @@
-import { useEffect, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
-import { useLang } from '../i18n'
+import { useEffect, useRef, useState } from 'react'
+import SwooshButton from './SwooshButton'
+import { useLang } from '../lib/lang'
 
-const TARGETS = ['#home', '#work', '#journal']
-
+/**
+ * Меню закреплено сверху и прячется при листании вниз, возвращаясь при
+ * листании вверх — так же, как в оригинале: там оно уезжает ровно
+ * на свою высоту через translateY.
+ *
+ * Знак вынесен из шапки отдельным элементом верхнего уровня. Иначе никак:
+ * он подкрашивается наложением difference, а наложение считается только
+ * с тем, что лежит под элементом внутри его контекста. Шапка со своим
+ * z-index — это отдельный контекст, и знак внутри неё смешивался бы
+ * с пустотой, а не с фоном страницы.
+ *
+ * Направление прокрутки считаем сами и пишем сдвиг прямо в стиль: scroll
+ * стреляет часто, и состояние React на каждом кадре здесь ни к чему.
+ */
 export default function Navbar() {
-  const { t, toggle } = useLang()
-  const [scrolled, setScrolled] = useState(false)
-  const [active, setActive] = useState(0)
+  const bar = useRef<HTMLElement>(null)
+  const mark = useRef<HTMLAnchorElement>(null)
+  const { lang, setLang, t } = useLang()
+  const [open, setOpen] = useState(false)
+
+  // Меню закрывается по Esc, по уходу на широкий экран и по прокрутке:
+  // раскрытая панель, висящая над уехавшим содержимым, читается поломкой
+  useEffect(() => {
+    if (!open) return
+    const close = () => setOpen(false)
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') close()
+    }
+    const wide = matchMedia('(min-width: 768px)')
+    window.addEventListener('keydown', onKey)
+    window.addEventListener('scroll', close, { passive: true })
+    wide.addEventListener('change', close)
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      window.removeEventListener('scroll', close)
+      wide.removeEventListener('change', close)
+    }
+  }, [open])
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 100)
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    const nodes = [bar.current, mark.current].filter(Boolean) as HTMLElement[]
+    if (!nodes.length) return
+
+    let last = scrollY
+    let hidden = false
+    let frame = 0
+
+    const update = () => {
+      cancelAnimationFrame(frame)
+      frame = requestAnimationFrame(() => {
+        const y = scrollY
+        const delta = y - last
+        // Мелкие подрагивания игнорируем, иначе меню дёргается
+        if (Math.abs(delta) < 6) return
+        // У самого верха меню всегда на месте
+        const shouldHide = delta > 0 && y > nodes[0].offsetHeight * 2
+
+        if (shouldHide !== hidden) {
+          hidden = shouldHide
+          for (const n of nodes) n.style.transform = hidden ? 'translateY(-110%)' : 'translateY(0)'
+        }
+        last = y
+      })
+    }
+
+    window.addEventListener('scroll', update, { passive: true })
+    return () => {
+      cancelAnimationFrame(frame)
+      window.removeEventListener('scroll', update)
+    }
   }, [])
 
+  const slide = { transition: 'transform .5s cubic-bezier(0.19, 1, 0.22, 1)' }
+
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-4 md:pt-6 px-4">
-      <div
-        className={`inline-flex items-center rounded-full backdrop-blur-md border border-white/10 bg-surface px-2 py-2 transition-shadow ${
-          scrolled ? 'shadow-md shadow-black/10' : ''
-        }`}
+    <>
+      {/* Знак без подложки: difference сам делает его светлым на тёмном
+          и тёмным на светлом.
+
+          Прижат к нулю, отступ внутренний: при сдвиге на свою высоту знак
+          должен уходить целиком, а внешний отступ остался бы за кадром и
+          знак выглядывал бы полоской. */}
+      <a
+        ref={mark}
+        href="#home"
+        data-cursor={t.cursor.top}
+        className="nav-mark fixed left-6 md:left-10 top-0 py-4 z-[41] flex items-center"
+        style={slide}
       >
-        {/* Логотип */}
-        <a
-          href="#home"
-          className="group w-9 h-9 rounded-full p-[1.5px] shrink-0 transition-transform hover:scale-110 gradient-ring"
-          aria-label={t.hero.name}
-        >
-          <span className="w-full h-full rounded-full bg-bg flex items-center justify-center">
-            <span className="font-display italic text-[13px] text-text-primary leading-none">
-              {t.initials}
-            </span>
-          </span>
-        </a>
+        <img
+          src={`${import.meta.env.BASE_URL}logo.png`}
+          alt={t.nav.logoAlt}
+          width={683}
+          height={399}
+          className="h-8 w-auto brightness-0 invert"
+        />
+      </a>
 
-        <span className="hidden sm:block w-px h-5 bg-stroke mx-1" />
+      <header
+        ref={bar}
+        className="fixed inset-x-0 top-0 z-40 flex items-center justify-between px-6 md:px-10 py-4 text-fog"
+        style={slide}
+      >
+        {/* Место знака: сам он лежит выше по дереву, а здесь держит разметку */}
+        <span className="w-14 h-8 block" aria-hidden="true" />
 
-        {/* Ссылки — скрыты на узких экранах, чтобы плашка не вылезала
-            за края (русские подписи длиннее английских) */}
-        <div className="hidden sm:flex items-center">
-          {t.nav.links.map((link, i) => (
-            <a
-              key={link}
-              href={TARGETS[i]}
-              onClick={() => setActive(i)}
-              className={`text-xs sm:text-sm rounded-full px-3 sm:px-4 py-1.5 sm:py-2 transition-colors whitespace-nowrap ${
-                active === i
-                  ? 'text-text-primary bg-stroke/50'
-                  : 'text-muted hover:text-text-primary hover:bg-stroke/50'
-              }`}
-            >
-              {link}
-            </a>
+        <nav className="hidden md:flex items-center gap-2">
+          {t.nav.items.map((l) => (
+            <SwooshButton key={l.href} href={l.href} tone="light" dot={false} cursor={t.cursor.go}>
+              <span className="text-ember mr-1">+</span>
+              {l.label}
+            </SwooshButton>
           ))}
-        </div>
+        </nav>
 
-        <span className="hidden sm:block w-px h-5 bg-stroke mx-1" />
+        {/* Переключатель языка подписан тем языком, на который переведёт:
+            надпись «EN» на русском сайте читается как действие, а не как
+            сообщение о текущем состоянии. Текущий язык при этом виден
+            рядом с часами на первом экране. */}
+        <div className="relative flex items-center gap-2">
+          <SwooshButton
+            tone="light"
+            dot={false}
+            cursor={t.nav.switchCursor}
+            onClick={() => setLang(lang === 'ru' ? 'en' : 'ru')}
+            aria-label={t.nav.switchCursor}
+          >
+            {t.nav.switchLabel}
+          </SwooshButton>
 
-        {/* Переключатель языка: подпись уезжает вверх, новая приходит снизу */}
-        <motion.button
-          onClick={toggle}
-          aria-label={t.langToggle.aria}
-          whileHover={{ scale: 1.08 }}
-          whileTap={{ scale: 0.9 }}
-          transition={{ type: 'spring', stiffness: 400, damping: 17 }}
-          className="relative overflow-hidden text-xs sm:text-sm rounded-full px-3 py-1.5 sm:py-2 text-muted hover:text-text-primary hover:bg-stroke/50 transition-colors font-medium"
-        >
-          {/* Ширину держим невидимым близнецом, чтобы кнопка не дёргалась */}
-          <span className="invisible" aria-hidden="true">
-            {t.langToggle.label}
-          </span>
-          <AnimatePresence mode="popLayout" initial={false}>
-            <motion.span
-              key={t.langToggle.label}
-              initial={{ y: '110%', opacity: 0 }}
-              animate={{ y: '0%', opacity: 1 }}
-              exit={{ y: '-110%', opacity: 0 }}
-              transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-              className="absolute inset-0 flex items-center justify-center"
+          {/* На широком экране «связаться» стоит в самой шапке, на узком
+              уходит внутрь меню — как в оригинале. Прячем обёрткой, а не
+              классом на самой кнопке: у .swoosh свой display, и он бы
+              перебил утилиту */}
+          <div className="hidden md:block">
+            <SwooshButton href="#contact" tone="light" cursor={t.cursor.write}>
+              {t.nav.contact}
+            </SwooshButton>
+          </div>
+
+          <div className="md:hidden">
+            <SwooshButton
+              tone="light"
+              cursor={t.nav.menu}
+              className={open ? 'swoosh--on' : ''}
+              onClick={() => setOpen((v) => !v)}
+              aria-expanded={open}
             >
-              {t.langToggle.label}
-            </motion.span>
-          </AnimatePresence>
-        </motion.button>
+              {t.nav.menu}
+            </SwooshButton>
+          </div>
 
-        {/* Кнопка «Написать» */}
-        <a
-          href="#contact"
-          className="group relative ml-1 inline-flex items-center rounded-full"
-        >
-          <span
-            className="absolute rounded-full opacity-0 group-hover:opacity-100 transition-opacity gradient-ring"
-            style={{ inset: '-2px' }}
-          />
-          <span className="relative bg-surface rounded-full backdrop-blur-md text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 text-text-primary whitespace-nowrap inline-flex items-center gap-1">
-            {t.nav.sayHi}
-            <span aria-hidden="true">↗</span>
-          </span>
-        </a>
-      </div>
-    </nav>
+          {/* Панель меню: тёмная плашка под кнопкой, пункты с оранжевым
+              плюсом и заливная кнопка связи внизу — как у оригинала.
+              Закрытая панель убрана через visibility, поэтому её ссылки
+              не ловят табуляцию */}
+          <div className={`nav-panel md:hidden ${open ? 'is-open' : ''}`}>
+            <nav className="flex flex-col items-start gap-4">
+              {t.nav.items.map((l) => (
+                <a
+                  key={l.href}
+                  href={l.href}
+                  onClick={() => setOpen(false)}
+                  className="font-mono text-caption uppercase tracking-[0.08em] text-fog"
+                >
+                  <span className="text-ember mr-2">+</span>
+                  {l.label}
+                </a>
+              ))}
+            </nav>
+            <SwooshButton
+              href="#contact"
+              className="swoosh--ember mt-5 w-full justify-center"
+              cursor={t.cursor.write}
+              onClick={() => setOpen(false)}
+            >
+              {t.nav.contact}
+            </SwooshButton>
+          </div>
+        </div>
+      </header>
+    </>
   )
 }

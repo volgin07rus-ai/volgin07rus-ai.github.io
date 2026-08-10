@@ -1,83 +1,514 @@
+/* ============================================================
+   ЗАГОЛОВОЧНАЯ ГАРНИТУРА
+   ABC Gravity Cyrillic — та самая, что у оригинала. Переменная:
+   один вес 900 и оси ширины (50…150) и наклона (0…-16), поэтому
+   одним файлом закрыты и прямое начертание, и наклонный хвост
+   подписи в подвале.
+
+   ВНИМАНИЕ: файл пробный, в имени семейства так и написано
+   «Unlicensed Trial». Для публикации сюда нужно положить
+   лицензионный веб-шрифт из личного кабинета Dinamo — имя файла
+   и это правило останутся теми же.
+   ============================================================ */
+@font-face {
+  font-family: 'ABC Gravity';
+  src: url('./fonts/gravity-trial.woff2') format('woff2');
+  font-weight: 900;
+  font-stretch: 50% 150%;
+  /* Диапазон, а не одно значение: наклон здесь ось, и курсив берётся
+     из того же файла, а не подделывается браузером */
+  font-style: oblique 0deg 16deg;
+  font-display: swap;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --bg: 0 0% 4%;
-    --surface: 0 0% 8%;
-    --text: 0 0% 96%;
-    --muted: 0 0% 53%;
-    --stroke: 0 0% 12%;
-    --accent: 0 0% 96%;
-
-    --font-body: 'Inter', sans-serif;
-    --font-display: 'Instrument Serif', 'Cormorant Garamond', serif;
-  }
-
   html {
     scroll-behavior: smooth;
   }
-
   body {
-    @apply bg-bg text-text-primary font-body;
+    @apply bg-onyx text-fog font-grot;
     margin: 0;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  ::selection {
+    background: #ff6436;
+    color: #161616;
   }
 }
 
-/* Акцентный градиент — кольцо логотипа, рамки при наведении, прогресс-бар */
-.accent-gradient {
-  background: linear-gradient(90deg, #89aacc 0%, #4e85bf 100%);
+/* ============================================================
+   МОНУМЕНТАЛЬНЫЙ ТЕКСТ
+   Буквы выходят из темноты на свет. Приём работает только на
+   display-масштабе: на мелком кегле градиент схлопывается в серое.
+   ============================================================ */
+.monument-fade {
+  background-image: linear-gradient(
+    rgb(44, 42, 47),
+    rgb(110, 108, 112) 25%,
+    rgb(185, 183, 187) 50%,
+    rgb(220, 214, 214) 75%,
+    rgb(241, 241, 241)
+  );
+  background-size: 100% 200%;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+/* Строки сидят в отдельных масках, поэтому одну заливку на весь заголовок
+   повесить нельзя — она обрежется вместе со строкой. Растягиваем градиент
+   на две строки и сдвигаем позицию: две заливки складываются в одну. */
+.monument-fade--top {
+  background-position: 0 0;
+}
+.monument-fade--bottom {
+  background-position: 0 100%;
 }
 
-/* Градиентная рамка с анимацией (для кнопок и карточек) */
-.gradient-ring {
-  background: linear-gradient(90deg, #89aacc 0%, #4e85bf 50%, #89aacc 100%);
-  background-size: 200% 100%;
-  animation: gradient-shift 6s ease infinite;
+/* ============================================================
+   ВЕРТИКАЛЬНАЯ СЕТКА
+   Волосные линии, приклеенные к экрану. Сами они неподвижны —
+   движется контент под ними, и от этого кажется, что едут полосы.
+   ============================================================ */
+.grid-lines {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  display: flex;
+  justify-content: space-between;
+  padding-inline: 24px;
+}
+.grid-lines > i {
+  display: block;
+  width: 1px;
+  height: 100%;
+  background: currentColor;
+  opacity: 0.14;
 }
 
-@keyframes scroll-down {
-  0% {
-    transform: translateY(-100%);
-  }
-  100% {
-    transform: translateY(200%);
-  }
+/* ============================================================
+   КУРСОР-ЯРЛЫК
+   Не замена системного курсора, а подпись рядом с ним:
+   всплывает над тем, что можно открыть.
+   ============================================================ */
+.cursor-tag {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 90;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 16px;
+  /* Квадратная плашка, а не пилюля: округлые углы спорили с острыми
+     углами карточек и кнопок */
+  border-radius: 0;
+  background: #161616;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #f1f1f1;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(10px, 14px) scale(0.85);
+  transition: opacity 0.25s cubic-bezier(0.32, 0.72, 0, 1),
+    scale 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+  will-change: translate;
 }
-.animate-scroll-down {
-  animation: scroll-down 1.5s ease-in-out infinite;
+.cursor-tag.is-on {
+  opacity: 1;
+  scale: 1;
+}
+.cursor-tag .dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #ff6436;
+  flex: none;
 }
 
-@keyframes role-fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
+/* Ярлык не нужен там, где нет мыши */
+@media (hover: none), (pointer: coarse) {
+  .cursor-tag {
+    display: none;
   }
-  to {
-    opacity: 1;
+}
+
+/* ============================================================
+   ПРОЧЕЕ
+   ============================================================ */
+.pill {
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 9999px;
+  padding: 7px 12px;
+  transition: background-color 0.3s cubic-bezier(0.32, 0.72, 0, 1),
+    border-color 0.3s cubic-bezier(0.32, 0.72, 0, 1),
+    color 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+}
+@media (hover: hover) and (pointer: fine) {
+  .pill:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+}
+
+/* Строка выезжает из-под маски. Нижний отступ обязателен:
+   без него обрезаются выносные элементы букв. */
+.line-mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  .cursor-tag {
+    display: none;
+  }
+}
+
+/* ============================================================
+   КНОПКА С ПРОКАТОМ
+   Два увеличенных наклонённых слоя проходят сквозь кнопку
+   со ступенчатой задержкой, подпись подменяется копией снизу.
+   ============================================================ */
+.swoosh {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
+  isolation: isolate;
+  padding: 9px 14px;
+  font-size: 12px;
+  line-height: 1.3;
+  border: 1px solid transparent;
+  transition: color 0.35s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.swoosh--lg {
+  padding: 14px 22px;
+  font-size: 15px;
+  letter-spacing: 0.06em;
+}
+.swoosh--dark {
+  background: #161616;
+  color: #f1f1f1;
+}
+/* Светлая кнопка живёт в шапке и проезжает над блоками любой яркости.
+   Прозрачной ей нельзя: на светлых секциях белый текст в белом фоне
+   пропадает. Подкладываем матовую серую пластину с размытием — на
+   тёмном первом экране она почти незаметна, на светлом держит текст. */
+.swoosh--light {
+  background: rgba(28, 28, 30, 0.62);
+  backdrop-filter: blur(12px) saturate(1.3);
+  -webkit-backdrop-filter: blur(12px) saturate(1.3);
+  border-color: rgba(255, 255, 255, 0.14);
+  color: #f1f1f1;
+}
+
+/* ============================================================
+   ССЫЛКА С ПРОКРУТКОЙ СТРОКИ
+   Подпись уезжает вверх, снизу приходит её копия — та же механика,
+   что у кнопок, только без заливки. Обе строки в окне высотой
+   в строку, поэтому окно нужно обрезающее.
+   ============================================================ */
+.link-roll {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  /* Выносные элементы букв обрезались бы окном: расширяем его
+     отступом и тут же забираем отступ обратно полями */
+  padding-block: 0.12em;
+  margin-block: -0.12em;
+}
+.link-roll__a,
+.link-roll__b {
+  display: block;
+  transition: transform 0.45s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.link-roll__b {
+  position: absolute;
+  inset: 0.12em 0 auto 0;
+  color: #ff6436;
+}
+.link-roll__b {
+  transform: translateY(110%);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .link-roll:hover .link-roll__a {
+    transform: translateY(-110%);
+  }
+  .link-roll:hover .link-roll__b {
     transform: translateY(0);
   }
 }
-.animate-role-fade-in {
-  animation: role-fade-in 0.4s ease-out;
-}
 
-@keyframes gradient-shift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
+@media (prefers-reduced-motion: reduce) {
+  .link-roll__a,
+  .link-roll__b {
+    transition: none !important;
   }
 }
 
-/* Полутоновая сетка поверх изображений проектов */
-.halftone {
-  background-image: radial-gradient(circle, #000 1px, transparent 1px);
-  background-size: 4px 4px;
+/* ============================================================
+   TILTED CARD
+   Правки живут здесь, файл компонента совпадает с исходником.
+   ============================================================ */
+
+/* Кадр показываем с верхнего края: у скриншотов сайтов там шапка
+   и заголовок. Скругление — как у панелей в системе. */
+.tilted-card-img {
+  border-radius: 14.4px;
+  object-position: top;
+}
+
+/* Слой подписей в исходнике без размеров — они нужны, чтобы ярлыки
+   встали по углам картинки */
+.tilted-card-overlay {
+  width: 100%;
+  height: 100%;
+}
+
+/* Наклонённая карточка выходит за свою ячейку и должна лечь поверх
+   соседей: иначе следующие по порядку перекрывают её край */
+.work-card:hover {
+  z-index: 5;
+}
+
+/* Правки для карточки ProfileCard живут здесь, а не в файле компонента:
+   тот оставлен совпадающим с исходником построчно.
+
+   Пробел в Onest широкий — 0.28 кегля, и в имени он читается разрывом.
+   Кегль исходника рассчитан на «Javi A. Torres»; «Дмитрий Волгин» шире
+   и упирается в края, поэтому чуть мельче и с полями по бокам. */
+.pc-details {
+  padding-inline: 12px;
+}
+
+.pc-details h3 {
+  word-spacing: -0.09em;
+  font-size: min(4.1svh, 2.4em);
+}
+
+/* Подпись под именем в исходнике шириной по минимуму содержимого.
+   Она залита градиентом через background-clip: text, а заливка идёт
+   только внутри рамки — боковые свесы последней буквы остаются
+   непрокрашенными и та выглядит срезанной. Отдаём строке всю ширину
+   блока: текст и так стоит по центру. */
+.pc-details p {
+  width: auto;
+  margin: 0;
+  padding-inline: 6px;
+}
+
+/* Карточка переведена с синего на оранжевый — единственный цвет,
+   который знает остальной сайт. Заливка и свечение задаются
+   свойствами, а блик и подписи прописаны в исходнике жёстко. */
+.pc-glare {
+  background-image: radial-gradient(
+    farthest-corner circle at var(--pointer-x) var(--pointer-y),
+    hsl(28, 45%, 82%) 12%,
+    hsla(16, 55%, 26%, 0.8) 90%
+  );
+}
+
+.pc-details h3 {
+  background-image: linear-gradient(to bottom, #ffffff, #ff9a6a);
+}
+
+.pc-details p {
+  background-image: linear-gradient(to bottom, #ffffff, #ff6436);
+}
+
+/* Знак подстраивается под фон сам: difference вычитает его из подложки,
+   и белый знак становится тёмным на светлом и светлым на тёмном.
+   Наложение и z-index обязаны быть на одном элементе — обёртка с
+   z-index создала бы контекст и погасила бы наложение. */
+.nav-mark {
+  mix-blend-mode: difference;
+}
+
+/* ============================================================
+   ЗАВЕСА СМЕНЫ ЯЗЫКА
+   Отдельный слой поверх страницы: подмена текста происходит в
+   темноте. Прозрачностью самой страницы этого делать нельзя —
+   она собрала бы содержимое в группу и сломала наложения.
+   ============================================================ */
+.lang-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: #0a0a0a;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease;
+}
+.lang-veil.is-on {
+  opacity: 1;
+  /* Пока темно, по странице не кликают */
+  pointer-events: auto;
+}
+
+/* ============================================================
+   МОНУМЕНТАЛЬНЫЙ ЗАГОЛОВОК ПЕРВОГО ЭКРАНА
+   На телефоне буквы сжаты по оси ширины сильнее, а кегль поднят: так
+   длинная строка остаётся одной строкой и при этом читается заметно
+   крупнее. Значения приходят из словаря языков.
+   ============================================================ */
+.hero-mark {
+  font-size: var(--mark-size);
+  font-stretch: var(--mark-width);
+}
+@media (max-width: 767px) {
+  .hero-mark {
+    font-size: var(--mark-size-mob);
+    font-stretch: var(--mark-width-mob);
+  }
+}
+
+/* Нажатое состояние кнопки меню и заливная кнопка связи внутри панели:
+   оранжевая плашка вместо тёмной, точка становится светлой */
+.swoosh--on,
+.swoosh--ember {
+  background: #ff6436;
+  color: #161616;
+  border-color: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.swoosh--on .swoosh__dot,
+.swoosh--ember .swoosh__dot {
+  background: #ffffff;
+}
+
+/* ============================================================
+   ПАНЕЛЬ МЕНЮ НА ТЕЛЕФОНЕ
+   Тёмная плашка под кнопкой: пункты с оранжевым плюсом и заливная
+   кнопка связи внизу. Закрыта — не только прозрачна, но и убрана
+   через visibility, иначе её ссылки ловили бы табуляцию.
+   ============================================================ */
+.nav-panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  min-width: 208px;
+  padding: 18px 18px 18px 20px;
+  background: rgba(22, 22, 22, 0.92);
+  backdrop-filter: blur(14px) saturate(1.3);
+  -webkit-backdrop-filter: blur(14px) saturate(1.3);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition:
+    opacity 0.25s cubic-bezier(0.19, 1, 0.22, 1),
+    transform 0.35s cubic-bezier(0.19, 1, 0.22, 1),
+    visibility 0.25s;
+}
+.nav-panel.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.swoosh__bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+}
+.swoosh__layer {
+  position: absolute;
+  /* Слой заметно крупнее кнопки и наклонён: край проката идёт
+     по диагонали, а не отвесной чертой */
+  left: -20%;
+  top: -60%;
+  width: 140%;
+  height: 220%;
+  transform: translateY(101%) skewY(-8deg);
+  transform-origin: bottom;
+  background: #f1f1f1;
+  transition: transform 0.55s cubic-bezier(0.19, 1, 0.22, 1);
+  transition-delay: calc(var(--index, 0) * 70ms);
+}
+.swoosh__layer--second {
+  background: #ff6436;
+}
+
+.swoosh__inner {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.swoosh__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ff6436;
+  flex: none;
+  transition: background-color 0.35s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* Обе подписи в одном окне высотой в строку: одна уезжает, вторая приходит */
+.swoosh__text {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  line-height: 1.2;
+}
+.swoosh__text-a,
+.swoosh__text-b {
+  display: block;
+  transition: transform 0.45s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.swoosh__text-b {
+  position: absolute;
+  inset: 0;
+  transform: translateY(105%);
+}
+
+/* Прокат срабатывает и от самой кнопки, и от карточки, внутри которой
+   она лежит: наводить точно на подпись внутри большой картинки неудобно */
+@media (hover: hover) and (pointer: fine) {
+  .swoosh:hover .swoosh__layer,
+  .group:hover .swoosh .swoosh__layer {
+    transform: translateY(0) skewY(-8deg);
+  }
+  .swoosh:hover,
+  .group:hover .swoosh {
+    color: #161616;
+  }
+  .swoosh:hover .swoosh__dot,
+  .group:hover .swoosh .swoosh__dot {
+    background: #161616;
+  }
+  .swoosh:hover .swoosh__text-a,
+  .group:hover .swoosh .swoosh__text-a {
+    transform: translateY(-105%);
+  }
+  .swoosh:hover .swoosh__text-b,
+  .group:hover .swoosh .swoosh__text-b {
+    transform: translateY(0);
+  }
+}
+.swoosh:active {
+  transform: scale(0.98);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .swoosh__layer,
+  .swoosh__text-a,
+  .swoosh__text-b {
+    transition: none !important;
+  }
 }
