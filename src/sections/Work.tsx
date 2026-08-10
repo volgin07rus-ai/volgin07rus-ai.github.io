@@ -11,7 +11,7 @@ import { useLang } from '../lib/lang'
 gsap.registerPlugin(ScrollTrigger)
 
 /** Сколько работ показываем сразу, до нажатия «смотреть ещё» */
-const FIRST = 5
+const FIRST = 6
 
 export default function Work() {
   const root = useRef<HTMLElement>(null)
@@ -60,7 +60,12 @@ export default function Work() {
             items-start обязателен — иначе карточки тянутся по высоте ряда
             и под короткой картинкой остаётся серая пустота. */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-6 items-start">
-          {видимые.map((p) => (
+          {видимые.map((p, i) => {
+            // Работ нечётное число, и последняя осталась бы в ряду одна,
+            // оставив полряда пустым. Растягиваем её на всю ширину и режем
+            // пониже: получается не дыра, а широкая карточка в конце.
+            const одна = видимые.length % 2 === 1 && i === видимые.length - 1
+            return (
             <a
               key={p.slug}
               href={p.href}
@@ -68,7 +73,7 @@ export default function Work() {
               rel="noreferrer"
               data-cursor={t.cursor.open}
               className={`work-card group relative block ${
-                p.wide ? 'md:col-span-7' : 'md:col-span-5'
+                одна ? 'md:col-span-12' : p.wide ? 'md:col-span-7' : 'md:col-span-5'
               }`}
             >
               {/* Наклон и подписи держит TiltedCard из React Bits — компонент
@@ -80,7 +85,7 @@ export default function Work() {
                   телефона тоже: оно английское и на весь экран. */}
               {/* Без подложки: наклонённая карточка приподнимается, и серый
                   прямоугольник за ней выглядывал по краям */}
-              <div className="aspect-[16/10]">
+              <div className={одна ? 'aspect-[24/10]' : 'aspect-[16/10]'}>
                 <TiltedCard
                   imageSrc={`${import.meta.env.BASE_URL}covers/${p.slug}.jpg`}
                   altText={p.title}
@@ -117,7 +122,8 @@ export default function Work() {
                 />
               </div>
             </a>
-          ))}
+            )
+          })}
         </div>
 
         {/* Остальные работы прячем за кнопкой: пятнадцать карточек подряд
