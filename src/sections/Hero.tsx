@@ -27,6 +27,14 @@ import { useLang } from '../lib/lang'
  */
 const FILL = 0.99
 
+/**
+ * Предел ширины строки. Без него на большом мониторе заголовок рос вместе
+ * с окном и выходил непомерным: на ноутбуке он смотрелся как надо, на
+ * широком экране занимал всё поле. Дальше этой ширины строка не растёт,
+ * а встаёт по центру — ровно тот же вид, что на ноутбуке.
+ */
+const MAX_LINE = 1330
+
 function useFitHeadline(el: React.RefObject<HTMLElement>, key: string) {
   useEffect(() => {
     const node = el.current
@@ -38,12 +46,13 @@ function useFitHeadline(el: React.RefObject<HTMLElement>, key: string) {
         node.clientWidth - parseFloat(стиль.paddingLeft) - parseFloat(стиль.paddingRight)
       const строки = [...node.children] as HTMLElement[]
       if (!avail || !строки.length) return
+      const цель = Math.min(avail * FILL, MAX_LINE)
 
       for (let i = 0; i < 2; i++) {
         const кегль = parseFloat(getComputedStyle(node).fontSize)
         const ширина = Math.max(...строки.map((s) => s.getBoundingClientRect().width))
         if (!кегль || !ширина) return
-        node.style.fontSize = `${(кегль * avail * FILL) / ширина}px`
+        node.style.fontSize = `${(кегль * цель) / ширина}px`
       }
     }
 
@@ -153,8 +162,8 @@ export default function Hero() {
   return (
     // z-10 обязателен: без него секция не создаёт контекст наложения, и
     // приклеенная сетка полос (z-1) проступает поверх первого экрана
-    <section id="home" ref={root} className="relative z-10 text-fog" style={{ height: '300vh' }}>
-      <div className="sticky top-0 h-screen overflow-hidden flex flex-col">
+    <section id="home" ref={root} className="relative z-10 text-fog" style={{ height: '300svh' }}>
+      <div className="sticky top-0 h-[100svh] overflow-hidden flex flex-col">
         {/* Фон: сверху темнота, снизу свет. Он держит оба режима наложения —
             умножение проявляет монитор только на светлом, а difference
             заголовка инвертирует именно этот градиент. */}
@@ -242,7 +251,7 @@ export default function Hero() {
             оригинале: слева род занятий и часы, справа короткая роль.
             Длинная строка там не помещается и остаётся широкому экрану. */}
         <div className="relative z-20 px-6 md:px-10 pt-5 md:pt-0 pb-0 md:pb-14">
-          <div className="mx-auto max-w-page flex flex-row items-start justify-center gap-8 md:items-end md:justify-between">
+          <div className="w-full flex flex-row items-start justify-center gap-8 md:items-end md:justify-between">
             <div
               className="hero-up font-mono font-semibold uppercase tracking-[0.1em] text-white/80 leading-[1.7] text-right md:text-left"
               style={{ fontSize: 'clamp(14px, 1.05vw, 19px)' }}
@@ -286,3 +295,4 @@ export default function Hero() {
     </section>
   )
 }
+
