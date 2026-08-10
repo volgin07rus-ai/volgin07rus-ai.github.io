@@ -11,11 +11,16 @@ import Services from './sections/Services'
 import Work from './sections/Work'
 import Footer from './sections/Footer'
 import { useLang } from './lib/lang'
+import { startDeviceTilt } from './lib/tilt'
 
 gsap.registerPlugin(ScrollTrigger)
 
 export default function App() {
   const { lang } = useLang()
+
+  // Гироскоп телефона: угол наклона уходит в переменные на корне
+  // страницы, по ним разворачиваются карточки работ и карточка профиля
+  useEffect(() => startDeviceTilt(), [])
 
   // От языка меняется длина текстов, а значит и высоты секций. Привязки
   // прокрутки посчитаны по старым высотам, поэтому пересчитываем — но не

@@ -69,7 +69,7 @@ const RU = {
     cardTitle: 'Дизайн и код',
     statsTitle: 'Коротко о цифрах',
     stats: [
-      { v: '7', u: '', l: 'Лет в разработке' },
+      { v: '0', u: '', l: 'Шаблонов и конструкторов' },
       { v: '60+', u: '', l: 'Проектов сделано' },
       { v: '7', u: 'дней', l: 'От старта до запуска' },
     ],
@@ -171,7 +171,7 @@ const EN: Dict = {
     cardTitle: 'Design & code',
     statsTitle: 'By the numbers',
     stats: [
-      { v: '7', u: '', l: 'Years building' },
+      { v: '0', u: '', l: 'Templates or builders' },
       { v: '60+', u: '', l: 'Projects shipped' },
       { v: '7', u: 'days', l: 'From start to launch' },
     ],

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useCallback, useMemo } from 'react'
 import './ProfileCard.css'
+import { onOrientationReady } from '../lib/tilt'
 
 const DEFAULT_INNER_GRADIENT = 'linear-gradient(145deg,#60496e8c 0%,#71C4FF44 100%)'
 
@@ -262,6 +263,15 @@ const ProfileCardComponent = ({
     }
     shell.addEventListener('click', handleClick)
 
+    // Разрешение на датчик наклона сайт спрашивает один раз на всех, при
+    // первом касании страницы. Как только оно получено, карточка слушает
+    // наклон сама — трогать именно её, как в исходнике, больше не нужно.
+    const отписка = enableMobileTilt
+      ? onOrientationReady(() =>
+          window.addEventListener('deviceorientation', deviceOrientationHandler)
+        )
+      : () => {}
+
     const initialX = (shell.clientWidth || 0) - ANIMATION_CONFIG.INITIAL_X_OFFSET
     const initialY = ANIMATION_CONFIG.INITIAL_Y_OFFSET
     tiltEngine.setImmediate(initialX, initialY)
@@ -269,6 +279,7 @@ const ProfileCardComponent = ({
     tiltEngine.beginInitial(ANIMATION_CONFIG.INITIAL_DURATION)
 
     return () => {
+      отписка()
       shell.removeEventListener('pointerenter', pointerEnterHandler)
       shell.removeEventListener('pointermove', pointerMoveHandler)
       shell.removeEventListener('pointerleave', pointerLeaveHandler)
