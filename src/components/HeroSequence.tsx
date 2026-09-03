@@ -12,7 +12,7 @@ const RATIO = 1104 / 832
 /** Что показывает монитор — по одному сайту на отрезок прокрутки.
  *  Только съёмки во весь экран: письмо или мокап телефона в мониторе
  *  читались бы как картинка в картинке. */
-const SHOWCASE = ['lumora', 'domik-cafe', 'baseline', 'partner-group', 'asme', 'studio-agency']
+const SHOWCASE = ['uplift', 'domik-cafe', 'baseline', 'partner-group', 'asme', 'volstek']
 /** Длина перехода между сайтами в кадрах */
 const FADE = 7
 

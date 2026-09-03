@@ -1,0 +1,5 @@
+User-Agent: *
+Allow: /
+
+Host: https://volstek.ru
+Sitemap: https://volstek.ru/sitemap.xml
