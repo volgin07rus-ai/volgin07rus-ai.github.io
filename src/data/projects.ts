@@ -23,7 +23,7 @@ const SITE = 'https://volgin.site'
  * сбить чередование, и в ряду остаётся дыра.
  */
 export const PROJECTS: Project[] = [
-  { slug: 'simple', title: 'Simple', tag: 'site', year: '2026', href: `${SITE}/simple/`, wide: true },
+  { slug: 'simple', title: 'Simple', tag: 'site', year: '2026', href: 'https://simplemind.ru/', wide: true },
   { slug: 'partner-group', title: 'Партнёр Групп', tag: 'site', year: '2026', href: 'https://prgr.pro' },
   { slug: 'domik-cafe', title: 'Домик', tag: 'site', year: '2026', href: 'https://domicafe.ru/' },
   { slug: 'lumora', title: 'Lumora', tag: 'site', year: '2026', href: `${SITE}/demo/lumora/index.html`, wide: true },
