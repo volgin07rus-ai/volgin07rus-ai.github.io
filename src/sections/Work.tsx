@@ -62,9 +62,10 @@ export default function Work() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-6 items-start">
           {видимые.map((p, i) => {
             // Работ нечётное число, и последняя осталась бы в ряду одна,
-            // оставив полряда пустым. Растягиваем её на всю ширину и режем
-            // пониже: получается не дыра, а широкая карточка в конце.
-            const одна = видимые.length % 2 === 1 && i === видимые.length - 1
+            // оставив полряда пустым. Растянутая на всю ширину, она выходила
+            // огромной — поэтому последние три встают в ряд поровну,
+            // по четыре колонки: ряд полный, и ни одна карточка не раздута.
+            const втройке = видимые.length % 2 === 1 && видимые.length >= 3 && i >= видимые.length - 3
             return (
             <a
               key={p.slug}
@@ -73,7 +74,7 @@ export default function Work() {
               rel="noreferrer"
               data-cursor={t.cursor.open}
               className={`work-card group relative block ${
-                одна ? 'md:col-span-12' : p.wide ? 'md:col-span-7' : 'md:col-span-5'
+                втройке ? 'md:col-span-4' : p.wide ? 'md:col-span-7' : 'md:col-span-5'
               }`}
             >
               {/* Наклон и подписи держит TiltedCard из React Bits — компонент
@@ -85,7 +86,7 @@ export default function Work() {
                   телефона тоже: оно английское и на весь экран. */}
               {/* Без подложки: наклонённая карточка приподнимается, и серый
                   прямоугольник за ней выглядывал по краям */}
-              <div className={одна ? 'aspect-[24/10]' : 'aspect-[16/10]'}>
+              <div className="aspect-[16/10]">
                 <TiltedCard
                   imageSrc={`${import.meta.env.BASE_URL}covers/${p.slug}.jpg`}
                   altText={p.title}
