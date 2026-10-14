@@ -4,6 +4,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import CursorTag from './components/CursorTag'
 import PageCurtain from './components/PageCurtain'
+import ScrollBar from './components/ScrollBar'
 import Navbar from './components/Navbar'
 import Hero from './sections/Hero'
 import About from './sections/About'
@@ -12,6 +13,7 @@ import Work from './sections/Work'
 import Footer from './sections/Footer'
 import { useLang } from './lib/lang'
 import { startDeviceTilt } from './lib/tilt'
+import { setLenis } from './lib/lenis'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -36,6 +38,7 @@ export default function App() {
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     const lenis = new Lenis({ smoothWheel: true })
+    setLenis(lenis)
     // Без этой связки ScrollTrigger считает позиции по нативному скроллу
     // и все привязки разъезжаются с плавной прокруткой
     lenis.on('scroll', ScrollTrigger.update)
@@ -45,6 +48,7 @@ export default function App() {
 
     return () => {
       gsap.ticker.remove(raf)
+      setLenis(null)
       lenis.destroy()
     }
   }, [])
@@ -53,6 +57,7 @@ export default function App() {
     <>
       <PageCurtain />
       <CursorTag />
+      <ScrollBar />
       <Navbar />
       <main>
         <Hero />

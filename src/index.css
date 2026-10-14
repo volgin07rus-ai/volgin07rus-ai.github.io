@@ -140,6 +140,136 @@
 }
 
 /* ============================================================
+   ПОЛЗУНОК ПРОКРУТКИ
+   Браузерный спрятан везде: пока шторка держит страницу, он пропадал
+   и появлялся снова, и вёрстка дёргалась на его ширину. Вместо него
+   свой (ScrollBar.tsx) — он лежит поверх страницы и места не занимает.
+   ============================================================ */
+html {
+  scrollbar-width: none;
+}
+html::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar {
+  position: fixed;
+  top: 14px;
+  bottom: 14px;
+  right: 4px;
+  z-index: 95;
+  width: 16px;
+  color: rgba(140, 138, 144, 0.7);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.scrollbar.is-on {
+  opacity: 1;
+  pointer-events: auto;
+}
+/* Направляющая — волосная линия, как линии сетки. Серая, а не белая:
+   страница то тёмная, то светлая, и серый читается на обеих */
+.scrollbar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 7px;
+  width: 1px;
+  background: currentColor;
+  opacity: 0.45;
+  transition: opacity 0.4s;
+}
+.scrollbar:hover::before,
+.scrollbar.is-drag::before {
+  opacity: 0.8;
+}
+.scrollbar-cross {
+  position: absolute;
+  right: 2.5px;
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
+}
+
+/* Планка: прозрачная полоса пошире — чтобы попадать мышью, —
+   а видимая оранжевая черта внутри неё */
+.scrollbar-thumb {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 16px;
+  cursor: grab;
+  will-change: transform;
+}
+.scrollbar-thumb::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 6.5px;
+  width: 2px;
+  background: #ff6436;
+  opacity: 0.6;
+  transition:
+    width 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    right 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.4s;
+}
+.scrollbar.is-active .scrollbar-thumb::before {
+  opacity: 1;
+}
+.scrollbar:hover .scrollbar-thumb::before,
+.scrollbar.is-drag .scrollbar-thumb::before {
+  opacity: 1;
+  width: 6px;
+  right: 4.5px;
+}
+
+/* Процент прокрутки — квадратная тёмная плашка с оранжевой точкой,
+   та же, что подпись у курсора */
+.scrollbar-label {
+  position: absolute;
+  top: 50%;
+  right: 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 11px;
+  background: #161616;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #f1f1f1;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(8px, -50%);
+  transition:
+    opacity 0.3s,
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.scrollbar-label .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ff6436;
+  flex: none;
+}
+.scrollbar:hover .scrollbar-label,
+.scrollbar.is-drag .scrollbar-label {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+
+/* Пока тянут планку, текст не выделяется, а курсор не мигает */
+.is-scroll-drag,
+.is-scroll-drag * {
+  user-select: none !important;
+  cursor: grabbing !important;
+}
+
+/* ============================================================
    ПРОЧЕЕ
    ============================================================ */
 .pill {
