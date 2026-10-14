@@ -11,7 +11,7 @@ import { useLang } from '../lib/lang'
 gsap.registerPlugin(ScrollTrigger)
 
 /** Сколько работ показываем сразу, до нажатия «смотреть ещё» */
-const FIRST = 6
+const FIRST = 7
 
 export default function Work() {
   const root = useRef<HTMLElement>(null)
