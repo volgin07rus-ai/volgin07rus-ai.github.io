@@ -1,13 +1,42 @@
-import { useEffect, useRef } from 'react'
+import { lazy, Suspense, useEffect, useRef, useState, type ReactNode } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import ChromeObject, { type ChromeShape } from '../components/ChromeObject'
+import type { ChromeShape } from '../components/ChromeObject'
 import { CrossCorners } from '../components/Cross'
 import GridLines from '../components/GridLines'
 import RevealWords from '../components/RevealWords'
 import { useLang } from '../lib/lang'
 
 gsap.registerPlugin(ScrollTrigger)
+
+/* Объёмные фигуры рисует three.js, а это больше половины скрипта сайта.
+   Поэтому он грузится отдельно и только когда блок услуг почти доехал
+   до экрана: первый экран открывается без него */
+const ChromeObject = lazy(() => import('../components/ChromeObject'))
+
+function Near({ children }: { children: ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const [near, setNear] = useState(false)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (!e.isIntersecting) return
+        setNear(true)
+        io.disconnect()
+      },
+      { rootMargin: '800px 0px' }
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+  return (
+    <div ref={ref} className="absolute inset-0">
+      {near && <Suspense fallback={null}>{children}</Suspense>}
+    </div>
+  )
+}
 
 /**
  * Услуги — блок собран по устройству оригинала: гигантское белое слово
@@ -154,7 +183,9 @@ export default function Services() {
                     'linear-gradient(rgb(0,0,0), rgb(110,108,112) 25%, rgb(185,183,187) 50%, rgb(220,214,214) 75%, rgb(241,241,241))',
                 }}
               >
-                <ChromeObject shape={c.shape} />
+                <Near>
+                  <ChromeObject shape={c.shape} />
+                </Near>
               </div>
 
               <div className="flex flex-col items-start">

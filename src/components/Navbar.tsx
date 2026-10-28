@@ -92,10 +92,10 @@ export default function Navbar() {
         style={slide}
       >
         <img
-          src={`${import.meta.env.BASE_URL}logo.png`}
+          src={`${import.meta.env.BASE_URL}logo.webp`}
           alt={t.nav.logoAlt}
-          width={683}
-          height={399}
+          width={360}
+          height={210}
           className="h-8 w-auto brightness-0 invert"
         />
       </a>

@@ -6,7 +6,8 @@ import { warpQuad, type Quad, type WarpSource } from '../lib/warpQuad'
 gsap.registerPlugin(ScrollTrigger)
 
 const COUNT = 89
-const SRC = (i: number) => `${import.meta.env.BASE_URL}hero-seq/${String(i).padStart(3, '0')}.jpg`
+/* WebP, а не JPEG: на тех же кадрах в семь раз легче, на глаз разницы нет */
+const SRC = (i: number) => `${import.meta.env.BASE_URL}hero-seq/${String(i).padStart(3, '0')}.webp`
 const RATIO = 1104 / 832
 
 /** Что показывает монитор — по одному сайту на отрезок прокрутки.
@@ -57,7 +58,7 @@ export default function HeroSequence() {
     const shots: HTMLImageElement[] = SHOWCASE.map((slug) => {
       const img = new Image()
       img.decoding = 'async'
-      img.src = `${import.meta.env.BASE_URL}covers/${slug}.jpg`
+      img.src = `${import.meta.env.BASE_URL}covers/${slug}.webp`
       return img
     })
 
@@ -95,10 +96,18 @@ export default function HeroSequence() {
       return blend
     }
 
+    const loaded = (i: number) => i >= 0 && i < COUNT && images[i].complete && images[i].naturalWidth > 0
+
     const draw = () => {
-      const idx = Math.min(COUNT - 1, Math.max(0, Math.round(state.frame)))
+      // Кадры приходят не все сразу: пока нужного нет, берём ближайший готовый
+      const want = Math.min(COUNT - 1, Math.max(0, Math.round(state.frame)))
+      let idx = -1
+      for (let d = 0; d < COUNT && idx < 0; d++) {
+        if (loaded(want - d)) idx = want - d
+        else if (loaded(want + d)) idx = want + d
+      }
+      if (idx < 0) return
       const img = images[idx]
-      if (!img?.complete || !img.naturalWidth) return
 
       const dpr = Math.min(devicePixelRatio || 1, 2)
       const w = box.clientWidth
@@ -160,16 +169,33 @@ export default function HeroSequence() {
         // Без таблицы углов монитор просто останется пустым
       })
 
+    // Кадры качаем не все разом: 89 запросов сразу отнимали канал у шрифта
+    // и скрипта. Сначала первый кадр, потом каждый четвёртый (монитор уже
+    // ездит, пусть и крупным шагом), потом остальные, по четыре за раз
     for (let i = 0; i < COUNT; i++) {
       const img = new Image()
       img.decoding = 'async'
-      img.src = SRC(i)
-      img.onload = () => {
-        ready++
-        if (i === 0) draw()
-      }
       images.push(img)
     }
+    const all = Array.from({ length: COUNT }, (_, i) => i)
+    const queue = [...all.filter((i) => i > 0 && i % 4 === 0), ...all.filter((i) => i % 4 !== 0)]
+    let alive = true
+    const pump = () => {
+      const i = queue.shift()
+      if (i === undefined || !alive) return
+      images[i].onload = images[i].onerror = () => {
+        ready++
+        draw()
+        pump()
+      }
+      images[i].src = SRC(i)
+    }
+    images[0].onload = images[0].onerror = () => {
+      ready++
+      draw()
+      for (let k = 0; k < 4; k++) pump()
+    }
+    images[0].src = SRC(0)
 
     const calm = matchMedia('(prefers-reduced-motion: reduce)').matches
 
@@ -210,6 +236,7 @@ export default function HeroSequence() {
     const onResize = () => draw()
     window.addEventListener('resize', onResize)
     return () => {
+      alive = false
       window.removeEventListener('resize', onResize)
       ctxGsap.revert()
     }

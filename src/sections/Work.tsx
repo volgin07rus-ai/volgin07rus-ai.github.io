@@ -88,7 +88,7 @@ export default function Work() {
                   прямоугольник за ней выглядывал по краям */}
               <div className="aspect-[16/10]">
                 <TiltedCard
-                  imageSrc={`${import.meta.env.BASE_URL}covers/${p.slug}.jpg`}
+                  imageSrc={`${import.meta.env.BASE_URL}covers/${p.slug}.webp`}
                   altText={p.title}
                   containerWidth="100%"
                   containerHeight="100%"

@@ -41,7 +41,7 @@ export default function About() {
               всю ширину и рассчитан на фигуру, вырезанную по контуру. */}
           <div className="shrink-0">
             <ProfileCard
-              avatarUrl={`${import.meta.env.BASE_URL}portrait-card.png`}
+              avatarUrl={`${import.meta.env.BASE_URL}portrait-card.webp`}
               iconUrl={iconUrl}
               grainUrl={grainUrl}
               name={t.about.cardName}
