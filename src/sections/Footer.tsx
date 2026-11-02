@@ -5,11 +5,9 @@ import BadgeHang from '../components/BadgeHang'
 import { CrossCorners } from '../components/Cross'
 import SwooshButton from '../components/SwooshButton'
 import { useLang, type Dict } from '../lib/lang'
+import { EMAIL, TELEGRAM } from '../lib/contacts'
 
 gsap.registerPlugin(ScrollTrigger)
-
-const EMAIL = 'volgin03rus@gmail.com'
-const TELEGRAM = 'https://t.me/D1maVolgin'
 
 /** Адреса от языка не зависят, подписи зависят — колонки собираем на месте */
 const cols = (t: Dict) => [

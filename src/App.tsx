@@ -9,6 +9,7 @@ import Navbar from './components/Navbar'
 import Hero from './sections/Hero'
 import About from './sections/About'
 import Services from './sections/Services'
+import Automation from './sections/Automation'
 import Work from './sections/Work'
 import Footer from './sections/Footer'
 import { useLang } from './lib/lang'
@@ -64,6 +65,7 @@ export default function App() {
         <About />
         <Work />
         <Services />
+        <Automation />
       </main>
       <Footer />
     </>

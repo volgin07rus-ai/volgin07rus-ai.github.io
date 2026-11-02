@@ -27,6 +27,7 @@ const RU = {
       { label: 'О себе', href: '#about' },
       { label: 'Работы', href: '#work' },
       { label: 'Услуги', href: '#services' },
+      { label: 'Автоматизация', href: '#automation' },
     ],
     contact: 'Связаться',
     logoAlt: 'Волгин',
@@ -54,7 +55,7 @@ const RU = {
     /** На телефоне сжимаем сильнее — и та же строка встаёт крупнее */
     headlineSizeMob: 'clamp(28px, calc(19.13vw - 6.1px), 150px)',
     headlineWidthMob: '66%',
-    role: 'Дизайн и код',
+    role: 'Дизайн, код и ИИ',
     /** Показываем текущий язык — кнопка в шапке показывает следующий */
     code: 'RU',
     zone: 'MSK',
@@ -69,8 +70,8 @@ const RU = {
     cardTitle: 'Дизайн и код',
     statsTitle: 'Коротко о цифрах',
     stats: [
-      { v: '0', u: '', l: 'Шаблонов и конструкторов' },
-      { v: '60+', u: '', l: 'Проектов сделано' },
+      { v: '1', u: '', l: 'Подрядчик вместо трёх' },
+      { v: '70+', u: '', l: 'Проектов сделано' },
       { v: '7', u: 'дней', l: 'От старта до запуска' },
     ],
   },
@@ -101,6 +102,40 @@ const RU = {
         body: 'Оживляю макет кодом: плавно, отзывчиво, доступно. От разметки до микровзаимодействий — работает целиком и не устаревает',
       },
     ],
+  },
+
+  automation: {
+    label: 'Автоматизация и ИИ',
+    /** Перевод строки задаёт разбивку заголовка, слово accent горит оранжевым */
+    heading: 'Рутину\nзабирает ИИ',
+    accent: 'ИИ',
+    lead: 'Внедряю ИИ и автоматизацию в бизнес. Всё, что сотрудники изо дня в день делают по шаблону, можно отдать системе',
+    /** Что умеет система, метками под абзацем */
+    can: ['КП в стиле компании', 'Презентации из текста', 'Ответ на заявку сразу', 'Договоры и счета', 'Разбор писем и сканов', 'Проверка договоров', 'Отчёты и сводки', 'Боты в Telegram'],
+    /**
+     * Пример на схеме и строки «из практики» взяты из настоящих проектов,
+     * но без названий компаний: клиенты не давали согласия их раскрывать.
+     * Между числом и единицей неразрывный пробел: единица не уезжает на новую строку
+     */
+    flowTitle: 'Как это работает на одной заявке',
+    flow: [
+      { step: 'Заявка с сайта', quote: 'Нужно доставить 5\u00a0тонн оборудования из Москвы в Новосибирск до конца месяца', from: 'Форма на сайте · отдел закупок', rows: [] as string[][], checks: [] as string[] },
+      { step: 'ИИ разбирает', quote: '', from: '', rows: [['Маршрут', 'Москва → Новосибирск'], ['Груз', '5\u00a0т оборудования'], ['Срок', 'до 30\u00a0ноября'], ['Тариф', 'по прайсу']], checks: [] as string[] },
+      { step: 'КП в стиле компании', quote: '', from: '', rows: [] as string[][], checks: ['Фирменный шаблон', 'Расчёт по тарифам', 'PDF готов'] },
+      { step: 'Отправлено клиенту', quote: '', from: '', rows: [] as string[][], checks: ['Письмо с КП', 'Сделка в CRM', 'Напоминание через 2\u00a0дня'] },
+    ],
+    tasksTitle: 'Что автоматизирую',
+    /** Подпись перед примером под каждой задачей */
+    practice: 'Из практики',
+    tasks: [
+      { title: 'КП и документы в стиле компании', body: 'Коммерческие предложения, презентации, договоры и счета собираются из заявки, таблиц и 1С в вашем фирменном стиле и сразу уходят клиенту', example: 'Экспорт в Китай. Спецификация, CMR, инвойс и контракт на двух языках из одной таблицы' },
+      { title: 'ИИ читает документы', body: 'Разбирает письма, сканы и реквизиты, проверяет чужие договоры и предлагает правки в режиме рецензирования Word', example: 'Строительная экспертиза. КП из документов заказчика, договор из КП, журнал работ из фото и видео' },
+      { title: 'CRM под ваши процессы', body: 'Своя система вместо разрозненных таблиц: отделы, роли, расчёт стоимости, зарплата по формуле владельца, загрузка из 1С', example: 'Транспортная компания. Склад, контейнерный и авиаотдел, документы как в 1С' },
+      { title: 'Контроль и уведомления', body: 'Проверка контрагентов по открытым источникам, разнос банковских платежей, сводки и тревоги в Telegram', example: 'Перевозчик. Платежи из банка сами разносятся по заявкам, сканы документов проверяются' },
+    ],
+    stepsTitle: 'Как работаю',
+    steps: ['Нахожу, где теряется время', 'Показываю рабочий прототип, а не презентацию', 'Внедряю и учу команду'],
+    cta: 'Обсудить автоматизацию',
   },
 
   footer: {
@@ -140,6 +175,7 @@ const EN: Dict = {
       { label: 'About', href: '#about' },
       { label: 'Work', href: '#work' },
       { label: 'Services', href: '#services' },
+      { label: 'Automation', href: '#automation' },
     ],
     contact: 'Contact',
     logoAlt: 'Volgin',
@@ -158,7 +194,7 @@ const EN: Dict = {
     headlineWidth: '96%',
     headlineSizeMob: 'clamp(28px, calc(17.3vw - 5.5px), 150px)',
     headlineWidthMob: '78%',
-    role: 'Design & code',
+    role: 'Design, code & AI',
     code: 'EN',
     zone: 'MSK',
     lead: 'I build websites and apps for brands and teams who care as much about how it works as how it looks',
@@ -171,8 +207,8 @@ const EN: Dict = {
     cardTitle: 'Design & code',
     statsTitle: 'By the numbers',
     stats: [
-      { v: '0', u: '', l: 'Templates or builders' },
-      { v: '60+', u: '', l: 'Projects shipped' },
+      { v: '1', u: '', l: 'Contractor instead of three' },
+      { v: '70+', u: '', l: 'Projects shipped' },
       { v: '7', u: 'days', l: 'From start to launch' },
     ],
   },
@@ -203,6 +239,32 @@ const EN: Dict = {
         body: 'Bringing the layout to life in code: smooth, responsive, accessible. From markup to micro-interactions — it works end to end and ages well',
       },
     ],
+  },
+
+  automation: {
+    label: 'Automation and AI',
+    heading: 'AI takes\nthe routine',
+    accent: 'AI',
+    lead: 'I bring AI and automation into businesses. Anything your team does by template day after day can be handed to a system',
+    can: ['Branded quotes', 'Decks from text', 'Instant replies to leads', 'Contracts and invoices', 'Reading emails and scans', 'Contract review', 'Reports and summaries', 'Telegram bots'],
+    flowTitle: 'How it works on a single lead',
+    flow: [
+      { step: 'Website lead', quote: 'We need 5\u00a0tonnes of equipment delivered from Moscow to Novosibirsk by the end of the month', from: 'Website form · procurement', rows: [] as string[][], checks: [] as string[] },
+      { step: 'AI sorts it', quote: '', from: '', rows: [['Route', 'Moscow → Novosibirsk'], ['Cargo', '5\u00a0t of equipment'], ['Deadline', 'by 30\u00a0November'], ['Rate', 'from the price list']], checks: [] as string[] },
+      { step: 'Branded quote', quote: '', from: '', rows: [] as string[][], checks: ['Company template', 'Priced by tariffs', 'PDF ready'] },
+      { step: 'Sent to client', quote: '', from: '', rows: [] as string[][], checks: ['Email with the quote', 'Deal in the CRM', 'Reminder in 2\u00a0days'] },
+    ],
+    tasksTitle: 'What I automate',
+    practice: 'In practice',
+    tasks: [
+      { title: 'Branded quotes and documents', body: 'Quotes, decks, contracts and invoices are assembled from the lead, spreadsheets and 1C in your brand style and go straight to the client', example: 'Export to China. Specification, CMR, invoice and a bilingual contract from one spreadsheet' },
+      { title: 'AI reads documents', body: "Sorts emails, scans and company details, checks other parties' contracts and suggests edits in Word track changes", example: 'Construction surveys. Quotes from client documents, contracts from quotes, a work log from photos and video' },
+      { title: 'A CRM built around you', body: 'One system instead of scattered spreadsheets: departments, roles, pricing, pay by the owner\'s formula, import from 1C', example: 'Transport company. Warehouse, container and air departments, documents just like in 1C' },
+      { title: 'Checks and alerts', body: 'Counterparty checks from open sources, matching bank payments, summaries and alerts in Telegram', example: 'Carrier. Bank payments match themselves to orders, document scans get checked' },
+    ],
+    stepsTitle: 'How I work',
+    steps: ['Find where time is lost', 'Show a working prototype, not a slide deck', 'Roll it out and train the team'],
+    cta: 'Discuss automation',
   },
 
   footer: {
