@@ -6,6 +6,7 @@ import { CrossCorners } from '../components/Cross'
 import GridLines from '../components/GridLines'
 import RevealWords from '../components/RevealWords'
 import { useLang } from '../lib/lang'
+import { whenCalm } from '../lib/calm'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -29,7 +30,17 @@ function Near({ children }: { children: ReactNode }) {
       { rootMargin: '800px 0px' }
     )
     io.observe(el)
-    return () => io.disconnect()
+    // Заранее, в первый спокойный момент после загрузки: пока человек
+    // читает первый экран, фигуры успевают собраться, и к блоку услуг
+    // ничего тяжёлого не остаётся
+    let gone = false
+    whenCalm(() => {
+      if (!gone) setNear(true)
+    })
+    return () => {
+      gone = true
+      io.disconnect()
+    }
   }, [])
   return (
     <div ref={ref} className="absolute inset-0">

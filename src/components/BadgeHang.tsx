@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { whenCalm } from '../lib/calm'
 
 /**
  * Пропуск на прищепке в подвале.
@@ -33,11 +34,14 @@ export default function BadgeHang({ scene }: { scene: string }) {
 
     const start = async () => {
       try {
-        const { Application } = await import('@splinetool/runtime')
+        // Движок, сцена и первый кадр запускаются по шагам и только в спокойный
+        // момент (lib/calm.ts): разом они замораживали прокрутку больше чем на секунду
+        const { Application } = await whenCalm(() => import('@splinetool/runtime'))
         if (dead) return
-        const instance = new Application(canvas)
+        const instance = await whenCalm(() => new Application(canvas))
         app = instance
-        await instance.load(scene)
+        if (dead) return
+        await whenCalm(() => instance.load(scene))
         if (dead) return
 
         // Пропуск целиком висит на пустышке с именем Pass — крутим её.
@@ -69,14 +73,15 @@ export default function BadgeHang({ scene }: { scene: string }) {
       }
     }
 
-    // Ждём, пока подвал покажется на экране
+    // Начинаем, когда до подвала остаётся около экрана: запуск всё равно
+    // ждёт паузы в прокрутке, и запас даёт ему успеть до самого подвала
     const io = new IntersectionObserver(
       ([e]) => {
         if (!e.isIntersecting) return
         io.disconnect()
         start()
       },
-      { rootMargin: '400px' }
+      { rootMargin: '1000px 0px' }
     )
     io.observe(canvas)
 

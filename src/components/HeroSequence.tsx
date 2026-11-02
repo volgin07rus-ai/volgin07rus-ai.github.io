@@ -96,6 +96,7 @@ export default function HeroSequence() {
       return blend
     }
 
+    let drawnKey = ''
     const loaded = (i: number) => i >= 0 && i < COUNT && images[i].complete && images[i].naturalWidth > 0
 
     const draw = () => {
@@ -118,6 +119,13 @@ export default function HeroSequence() {
           c.height = Math.round(h * dpr)
         }
       }
+      // Кадр тот же, размер тот же, снимки на экране те же: перерисовывать
+      // нечего. Прокрутка дёргает отрисовку каждый тик, а кадр меняется реже
+      const shotsReady = shots.reduce((n, s) => n + (s.complete && s.naturalWidth ? 1 : 0), 0)
+      const key = idx + '|' + cv.width + '|' + cv.height + '|' + shotsReady + '|' + (quads ? 1 : 0)
+      if (key === drawnKey) return
+      drawnKey = key
+
       // Фон заливаем белым: при умножении белое не меняет подложку,
       // иначе прошлый кадр просвечивал бы сквозь новый
       ctx.fillStyle = '#ffffff'
