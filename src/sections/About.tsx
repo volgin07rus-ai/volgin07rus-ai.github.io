@@ -61,7 +61,10 @@ export default function About() {
             <div className="font-mono text-micro uppercase tracking-[0.14em] text-stone mb-6">
               {t.about.statsTitle}
             </div>
-            <dl className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-white/10 border-y border-white/10">
+            <dl
+              // Колонок столько, сколько цифр: пустой ячейки в ряду быть не должно
+              style={{ ['--n' as string]: t.about.stats.length }}
+              className="grid grid-cols-1 sm:[grid-template-columns:repeat(var(--n),minmax(0,1fr))] divide-y sm:divide-y-0 sm:divide-x divide-white/10 border-y border-white/10">
               {t.about.stats.map((s, i) => (
                 <div key={i} className="py-6 sm:px-6 first:sm:pl-0">
                   <dt className="font-monument font-black text-heading-sm md:text-heading leading-none">
