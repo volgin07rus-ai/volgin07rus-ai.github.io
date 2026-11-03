@@ -690,6 +690,8 @@ html.motion .rv.in { opacity: 1; transform: none }
   }
   // Без перехода, чтобы цифра на месте и летящая копия не мигали
   function setAway(on) {
+    // Прежнее проявление базы, если ещё идёт, мешало бы спрятать цифру
+    if (baseNum.getAnimations) baseNum.getAnimations().forEach(function (a) { a.cancel(); });
     baseNum.style.transition = 'none';
     baseNum.classList.toggle('away', on);
     void baseNum.offsetWidth;
@@ -715,10 +717,21 @@ html.motion .rv.in { opacity: 1; transform: none }
   function hideFloat() {
     if (!floating) return;
     floating = false;
-    var fin = function () { if (!floating) { floatEl.hidden = true; document.body.classList.remove('has-float'); setAway(false); } };
-    if (reduce || !floatEl.animate) { fin(); return; }
+    // Цифра могла ещё лететь вниз: убираем копию, иначе она сядет в закрывающуюся плашку
+    if (ghost) { ghost.remove(); ghost = null; flNum.style.visibility = ''; }
+    var fin = function () { if (!floating) { floatEl.hidden = true; document.body.classList.remove('has-float'); } };
+    if (reduce || !floatEl.animate) { fin(); setAway(false); return; }
+    // Обратно цифра не летит. В плашке итог вместе с опциями, а на месте база,
+    // и прилёт одной суммы с подменой на другую выглядел сбоем. Плашка уезжает
+    // вправо, а база проявляется на своём месте: чуть поднимается и выходит
+    // из размытия, как строки первого экрана
     var clip = pillClip(false);
-    ghostFly(flNum, baseNum, true, function () { clip.cancel(); fin(); });
+    clip.onfinish = function () { fin(); if (!floating) clip.cancel(); };
+    setAway(false);
+    baseNum.animate(
+      [{ opacity: 0, transform: 'translateY(.28em)', filter: 'blur(8px)' }, { opacity: 1, transform: 'none', filter: 'blur(0)' }],
+      { duration: 800, delay: 120, easing: EASE, fill: 'backwards' }
+    );
   }
   function watch() {
     floatEl = $('float'); flNum = $('flNum'); baseNum = $('baseNum');
