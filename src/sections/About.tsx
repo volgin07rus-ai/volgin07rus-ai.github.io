@@ -8,7 +8,7 @@ import { useLang } from '../lib/lang'
 // находился. Поэтому эти два файла импортируются — сборщик сам проставит
 // верный адрес.
 import grainUrl from '../assets/grain.webp'
-import iconUrl from '../assets/iconpattern.png'
+import iconUrl from '../assets/iconpattern.webp'
 
 export default function About() {
   const { t } = useLang()

@@ -99,9 +99,12 @@ export default function TiltedCard({
           scale
         }}
       >
+        {/* Обложки ниже первого экрана: грузим, когда до них долистали */}
         <motion.img
           src={imageSrc}
           alt={altText}
+          loading="lazy"
+          decoding="async"
           className="tilted-card-img"
           style={{
             width: imageWidth,
