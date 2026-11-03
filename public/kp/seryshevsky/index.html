@@ -727,8 +727,11 @@ html.motion .rv.in { opacity: 1; transform: none }
     document.body.classList.add('has-float');
     setAway(true);
     if (animate && !reduce && floatEl.animate) {
+      // Сначала цифра меряет, куда лететь, и только потом плашка начинает выезжать:
+      // иначе замер ловил плашку ещё сдвинутой вниз, и цифра садилась ниже своего места
+      ghostFly(function () {});
       var move = pillMove(true);
-      ghostFly(function () { move.cancel(); });
+      move.onfinish = function () { move.cancel(); };
     }
   }
   function hideFloat() {
