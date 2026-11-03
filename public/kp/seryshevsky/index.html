@@ -34,7 +34,7 @@ button, input { font: inherit; color: inherit }
 .label::before { content: ''; flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--ember) }
 .dark .label { color: var(--ash) }
 .accent { color: var(--ember); -webkit-text-fill-color: var(--ember) }
-.h2 { font: 900 clamp(36px, 7vw, 84px)/.88 var(--monument); font-stretch: 80%; text-transform: uppercase; color: var(--onyx); padding-top: .06em; text-wrap: balance }
+.h2 { font: 900 clamp(32px, 4.8vw, 60px)/.9 var(--monument); font-stretch: 80%; text-transform: uppercase; color: var(--onyx); padding-top: .06em; text-wrap: balance }
 .lead { font: 400 clamp(22px, 3vw, 34px)/1.12 var(--grot); letter-spacing: -.03em; color: var(--onyx); max-width: 30ch; text-wrap: balance }
 .muted { color: var(--stone) }
 
@@ -43,14 +43,14 @@ button, input { font: inherit; color: inherit }
 .grid i { width: 1px; height: 100%; background: rgba(241,241,241,.08) }
 
 /* Первый экран */
-.hero { position: relative; background: linear-gradient(to bottom, #0a0a0a 0%, #161616 26%, #3a383d 62%, #9c9a9f 86%, #f1f1f1 100%); color: var(--fog); padding: 40px 0 150px; overflow: hidden }
+.hero { position: relative; background: linear-gradient(to bottom, #0a0a0a 0%, #161616 26%, #3a383d 62%, #9c9a9f 86%, #f1f1f1 100%); color: var(--fog); padding: 40px 0 clamp(88px, 10vw, 132px); overflow: hidden }
 .hero .wrap { position: relative }
 .top { display: flex; justify-content: space-between; align-items: center; gap: 16px }
 .logo { height: 30px; width: auto; filter: brightness(0) invert(1) }
 .top .mono { font: 600 12px/1.3 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--ash); text-align: right }
-.monument { margin-top: clamp(72px, 14vw, 150px); font: 900 clamp(44px, 12.4vw, 168px)/.84 var(--monument); font-stretch: 80%; letter-spacing: -.01em; text-transform: uppercase; white-space: nowrap; background: linear-gradient(180deg, #fff 0%, #cfced3 52%, #75747a 100%); -webkit-background-clip: text; background-clip: text; color: transparent; padding-top: .08em }
+.monument { margin-top: clamp(64px, 10vw, 120px); font: 900 clamp(44px, 9.6vw, 136px)/.84 var(--monument); font-stretch: 80%; letter-spacing: -.01em; text-transform: uppercase; white-space: nowrap; background: linear-gradient(180deg, #fff 0%, #cfced3 52%, #75747a 100%); -webkit-background-clip: text; background-clip: text; color: transparent; padding-top: .08em }
 .hero .lead { color: rgba(241,241,241,.92); margin-top: 32px }
-.how { margin-top: 28px; font: 600 12px/1.5 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--silver); max-width: 52ch }
+.how { margin-top: 22px; font: 400 15px/1.5 var(--grot); color: rgba(241,241,241,.62); max-width: 46ch }
 
 /* Секции */
 section.block { padding: 96px 0 }
@@ -61,7 +61,7 @@ section.block { padding: 96px 0 }
 .base { padding-top: 40px }
 .base-row { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 24px; border-top: 2px solid var(--onyx); border-bottom: 1px solid var(--line); padding: 20px 0 22px }
 .base-row p { max-width: 46ch; color: var(--graphite) }
-.base-num { font: 900 clamp(56px, 11vw, 132px)/.9 var(--monument); font-stretch: 85%; color: var(--onyx); white-space: nowrap; transition: opacity .3s }
+.base-num { font: 900 clamp(48px, 8.4vw, 108px)/.9 var(--monument); font-stretch: 85%; color: var(--onyx); white-space: nowrap; transition: opacity .3s }
 .base-num .rub { font: 400 .32em var(--grot); color: var(--stone); margin-left: 8px }
 .base-num.away { opacity: 0 }
 details.parts { margin-top: 18px }
@@ -84,10 +84,16 @@ table.est td.w { padding-left: 36px }
 .group { margin-top: 56px }
 .group:first-of-type { margin-top: 0 }
 .group-h { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--line-strong) }
-.group-h h3 { font: 900 clamp(26px, 3.4vw, 40px)/.9 var(--monument); font-stretch: 85%; text-transform: uppercase; color: var(--onyx); padding-top: .06em }
+.group-h h3 { font: 900 clamp(22px, 2.4vw, 30px)/.95 var(--monument); font-stretch: 85%; text-transform: uppercase; color: var(--onyx); padding-top: .06em }
 .group-h .mono { font: 600 11px/1.3 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--stone); white-space: nowrap }
-.opt { position: relative; display: grid; grid-template-columns: 26px minmax(0, 1fr) auto auto; align-items: center; gap: 8px 18px; padding: 14px 0; border-bottom: 1px solid var(--line); cursor: pointer; transition: background .25s }
-@media (hover: hover) and (pointer: fine) { .opt:hover { background: rgba(255,255,255,.55) } }
+.opt { position: relative; display: grid; grid-template-columns: 26px minmax(0, 1fr) auto auto; align-items: center; gap: 8px 18px; padding: 14px 0; border-bottom: 1px solid var(--line); cursor: pointer; isolation: isolate }
+/* Подсветка шире ряда на 20px с каждой стороны, а края тают: флажок и цена
+   больше не упираются в её границу, и полоса не выглядит обрезанной */
+.opt::before, .opt::after { content: ''; position: absolute; z-index: -1; top: 0; bottom: 0; left: -20px; right: -20px; pointer-events: none; opacity: 0 }
+.opt::before { background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.78) 20px, rgba(255,255,255,.78) calc(100% - 20px), rgba(255,255,255,0)); transform: scaleX(.97); transition: opacity .3s var(--out), transform .5s var(--expo) }
+@media (hover: hover) and (pointer: fine) { .opt:hover::before { opacity: 1; transform: none } }
+/* Вспышка при выборе той же формы, оранжевым */
+.opt::after { background: linear-gradient(90deg, rgba(255,100,54,0), rgba(255,100,54,.14) 20px, rgba(255,100,54,.14) calc(100% - 20px), rgba(255,100,54,0)) }
 .opt input[type=checkbox] { position: absolute; opacity: 0; width: 1px; height: 1px }
 .box { width: 22px; height: 22px; border: 1.5px solid var(--onyx); display: grid; place-items: center; transition: background .2s, border-color .2s }
 .box::after { content: ''; width: 10px; height: 10px; background: var(--ember); transform: scale(0); transition: transform .3s var(--expo) }
@@ -125,9 +131,15 @@ table.est td.w { padding-left: 36px }
 .t-row.big b { font: 900 clamp(40px, 5vw, 60px)/1 var(--monument); font-stretch: 85% }
 .toggles { margin-top: 28px; display: grid; gap: 10px }
 .tog { display: flex; align-items: flex-start; gap: 12px; cursor: pointer; font-size: 15px; color: rgba(241,241,241,.85) }
-.tog input { margin-top: 3px; accent-color: var(--ember); width: 17px; height: 17px; flex: none }
+.tog { position: relative }
+.tog input { position: absolute; opacity: 0; width: 1px; height: 1px }
+.tog .box { flex: none; margin-top: 1px; border-color: rgba(241,241,241,.55) }
+.tog input:checked + .box { border-color: var(--ember) }
+.tog input:checked + .box::after { transform: scale(1) }
+.tog input:focus-visible + .box { outline: 2px solid var(--ember); outline-offset: 3px }
 .tog small { display: block; color: var(--ash); font-size: 13px }
-.btns { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 32px }
+.btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 32px }
+.btns .btn { width: 100% }
 .btn { display: inline-flex; align-items: center; gap: 9px; height: 46px; padding: 0 18px; border: 1px solid rgba(255,255,255,.18); background: rgba(28,28,30,.62); color: var(--fog); font: 600 12px var(--mono); letter-spacing: .08em; text-transform: uppercase; cursor: pointer; transition: background .3s var(--out), color .3s var(--out), border-color .3s }
 .btn::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--ember) }
 .btn:hover { background: var(--fog); color: var(--onyx) }
@@ -143,7 +155,7 @@ table.est td.w { padding-left: 36px }
 
 /* Подвал */
 .foot { background: linear-gradient(340deg, #ff6436, rgba(255,100,54,0) 50%), linear-gradient(#f1f1f1, #adafae); padding: 96px 0 48px; color: var(--onyx) }
-.foot .name { font: 900 clamp(56px, 11vw, 150px)/.84 var(--monument); font-stretch: 80%; text-transform: uppercase; padding-top: .08em; white-space: nowrap }
+.foot .name { font: 900 clamp(48px, 8.4vw, 120px)/.84 var(--monument); font-stretch: 80%; text-transform: uppercase; padding-top: .08em; white-space: nowrap }
 .summary .label { color: var(--ash) }
 .foot .name em { font-style: oblique 16deg }
 .foot-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; margin-top: 56px; padding-top: 12px; border-top: 1px solid rgba(22,22,22,.3); font: 600 12px var(--mono); letter-spacing: .1em; text-transform: uppercase }
@@ -164,11 +176,11 @@ table.est td.w { padding-left: 36px }
 @keyframes delta { 0% { opacity: 0; transform: translateY(10px) } 20% { opacity: 1; transform: translateY(0) } 75% { opacity: 1 } 100% { opacity: 0; transform: translateY(-10px) } }
 
 /* Плавность. Скрываем только при включённом движении, без скрипта всё видно сразу */
-html.motion .rv { opacity: 0; transform: translateY(28px); transition: opacity .9s var(--expo), transform 1s var(--expo); transition-delay: var(--d, 0ms) }
+html.motion .rv { opacity: 0; transform: translateY(14px); transition: opacity .7s var(--expo), transform .8s var(--expo); transition-delay: var(--d, 0ms) }
 html.motion .rv.in { opacity: 1; transform: none }
 .fl-ghost { position: fixed; z-index: 60; margin: 0; pointer-events: none; transform-origin: 0 0; will-change: transform }
-.opt.flash { animation: flash .9s var(--expo) }
-@keyframes flash { from { background: rgba(255,100,54,.12) } to { background: transparent } }
+.opt.flash::after { animation: flash .9s var(--expo) }
+@keyframes flash { from { opacity: 1 } to { opacity: 0 } }
 .btn { position: relative; overflow: hidden; isolation: isolate }
 /* Слой прокатки спрятан целиком под кнопкой: наклон опускает правый край вниз, а не поднимает его в кнопку */
 .btn::after { content: ''; position: absolute; inset: -2px; z-index: -1; background: var(--fog); transform: translateY(102%) skewY(8deg); transform-origin: 0 0; transition: transform .6s cubic-bezier(.19,1,.22,1) }
@@ -284,8 +296,8 @@ html.motion .rv.in { opacity: 1; transform: none }
             <div class="t-row" id="rowSup" hidden><span>Поддержка</span><b>5&nbsp;000 ₽ в месяц</b></div>
           </div>
           <div class="toggles">
-            <label class="tog"><input type="checkbox" id="hostOn" checked><span>Домен .ru и хостинг на REG.RU на год<small>169 ₽ домен и 5 038 ₽ хостинг. Оплачиваются регистратору, на ваше юрлицо</small></span></label>
-            <label class="tog"><input type="checkbox" id="supOn"><span>Поддержка по подписке 5 000 ₽ в месяц<small>До 5 часов правок, бэкапы, слежу за доменом и хостингом. Без подписки разовые правки от 100 ₽</small></span></label>
+            <label class="tog"><input type="checkbox" id="hostOn" checked><span class="box" aria-hidden="true"></span><span>Домен .ru и хостинг на REG.RU на год<small>169 ₽ домен и 5 038 ₽ хостинг. Оплачиваются регистратору, на ваше юрлицо</small></span></label>
+            <label class="tog"><input type="checkbox" id="supOn"><span class="box" aria-hidden="true"></span><span>Поддержка по подписке 5 000 ₽ в месяц<small>До 5 часов правок, бэкапы, слежу за доменом и хостингом. Без подписки разовые правки от 100 ₽</small></span></label>
           </div>
           <div class="btns">
             <button class="btn btn--main" type="button" id="bXlsx">Скачать Excel</button>
@@ -1003,7 +1015,7 @@ html.motion .rv.in { opacity: 1; transform: none }
     function add(el, d) { if (!el) return; el.classList.add('rv'); el.style.setProperty('--d', (d || 0) + 'ms'); targets.push(el); }
     document.querySelectorAll('.head, .base-row, details.parts, .group-h, .sum-grid > div, .terms > div').forEach(function (el, i) { add(el, el.parentNode.classList.contains('terms') ? (i % 3) * 90 : 0); });
     document.querySelectorAll('.group').forEach(function (g) {
-      g.querySelectorAll('.opt').forEach(function (o, i) { add(o, Math.min(i, 6) * 55); });
+      g.querySelectorAll('.opt').forEach(function (o, i) { add(o, Math.min(i, 4) * 35); });
     });
     if (!document.documentElement.classList.contains('motion')) return;
     if (!('IntersectionObserver' in window)) { targets.forEach(function (el) { el.classList.add('in'); }); return; }
