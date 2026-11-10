@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#EDEBE6">
+<title>Ять. Книжная лавка, каталог на полке</title>
+<meta name="description" content="Букинистическая лавка на Литейном. Девяносто шесть старых книг стоят на одной бесконечной полке, каждая в единственном экземпляре.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<script>try{if(sessionStorage.getItem('yat-wipe')){sessionStorage.removeItem('yat-wipe');document.documentElement.classList.add('is-arriving')}}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&display=swap&subset=cyrillic,cyrillic-ext">
+<link rel="stylesheet" href="assets/css/site.css">
+<link rel="stylesheet" href="assets/css/shelf.css">
+</head>
+<body class="is-shelf" data-page="shelf">
+<a class="skip" href="#polka">К полке</a>
+<header data-bar></header>
+<div class="probe" aria-hidden="true"></div>
+
+<main id="polka">
+  <h1 class="sr">Ять, книжная лавка. Каталог на полке</h1>
+
+  <nav class="eras" aria-label="Эпохи"></nav>
+
+  <section class="shelf" aria-label="Полка с книгами">
+    <div class="stage"></div>
+  </section>
+
+  <button type="button" class="ring" aria-label="В корзину">
+    <svg class="ring__plus" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M7 1v12M1 7h12"/></svg>
+    <svg class="ring__ok" width="15" height="12" viewBox="0 0 15 12" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M1 6.5l4.2 4L14 1"/></svg>
+  </button>
+
+  <div class="caption" aria-live="polite">
+    <div class="mask c-title" data-c-title></div>
+    <div class="mask c-sub lbl" data-c-sub></div>
+    <div class="mask c-year" data-c-year></div>
+  </div>
+
+  <button type="button" class="arrow arrow--l" aria-label="Предыдущая книга">
+    <svg width="18" height="10" viewBox="0 0 18 10" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M5 1L1 5l4 4M1 5h16"/></svg>
+  </button>
+  <button type="button" class="arrow arrow--r" aria-label="Следующая книга">
+    <svg width="18" height="10" viewBox="0 0 18 10" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M13 1l4 4-4 4M17 5H1"/></svg>
+  </button>
+
+  <div class="foot">
+    <a class="foot__l lbl ulink" href="https://volgin.site" target="_blank" rel="noopener">Разработка volgin.site</a>
+    <div class="secs" role="group" aria-label="Разделы каталога"></div>
+    <span class="foot__r lbl" data-counter></span>
+  </div>
+</main>
+
+<script defer src="assets/js/data.js"></script>
+<script defer src="assets/js/metrics.js"></script>
+<script defer src="assets/js/more.js"></script>
+<script defer src="assets/js/site.js"></script>
+<script defer src="assets/js/shelf.js"></script>
+</body>
+</html>

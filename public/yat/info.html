@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#EDEBE6">
+<title>Покупателям · Ять</title>
+<meta name="description" content="Как заказать книгу, сколько идёт доставка, что значит каждая степень состояния и как вернуть покупку.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<script>try{if(sessionStorage.getItem('yat-wipe')){sessionStorage.removeItem('yat-wipe');document.documentElement.classList.add('is-arriving')}}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&display=swap&subset=cyrillic,cyrillic-ext">
+<link rel="stylesheet" href="assets/css/site.css">
+<link rel="stylesheet" href="assets/css/pages.css">
+</head>
+<body data-page="info">
+<a class="skip" href="#main">К содержимому</a>
+<header data-bar></header>
+
+<main id="main" class="page">
+  <div class="head" data-rise>
+    <h1 class="h1"><span class="m"><span>Как купить</span></span><span class="m"><span style="--i:1"><em>книгу</em></span></span></h1>
+    <p class="lead"><span class="m"><span style="--i:2">Всё просто, пока помнишь главное. Каждая книга у нас одна, и второй такой не будет</span></span></p>
+  </div>
+
+  <section class="block" id="order">
+    <p class="block__t lbl">Заказ</p>
+    <div class="rows">
+      <div class="row" data-rise><span class="row__n lbl">1</span><h3 class="row__h"><span class="m"><span>Положите в корзину</span></span></h3><p class="row__p"><span class="m"><span style="--i:1">На полке нажмите плюс на углу обложки или откройте книгу и нажмите кнопку</span></span></p></div>
+      <div class="row" data-rise><span class="row__n lbl">2</span><h3 class="row__h"><span class="m"><span>Оставьте телефон</span></span></h3><p class="row__p"><span class="m"><span style="--i:1">Мы держим книгу сутки, перезваниваем и отправляем дополнительные фотографии, если нужно</span></span></p></div>
+      <div class="row" data-rise><span class="row__n lbl">3</span><h3 class="row__h"><span class="m"><span>Получите</span></span></h3><p class="row__p"><span class="m"><span style="--i:1">Упаковываем в бескислотную бумагу и плотный картон. Книги дороже ста тысяч привозим лично</span></span></p></div>
+    </div>
+  </section>
+
+  <section class="block" id="delivery">
+    <p class="block__t lbl">Доставка</p>
+    <div data-rise>
+      <table class="tbl">
+        <thead><tr class="lbl"><th>Способ</th><th>Срок</th><th>Цена</th></tr></thead>
+        <tbody>
+          <tr><td>Забрать на Литейном</td><td>В день заказа</td><td>Бесплатно</td></tr>
+          <tr><td>Курьером по Петербургу</td><td>1 день</td><td>450 ₽</td></tr>
+          <tr><td>СДЭК до пункта выдачи</td><td>2-6 дней</td><td>От 390 ₽</td></tr>
+          <tr><td>Почта России</td><td>5-14 дней</td><td>От 320 ₽</td></tr>
+          <tr><td>Лично в руки</td><td>По договорённости</td><td>Для книг от 100 000 ₽</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="block" id="pay">
+    <p class="block__t lbl">Оплата</p>
+    <div class="prose" data-rise><span class="m"><span>
+      <p>Картой или переводом после разговора с нами. В лавке можно и наличными. Предоплату берём только за отправку транспортной компанией.</p>
+    </span></span></div>
+  </section>
+
+  <section class="block" id="state">
+    <p class="block__t lbl">Шкала состояний</p>
+    <div data-rise>
+      <h2 class="h2" style="margin-bottom:30px"><span class="m"><span>Четыре степени, и каждая про что-то конкретное</span></span></h2>
+      <div class="scale" data-scale></div>
+    </div>
+  </section>
+
+  <section class="block" id="returns">
+    <p class="block__t lbl">Возврат</p>
+    <div class="prose" data-rise><span class="m"><span>
+      <p>Если книга отличается от описания, вернём деньги и оплатим обратную доставку. Если просто разонравилась, примем её в течение четырнадцати дней в том же состоянии.</p>
+    </span></span></div>
+  </section>
+
+  <section class="block" id="find">
+    <p class="block__t lbl">Поиск под заказ</p>
+    <div data-rise>
+      <h2 class="h2"><span class="m"><span>Нет нужной книги? Напишите</span></span></h2>
+      <form class="form" data-form style="margin-top:28px">
+        <div class="field wide"><label class="lbl" for="f-book">Какую книгу ищете</label><input class="input" id="f-book" required placeholder="Автор, название, издание"><span class="field__err">Напишите хотя бы название</span></div>
+        <div class="field"><label class="lbl" for="f-name">Имя</label><input class="input" id="f-name" autocomplete="name" required><span class="field__err">Как к вам обращаться</span></div>
+        <div class="field"><label class="lbl" for="f-tel">Телефон</label><input class="input" id="f-tel" type="tel" inputmode="tel" autocomplete="tel" required><span class="field__err">Нужен номер из 10 цифр и больше</span></div>
+        <div class="wide"><button class="btn btn--fill lbl" type="submit">Отправить запрос</button></div>
+      </form>
+    </div>
+  </section>
+
+  <section class="block" id="faq">
+    <p class="block__t lbl">Вопросы</p>
+    <div class="faq" data-rise>
+      <details><summary>Можно ли посмотреть книгу до покупки?<i aria-hidden="true">+</i></summary><p>Да, приезжайте на Литейный. Редкие издания показываем по записи и за отдельным столом. Если вы в другом городе, пришлём подробные фотографии или покажем книгу по видеосвязи.</p></details>
+      <details><summary>Почему одна книга стоит 750 рублей, а другая 420 000?<i aria-hidden="true">+</i></summary><p>Цена складывается из редкости издания, тиража, состояния и спроса. Прижизненный первый сборник и массовое переиздание могут отличаться в сотни раз, даже если текст один и тот же.</p></details>
+      <details><summary>Что значит старая орфография?<i aria-hidden="true">+</i></summary><p>Книга напечатана по правилам до реформы 1918 года, с буквами ять, фита и i десятеричное и с твёрдым знаком на конце слов. Читать такие тексты легко, привыкаешь за две страницы.</p></details>
+      <details><summary>Как хранить старые книги?<i aria-hidden="true">+</i></summary><p>Вдали от батарей и прямого солнца, при влажности около пятидесяти процентов. Ставить плотно, но без усилия, и не класть тяжёлое сверху. Если книга большая, её лучше хранить лёжа.</p></details>
+      <details><summary>Вы покупаете книги?<i aria-hidden="true">+</i></summary><p>Да, и часто забираем целые библиотеки. Подробности на странице <a href="sell.html" style="color:var(--cobalt);text-decoration:underline">Продать книги</a>.</p></details>
+    </div>
+  </section>
+</main>
+
+<footer data-sitefoot></footer>
+
+<script defer src="assets/js/data.js"></script>
+<script defer src="assets/js/metrics.js"></script>
+<script defer src="assets/js/more.js"></script>
+<script defer src="assets/js/site.js"></script>
+<script defer src="assets/js/page.js"></script>
+</body>
+</html>

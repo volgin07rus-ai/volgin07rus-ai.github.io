@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#EDEBE6">
+<title>Продать книги · Ять</title>
+<meta name="description" content="Покупаем домашние библиотеки и отдельные редкие издания. Приезжаем, оцениваем и платим в тот же день.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<script>try{if(sessionStorage.getItem('yat-wipe')){sessionStorage.removeItem('yat-wipe');document.documentElement.classList.add('is-arriving')}}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&display=swap&subset=cyrillic,cyrillic-ext">
+<link rel="stylesheet" href="assets/css/site.css">
+<link rel="stylesheet" href="assets/css/pages.css">
+</head>
+<body data-page="sell">
+<a class="skip" href="#main">К содержимому</a>
+<header data-bar></header>
+
+<main id="main" class="page">
+  <div class="head" data-rise>
+    <h1 class="h1"><span class="m"><span>Продать</span></span><span class="m"><span style="--i:1"><em>книги</em></span></span></h1>
+    <p class="lead"><span class="m"><span style="--i:2">Приезжаем, смотрим всё, называем цену на месте и забираем сами. Выносить коробки вам не придётся</span></span></p>
+  </div>
+
+  <div class="wall" data-rise data-wall="domostroy tsement podarok-molodym-hozyaykam zhizn-rasteniya gamlet atlas-mira iskusstvo-knigi tihiy-don ya-robot bagazh petr-pervyy zvezdnyy-atlas"></div>
+
+  <section class="block">
+    <p class="block__t lbl">Что берём охотно</p>
+    <div class="buys" data-rise>
+      <div><h3>Книги до 1917 года</h3><p>В любом состоянии, включая разрозненные тома и книги без переплёта</p></div>
+      <div><h3>Двадцатые годы</h3><p>Авангард, поэтические сборники, детские книжки, обложки конструктивистов</p></div>
+      <div><h3>Academia</h3><p>Всё, что выходило в этом издательстве, особенно с суперобложками</p></div>
+      <div><h3>Детская книга</h3><p>Особенно довоенная. Рисунки на полях нас не пугают</p></div>
+      <div><h3>Тамиздат и самиздат</h3><p>Парижские и американские издания, машинописные копии</p></div>
+      <div><h3>Книги с автографами</h3><p>Дарственные надписи писателей, письма и записки внутри книг</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <p class="block__t lbl">Как это работает</p>
+    <div class="rows">
+      <div class="row" data-rise><span class="row__n lbl">1</span><h3 class="row__h"><span class="m"><span>Пришлите фото</span></span></h3><p class="row__p"><span class="m"><span style="--i:1">Достаточно снять полки целиком, чтобы читались корешки. Ответим в течение дня</span></span></p></div>
+      <div class="row" data-rise><span class="row__n lbl">2</span><h3 class="row__h"><span class="m"><span>Мы приедем</span></span></h3><p class="row__p"><span class="m"><span style="--i:1">По Петербургу и области бесплатно. Для большого собрания выезжаем и в другие города</span></span></p></div>
+      <div class="row" data-rise><span class="row__n lbl">3</span><h3 class="row__h"><span class="m"><span>Назовём цену</span></span></h3><p class="row__p"><span class="m"><span style="--i:1">Объясним, почему столько, и покажем, какие книги ценные, а какие нет. Можно отказаться без объяснений</span></span></p></div>
+      <div class="row" data-rise><span class="row__n lbl">4</span><h3 class="row__h"><span class="m"><span>Заплатим и заберём</span></span></h3><p class="row__p"><span class="m"><span style="--i:1">Деньги в тот же день. Книги выносим сами и пристраиваем даже те, что не покупаем</span></span></p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <p class="block__t lbl">Заявка</p>
+    <div data-rise>
+      <h2 class="h2"><span class="m"><span>Расскажите, что у вас есть</span></span></h2>
+      <form class="form" data-form style="margin-top:28px">
+        <div class="field"><label class="lbl" for="s-name">Имя</label><input class="input" id="s-name" autocomplete="name" required><span class="field__err">Как к вам обращаться</span></div>
+        <div class="field"><label class="lbl" for="s-tel">Телефон</label><input class="input" id="s-tel" type="tel" inputmode="tel" autocomplete="tel" required><span class="field__err">Нужен номер из 10 цифр и больше</span></div>
+        <div class="field wide"><label class="lbl" for="s-note">Что за книги</label><textarea class="input" id="s-note" required placeholder="Примерное количество, годы, город"></textarea><span class="field__err">Напишите пару слов о книгах</span></div>
+        <div class="wide"><button class="btn btn--fill lbl" type="submit">Отправить заявку</button></div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer data-sitefoot></footer>
+
+<script defer src="assets/js/data.js"></script>
+<script defer src="assets/js/metrics.js"></script>
+<script defer src="assets/js/more.js"></script>
+<script defer src="assets/js/site.js"></script>
+<script defer src="assets/js/page.js"></script>
+</body>
+</html>
