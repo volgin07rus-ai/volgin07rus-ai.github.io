@@ -168,7 +168,20 @@ window.Site = (() => {
       }
       const total = entries.reduce((s, e) => s + D.variant(e.id).product.price * e.quantity, 0);
       document.getElementById('bag-total').textContent = entries.length ? `Итого ${D.money(total)}` : '';
-      document.getElementById('export-bag').disabled = !entries.length;
+      document.getElementById('buy-bag').disabled = !entries.length;
+      demoNote('');
+    }
+
+    /* Демо-версия: кнопка «Купить» ничего не скачивает и не оформляет, только объясняет это */
+    function demoNote(text) {
+      const n = document.getElementById('bag-demo');
+      if (!n) return;
+      n.textContent = text;
+      n.classList.toggle('is-on', !!text);
+    }
+    function buy() {
+      if (!entries.length) return;
+      demoNote('Это демо-версия сайта. Оплата пока не подключена, заказ не оформлен');
     }
 
     async function add(items) {
@@ -190,26 +203,10 @@ window.Site = (() => {
       render();
     }
 
-    function exportList() {
-      const parts = [
-        `${D.brand} · СПИСОК ОБРАЗА`,
-        'Справочные цены. Заказ и оплата не оформлены.',
-        '',
-        ...entries.map(e => {
-          const { product: p, variant: v } = D.variant(e.id);
-          return `${p.name} · Размер ${v.o[0]} · Количество ${e.quantity}\n${new URL(productUrl(p), location.href).href}`;
-        })
-      ];
-      const url = URL.createObjectURL(new Blob([parts.join('\n\n')], { type: 'text/plain;charset=utf-8' }));
-      const a = Object.assign(document.createElement('a'), { href: url, download: 'runway-outfit-shortlist.txt' });
-      a.click();
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
-    }
-
     function init() { entries = read(); render(); }
     function reload() { entries = read(); render(); }
 
-    return { init, reload, add, remove, render, exportList };
+    return { init, reload, add, remove, render, buy };
   })();
 
   function renderBagShell() {
@@ -220,14 +217,15 @@ window.Site = (() => {
         <h2>Твоя корзина</h2>
         <button id="close-bag" type="button" aria-label="Закрыть корзину">×</button>
       </div>
-      <p class="bag-note">Подборка хранится на этом устройстве. Заказ и оплата здесь не оформляются</p>
+      <p class="bag-note">Корзина хранится на этом устройстве</p>
       <div id="bag-items"></div>
       <p id="bag-total"></p>
-      <button id="export-bag" type="button">Скачать список вещей</button>`;
+      <button id="buy-bag" type="button">Купить</button>
+      <p id="bag-demo" class="bag-demo" role="status" aria-live="polite"></p>`;
 
     document.getElementById('open-bag')?.addEventListener('click', () => { bag.render(); dlg.showModal(); });
     document.getElementById('close-bag').addEventListener('click', () => dlg.close());
-    document.getElementById('export-bag').addEventListener('click', () => bag.exportList());
+    document.getElementById('buy-bag').addEventListener('click', () => bag.buy());
     dlg.addEventListener('click', e => {
       const rm = e.target.closest('[data-bag-remove]');
       if (rm) { bag.remove(Number(rm.dataset.bagRemove)); return; }

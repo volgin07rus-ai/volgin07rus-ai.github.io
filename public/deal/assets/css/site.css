@@ -211,15 +211,30 @@ img { max-width: 100%; }
 .bag-row a.bag-row__link { font-size: 12px; text-decoration: underline; text-underline-offset: 3px; }
 .bag-row__rm { font-size: 20px; padding: 12px; background: none; border: 0; cursor: pointer; line-height: 1; }
 #bag-total { text-align: right; font-size: 15px; padding: 12px 0; margin: 0; }
-#export-bag {
+#buy-bag {
   background: #151413;
   color: #fff;
   border: 0;
   padding: 16px 20px;
   width: 100%;
   cursor: pointer;
+  font-size: 15px;
+  transition: background-color .3s var(--rw-ease);
 }
-#export-bag:disabled { opacity: .4; cursor: default; }
+#buy-bag:hover:not(:disabled) { background: #33302d; }
+#buy-bag:disabled { opacity: .4; cursor: default; }
+.bag-demo {
+  margin: 0;
+  max-height: 0;
+  overflow: hidden;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--rw-muted);
+  text-align: center;
+  opacity: 0;
+  transition: opacity .5s var(--rw-ease), max-height .5s var(--rw-ease), margin .5s var(--rw-ease);
+}
+.bag-demo.is-on { opacity: 1; max-height: 4em; margin-top: 12px; }
 
 /* Тост */
 #bag-status {
