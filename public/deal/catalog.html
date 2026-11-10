@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#ffffff">
+<meta name="robots" content="noindex">
+<title>Каталог · DEAL</title>
+<meta name="description" content="Обувь, худи, трикотаж и деним из образов подиума. Фильтры по размеру, цвету и цене.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap">
+<link rel="stylesheet" href="assets/css/site.css">
+<link rel="stylesheet" href="assets/css/runway.css">
+<link rel="stylesheet" href="assets/css/pages.css">
+</head>
+<body data-page="catalog">
+<a class="skip-link" href="#main">К содержимому</a>
+<header class="site-header shopify-section-group-header-group" data-site-header></header>
+
+<main id="main">
+  <div class="page-head">
+    <div data-reveal>
+      <ol class="crumbs"><li><a href="./">Главная</a></li><li>Каталог</li></ol>
+      <h1 class="page-title">Каталог.</h1>
+      <p class="page-sub">Всё, что есть на подиуме, и вещи, с которыми эти образы можно собрать заново</p>
+    </div>
+    <span class="page-label" data-count data-reveal style="--d:120ms" role="status" aria-live="polite"></span>
+  </div>
+
+  <div class="cat-ticks" data-cat-ticks role="group" aria-label="Разделы каталога"></div>
+
+  <div class="cat-layout">
+    <aside class="cat-side" data-filters aria-label="Фильтры">
+      <div class="f-group">
+        <p class="f-group__title">Поиск</p>
+        <label class="f-search">
+          <span class="rw__sr">Поиск по каталогу</span>
+          <input type="search" data-q placeholder="Например, джинсы" autocomplete="off" enterkeyhint="search">
+          <button type="button" class="f-search__clear" data-q-clear aria-label="Очистить поиск" hidden>×</button>
+        </label>
+      </div>
+      <div class="f-group"><p class="f-group__title">Размер</p><div data-f-sizes></div></div>
+      <div class="f-group"><p class="f-group__title">Цвет</p><div class="f-rows" data-f-colors></div></div>
+      <div class="f-group"><p class="f-group__title">Цена</p><div class="f-rows" data-f-price></div></div>
+      <div class="f-group"><div class="f-rows" data-f-new></div></div>
+      <div class="f-group" style="border-bottom:0"><button type="button" class="f-reset" data-reset>Сбросить всё</button></div>
+      <div class="f-foot"><button type="button" class="btn-dark" data-close-filters></button></div>
+    </aside>
+
+    <div class="cat-main">
+      <div class="cat-toolbar">
+        <div class="cat-chips" data-chips></div>
+        <div class="cat-toolbar__right">
+          <button type="button" class="cat-open-filters" data-open-filters>Фильтры</button>
+          <div class="cat-views" role="group" aria-label="Плотность сетки">
+            <button type="button" class="cat-view" data-view="2" aria-pressed="false" aria-label="Две колонки"><svg width="16" height="14" viewBox="0 0 16 14" fill="currentColor" aria-hidden="true"><rect width="7" height="14"/><rect x="9" width="7" height="14"/></svg></button>
+            <button type="button" class="cat-view" data-view="3" aria-pressed="true" aria-label="Три колонки"><svg width="16" height="14" viewBox="0 0 16 14" fill="currentColor" aria-hidden="true"><rect width="4" height="14"/><rect x="6" width="4" height="14"/><rect x="12" width="4" height="14"/></svg></button>
+            <button type="button" class="cat-view" data-view="4" aria-pressed="false" aria-label="Четыре колонки"><svg width="16" height="14" viewBox="0 0 16 14" fill="currentColor" aria-hidden="true"><rect width="2.8" height="14"/><rect x="4.4" width="2.8" height="14"/><rect x="8.8" width="2.8" height="14"/><rect x="13.2" width="2.8" height="14"/></svg></button>
+          </div>
+          <label class="sort-field">
+            <span class="rw__sr">Сортировка</span>
+            <select data-sort>
+              <option value="default">Сначала популярное</option>
+              <option value="new">Сначала новинки</option>
+              <option value="asc">Сначала дешевле</option>
+              <option value="desc">Сначала дороже</option>
+              <option value="name">По названию</option>
+            </select>
+          </label>
+        </div>
+      </div>
+      <div class="tile-grid" data-grid></div>
+      <div class="cat-empty" data-empty hidden>
+        <h2>Ничего не нашлось</h2>
+        <p class="page-sub">Попробуй убрать часть фильтров или поискать другое слово</p>
+        <button type="button" class="btn-dark" data-reset>Показать всё</button>
+      </div>
+      <div class="cat-more" data-more hidden>
+        <span class="page-label" data-more-label></span>
+        <span class="cat-more__bar" data-more-bar></span>
+        <button type="button" class="btn-dark" data-more-btn>Показать ещё</button>
+      </div>
+    </div>
+  </div>
+  <button type="button" class="cat-scrim" data-scrim tabindex="-1" aria-hidden="true"></button>
+</main>
+
+<footer class="site-footer" data-site-footer></footer>
+<dialog id="bag-dialog"></dialog>
+<div id="bag-status" role="status" aria-live="polite"></div>
+
+<script defer src="assets/js/data.js"></script>
+<script defer src="assets/js/site.js"></script>
+<script defer src="assets/js/catalog.js"></script>
+</body>
+</html>
