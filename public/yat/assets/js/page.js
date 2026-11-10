@@ -12,7 +12,7 @@
         <p class="sitefoot__lead">Книги на ять с девяносто четвёртого года</p>
         <div><h3 class="lbl">Лавка</h3><ul><li><a class="ulink" href="./">Полка</a></li><li><a class="ulink" href="about.html">О лавке</a></li><li><a class="ulink" href="slovar.html">Словарь</a></li></ul></div>
         <div><h3 class="lbl">Покупателям</h3><ul><li><a class="ulink" href="info.html#delivery">Доставка</a></li><li><a class="ulink" href="info.html#state">Шкала состояний</a></li><li><a class="ulink" href="info.html#faq">Вопросы</a></li><li><a class="ulink" href="sell.html">Продать книги</a></li></ul></div>
-        <div><h3 class="lbl">Адрес</h3><ul><li>Литейный проспект, Петербург</li><li>Каждый день с 11 до 20</li><li><a class="ulink" href="tel:+78125550143">+7 812 555-01-43</a></li></ul></div>
+        <div><h3 class="lbl">Адрес</h3><ul><li>Литейный проспект, 21, Петербург</li><li>Каждый день с 11 до 20</li><li><a class="ulink" href="tel:+78125550143">+7 812 555-01-43</a></li></ul></div>
       </div>
       <div class="sitefoot__legal lbl"><span>© Ять, книжная лавка</span><a class="ulink" href="https://volgin.site" target="_blank" rel="noopener">Разработка volgin.site</a></div>`;
   }
