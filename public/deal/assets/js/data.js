@@ -65,30 +65,18 @@ window.RW = (() => {
     { id: 'hoodie-black', name: 'Чёрное худи', vendor: BRAND, cat: 'hoodie', color: 'black', price: 19900, file: 'source-hoodie-black.webp', h: 536, sizes: APPAREL, vids: [56836251681073, 56836251713841, 56836251746609, 56836251779377], desc: 'Чёрное худи с серой графикой в виде звезды. Глубокий капюшон и большой карман спереди', isNew: true },
     { id: 'sweatshirt-plus', name: 'Свитшот Plus', vendor: BRAND, cat: 'sweat', color: 'green', price: 19900, file: 'source-sweatshirt-plus.webp', h: 610, sizes: APPAREL, vids: [56836143743281, 56836143776049, 56836143808817, 56836143841585], desc: 'Бутылочно-зелёная модель с кремовыми буквами в университетском стиле. Самая яркая вещь на подиуме' },
     { id: 'hoodie', name: 'Худи', vendor: BRAND, cat: 'hoodie', color: 'grey', price: 19900, file: 'source-hoodie.webp', h: 555, sizes: APPAREL, vids: [56836002185521, 56836002218289, 56836002251057, 56836002283825], desc: 'Серое меланжевое худи с чёрным текстовым принтом на груди. Плотный футер и мягкий капюшон' },
-    { id: 'luka-5', name: 'Luka 5', vendor: 'Jordan', cat: 'shoes', color: 'black', price: 14900, file: 'source-air-jordan-12-retro-copy.webp', h: 400, sizes: SHOE, vids: [57015176364337, 57015176397105, 57015176429873, 57015176462641, 57015176495409, 57015176528177, 57015176560945], desc: 'Чёрные низкие кроссовки из кожи с белой средней подошвой. Спокойная пара к широкому дениму' },
-
-    /* Вещи с моделей: кадр вырезается из снимка образа, part задаёт верх или низ */
-    { id: 'knit-graphite', name: 'Джемпер Графит', vendor: BRAND, cat: 'knit', color: 'grey', price: 12900, look: 0, part: 'top', sizes: TOPS, desc: 'Графитовый джемпер с круглым вырезом. Плотная вязка, которая спокойно садится на широкий деним' },
-    { id: 'denim-sky', name: 'Джинсы Небо', vendor: BRAND, cat: 'denim', color: 'blue', price: 11900, look: 0, part: 'bottom', sizes: WAIST, desc: 'Голубой деним с широкой прямой штаниной и лёгкой потёртостью по бёдрам' },
-    { id: 'tee-oversize', name: 'Футболка оверсайз', vendor: BRAND, cat: 'tee', color: 'white', price: 5900, look: 1, part: 'top', sizes: TOPS, desc: 'Белая футболка свободного кроя с длинным рукавом до локтя. База под любой низ', isNew: true },
-    { id: 'denim-vintage', name: 'Джинсы Винтаж', vendor: BRAND, cat: 'denim', color: 'blue', price: 13900, look: 1, part: 'bottom', sizes: WAIST, desc: 'Очень широкие джинсы с винтажной стиркой и выбеленными заломами' },
-    { id: 'knit-olive', name: 'Свитер Олива', vendor: BRAND, cat: 'knit', color: 'green', price: 14900, look: 2, part: 'top', sizes: TOPS, desc: 'Оливковый свитер крупной вязки. Тёплая вещь для прохладного города', isNew: true },
-    { id: 'trousers-cocoa', name: 'Брюки Какао', vendor: BRAND, cat: 'trousers', color: 'brown', price: 12400, look: 2, part: 'bottom', sizes: WAIST, desc: 'Широкие брюки тёплого коричневого цвета со стрелкой и мягкой тканью' },
-    { id: 'tee-base', name: 'Футболка База', vendor: BRAND, cat: 'tee', color: 'black', price: 4900, look: 3, part: 'top', sizes: TOPS, desc: 'Чёрная футболка из плотного хлопка. Лучше всего работает с цепью и светлым денимом' },
-    { id: 'denim-ice', name: 'Джинсы Лёд', vendor: BRAND, cat: 'denim', color: 'blue', price: 11900, look: 3, part: 'bottom', sizes: WAIST, desc: 'Почти белый деним с широкой штаниной. Яркий низ для простого верха' },
-    { id: 'knit-bordeaux', name: 'Джемпер Бордо', vendor: BRAND, cat: 'knit', color: 'burgundy', price: 13400, look: 4, part: 'top', sizes: TOPS, desc: 'Бордовый джемпер, который носят поверх белой футболки. Глубокий цвет и мягкая пряжа' },
-    { id: 'denim-ash', name: 'Джинсы Пепел', vendor: BRAND, cat: 'denim', color: 'grey', price: 12400, look: 4, part: 'bottom', sizes: WAIST, desc: 'Серый деним свободного кроя с ровной стиркой и высокой посадкой' },
-    { id: 'crew-fog', name: 'Свитшот Туман', vendor: BRAND, cat: 'sweat', color: 'grey', price: 9900, look: 5, part: 'top', sizes: TOPS, desc: 'Светло-серый свитшот с круглым вырезом. Самая тихая и самая ноская вещь в подборке' },
-    { id: 'denim-wash', name: 'Джинсы Светлые', vendor: BRAND, cat: 'denim', color: 'blue', price: 11400, look: 5, part: 'bottom', sizes: WAIST, desc: 'Светлые широкие джинсы с мягкой стиркой. Твой любимый деним, только новый' }
+    { id: 'luka-5', name: 'Luka 5', vendor: 'Jordan', cat: 'shoes', color: 'black', price: 14900, file: 'source-air-jordan-12-retro-copy.webp', h: 400, sizes: SHOE, vids: [57015176364337, 57015176397105, 57015176429873, 57015176462641, 57015176495409, 57015176528177, 57015176560945], desc: 'Чёрные низкие кроссовки из кожи с белой средней подошвой. Спокойная пара к широкому дениму' }
   ];
 
+  /* Образы собраны из реальных вещей, похожих на то, что надето на модели.
+     Порядок всегда сверху вниз: 1 верх, 2 низ, 3 обувь. Метки стоят на этих вещах на снимке */
   const looks = [
-    { key: 'bndthK', name: 'Городской выход', desc: 'Графитовый трикотаж и свободный деним', file: 1, items: ['air-jordan-12-retro', 'tshirt', 'sweatshirt'], pins: [[47, 27], [48, 58], [45, 96]], tag: -1 },
-    { key: 'XckgG6', name: 'Открытие галереи', desc: 'Чистая белая футболка и расслабленный деним', file: 5, items: ['tatum-5-orbit', 'hoodie-black', 'tshirt'], pins: [[50, 28], [48, 58], [45, 88]], tag: 1 },
-    { key: 'rLfAhC', name: 'Открытие галереи', desc: 'Оливковая вязка и приземлённая палитра', file: 4, items: ['sweatshirt-plus', 'tatum-5-orbit', 'tshirt'], pins: [[50, 28], [48, 58], [45, 88]], tag: 1 },
-    { key: 'FKg67q', name: 'День в студии', desc: 'Чёрное, белое и свободный деним', file: 6, items: ['hoodie-black', 'air-jordan-12-retro', 'tshirt'], pins: [[50, 28], [48, 58], [45, 88]], tag: -1 },
-    { key: '8KREEE', name: 'День в студии', desc: 'Бордовые слои и выверенные пропорции', file: 3, items: ['sweatshirt', 'tatum-5-orbit', 'tshirt'], pins: [[50, 28], [48, 58], [45, 88]], tag: -1 },
-    { key: 'N3bfm9', name: 'День в студии', desc: 'Серый свитшот и твой любимый деним', file: 2, items: ['hoodie', 'luka-5', 'tshirt'], pins: [[50, 28], [48, 58], [45, 88]], tag: -1 }
+    { key: 'bndthK', name: 'Городской выход', desc: 'Графитовый трикотаж, свободный деним и серые New Balance', file: 1, items: ['r253', 'r254', 'r255'], pins: [[49.6, 28.3], [50.6, 60.3], [44.8, 96.2]], tag: -1 },
+    { key: 'XckgG6', name: 'Открытие галереи', desc: 'Чистая белая футболка, винтажный деним и чёрные Converse', file: 5, items: ['r256', 'r257', 'r258'], pins: [[49.6, 28.6], [49, 60.3], [35.3, 95.9]], tag: 1 },
+    { key: 'rLfAhC', name: 'Открытие галереи', desc: 'Оливковая вязка, коричневый деним и Timberland', file: 4, items: ['r259', 'r218', 'r260'], pins: [[51.2, 28.6], [50.7, 60.4], [42.7, 96]], tag: 1 },
+    { key: 'FKg67q', name: 'День в студии', desc: 'Чёрная футболка, светлые Levi’s и белые Air Force 1', file: 6, items: ['r125', 'r261', 'r262'], pins: [[48.4, 29.2], [47.2, 60.9], [31.6, 96.5]], tag: -1 },
+    { key: '8KREEE', name: 'День в студии', desc: 'Тёплая коричневая вязка и выбеленный серый деним', file: 3, items: ['r263', 'r264', 'r265'], pins: [[50.4, 28.5], [51.4, 60.3], [46.5, 96]], tag: -1 },
+    { key: 'N3bfm9', name: 'День в студии', desc: 'Серый свитшот, светлый деним и adidas Superstar', file: 2, items: ['r232', 'r217', 'r266'], pins: [[52.1, 29.4], [52.9, 60.8], [38.1, 96]], tag: -1 }
   ].map(l => ({ ...l, src: `${A}model-${l.file}-640.webp`, orig: `${A}original-look-${l.file}.webp` }));
 
   /* Области кадра: доли ширины и высоты снимка 9:16, пропорция плитки 4:5 */
@@ -146,7 +134,8 @@ window.RW = (() => {
   const pieces = n => `${n} ${plural(n, ['вещь', 'вещи', 'вещей'])}`;
 
   const lookTotal = l => l.items.reduce((s, id) => s + byId[id].price, 0);
-  const lookBundle = l => lookTotal(l) * 0.9;
+  /* Скидка 10% на весь образ, цена округляется до десяти рублей */
+  const lookBundle = l => Math.round(lookTotal(l) * 0.09) * 10;
 
   /* В каких образах встречается товар. Для вещей с модели это её образ */
   const looksWith = p => looks
