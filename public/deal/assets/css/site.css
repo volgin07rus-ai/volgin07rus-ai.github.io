@@ -172,6 +172,13 @@ img { max-width: 100%; }
   color: var(--rw-muted);
 }
 
+.site-footer__credit {
+  color: var(--rw-text);
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  transition: background-size .7s var(--rw-ease);
+}
+.site-footer__credit:hover { background-size: 100% 1px; }
+
 /* Корзина */
 #bag-dialog {
   border: 1px solid #d9d9d9;

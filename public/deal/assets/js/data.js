@@ -12,11 +12,16 @@ window.RW = (() => {
   const cats = [
     { id: 'shoes', name: 'Обувь', one: 'Кроссовки' },
     { id: 'tee', name: 'Футболки', one: 'Футболка' },
+    { id: 'long', name: 'Лонгсливы', one: 'Лонгслив' },
     { id: 'hoodie', name: 'Худи', one: 'Худи' },
     { id: 'sweat', name: 'Свитшоты', one: 'Свитшот' },
     { id: 'knit', name: 'Трикотаж', one: 'Трикотаж' },
+    { id: 'shirt', name: 'Рубашки', one: 'Рубашка' },
+    { id: 'jacket', name: 'Куртки', one: 'Куртка' },
     { id: 'denim', name: 'Джинсы', one: 'Джинсы' },
-    { id: 'trousers', name: 'Брюки', one: 'Брюки' }
+    { id: 'trousers', name: 'Брюки', one: 'Брюки' },
+    { id: 'shorts', name: 'Шорты', one: 'Шорты' },
+    { id: 'acc', name: 'Аксессуары', one: 'Аксессуар' }
   ];
 
   const colors = {
@@ -27,7 +32,13 @@ window.RW = (() => {
     green: { name: 'Зелёный', hex: '#4b5a3a' },
     burgundy: { name: 'Бордовый', hex: '#6d2d26' },
     blue: { name: 'Голубой', hex: '#8fa9c4' },
-    brown: { name: 'Коричневый', hex: '#6a4a32' }
+    navy: { name: 'Тёмно-синий', hex: '#22304f' },
+    brown: { name: 'Коричневый', hex: '#6a4a32' },
+    red: { name: 'Красный', hex: '#c0302b' },
+    pink: { name: 'Розовый', hex: '#e3a6b6' },
+    orange: { name: 'Оранжевый', hex: '#d9772b' },
+    yellow: { name: 'Жёлтый', hex: '#e3c33f' },
+    purple: { name: 'Фиолетовый', hex: '#6b4c8a' }
   };
 
   const spec = {
@@ -37,7 +48,12 @@ window.RW = (() => {
     sweat: { material: '80% хлопок, 20% полиэстер, плотный футер', care: 'Стирка при 30 °C наизнанку. Не сушить в барабане', fit: 'Свободный крой и спущенное плечо' },
     knit: { material: '70% шерсть, 30% акрил, крупная вязка', care: 'Ручная стирка, сушить на плоскости', fit: 'Свободная посадка, можно носить поверх футболки' },
     denim: { material: '100% хлопок, плотный деним 13 унций', care: 'Стирка при 30 °C наизнанку, отдельно от светлых вещей', fit: 'Широкая штанина и высокая посадка' },
-    trousers: { material: '98% хлопок, 2% эластан', care: 'Стирка при 30 °C. Гладить с изнанки', fit: 'Широкая штанина и посадка по талии' }
+    trousers: { material: '98% хлопок, 2% эластан', care: 'Стирка при 30 °C. Гладить с изнанки', fit: 'Широкая штанина и посадка по талии' },
+    long: { material: 'Хлопковый трикотаж', care: 'Стирка при 30 °C наизнанку', fit: 'Посадка по размеру' },
+    shirt: { material: 'Хлопок', care: 'Стирка при 30 °C. Гладить с изнанки', fit: 'Прямой крой' },
+    jacket: { material: 'Состав указан на ярлыке', care: 'Деликатная стирка или химчистка', fit: 'Посадка по размеру, под тёплый слой можно взять на размер больше' },
+    shorts: { material: 'Хлопок или нейлон', care: 'Стирка при 30 °C', fit: 'Свободный крой' },
+    acc: { material: 'Состав указан на ярлыке', care: 'Ручная стирка', fit: 'Размер указан в карточке' }
   };
 
   /* Варианты размеров из промпта, порядок совпадает с порядком размеров */
@@ -81,10 +97,19 @@ window.RW = (() => {
     bottom: { y0: 0.45, bh: 0.5, bw: 0.7111 }
   };
 
+  /* Реальные вещи брендов из открытых каталогов магазинов, фото лежат в assets/items */
+  const realRaw = (window.RW_REAL || []).map(r => ({
+    id: r.id, name: r.name, vendor: r.vendor, cat: r.cat, color: r.color, price: r.price,
+    img: `assets/items/${r.id}.webp`, img2: r.img2 ? `assets/items/${r.id}-2.webp` : '', w: 800, h: 1000,
+    sizes: r.sizes, vids: r.vids, avail: r.avail, desc: r.desc, mat: r.mat, isNew: r.isNew, real: true, src: r.src
+  }));
+
   let synthetic = 7300000000000;
-  const products = raw.map(p => {
-    const out = { ...p, spec: spec[p.cat] };
-    if (p.file) {
+  const built = [...raw, ...realRaw].map(p => {
+    const out = { ...p, spec: p.mat ? { ...spec[p.cat], material: p.mat } : spec[p.cat] };
+    if (p.real) {
+      /* фото и варианты уже готовы */
+    } else if (p.file) {
       out.img = A + p.file;
       out.w = 400;
     } else {
@@ -92,10 +117,18 @@ window.RW = (() => {
       out.crop = { look: p.look, y0: c.y0, bh: c.bh, bw: c.bw, x0: (1 - c.bw) / 2 };
       out.vids = p.sizes.map(() => (synthetic += 137));
     }
-    out.legend = p.cat === 'shoes' ? 'Размер обуви' : (p.cat === 'denim' || p.cat === 'trousers') ? 'Размер по талии' : 'Размер';
-    out.variants = p.sizes.map((s, i) => ({ id: out.vids[i], a: true, o: [s] }));
+    const numeric = p.sizes.every(s => /^\d+$/.test(s));
+    out.legend = p.cat === 'shoes' ? (String(p.sizes[0]).startsWith('US') ? 'Размер обуви, US' : 'Размер обуви, EU')
+      : numeric ? 'Размер по талии' : 'Размер';
+    out.variants = p.sizes.map((s, i) => ({ id: out.vids[i], a: p.avail ? !!p.avail[i] : true, o: [s] }));
     return out;
   });
+
+  /* Разделы чередуются, чтобы в первом экране каталога были разные вещи */
+  const groups = cats.map(c => built.filter(p => p.cat === c.id));
+  const longest = Math.max(...groups.map(g => g.length));
+  const products = [];
+  for (let i = 0; i < longest; i++) groups.forEach(g => { if (g[i]) products.push(g[i]); });
 
   const byId = Object.fromEntries(products.map(p => [p.id, p]));
   const variantIndex = new Map();

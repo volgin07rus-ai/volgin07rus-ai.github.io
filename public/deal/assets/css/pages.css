@@ -82,6 +82,7 @@
 .tile__media { position: relative; display: block; aspect-ratio: 4 / 5; overflow: hidden; background: var(--rw-tile-bg); }
 .tile__pic { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 1.4s var(--rw-ease); }
 .tile__pic--contain { object-fit: contain; padding: 12%; mix-blend-mode: multiply; }
+.tile__pic--pack { object-fit: contain; mix-blend-mode: multiply; }
 @media (hover: hover) { .tile:hover .tile__pic, .tile:hover .crop { transform: scale(1.07); } }
 .tile .rw__tag { top: 11px; left: 8px; }
 .tile__info { display: grid; grid-template-columns: minmax(0, 1fr) 44px; column-gap: 8px; align-items: start; }

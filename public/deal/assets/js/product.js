@@ -44,6 +44,10 @@
   }
 
   function secondShot() {
+    if (p.real) {
+      if (p.img2) return `<div class="pdp__shot"><img src="${p.img2}" width="800" height="1000" alt="${esc(p.name)}, второй ракурс" loading="lazy" decoding="async"></div>`;
+      return `<div class="pdp__shot"><img src="${p.img}" width="800" height="1000" alt="${esc(p.name)}, крупно" loading="lazy" decoding="async" style="transform:scale(1.8);transform-origin:50% 42%"></div>`;
+    }
     if (!p.crop) return '';
     const c = p.crop;
     const zoom = { ...p, crop: { ...c, bw: c.bw * 0.6, bh: c.bh * 0.6, x0: 0.5 - c.bw * 0.3, y0: c.y0 + c.bh * 0.18 } };

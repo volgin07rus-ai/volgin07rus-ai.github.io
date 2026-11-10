@@ -68,7 +68,8 @@ window.Site = (() => {
         <div class="site-footer__mark" aria-hidden="true">${WATERMARK}</div>
         <div class="site-footer__legal">
           <span>Демо-версия сайта. Заказы и оплата пока не принимаются</span>
-          <span>© ${new Date().getFullYear()} ${D.brand}. Nike и Jordan принадлежат правообладателям, ${D.brand} не официальный представитель брендов</span>
+          <span>© ${new Date().getFullYear()} ${D.brand}. Товарные знаки принадлежат правообладателям, ${D.brand} не официальный представитель брендов</span>
+          <a class="site-footer__credit" href="https://volgin.site/" target="_blank" rel="noopener">Разработано volgin.site</a>
         </div>`;
     }
   }
@@ -81,7 +82,7 @@ window.Site = (() => {
       const c = p.crop, l = D.looks[c.look];
       return `<span class="crop" style="--bw:${c.bw};--bh:${c.bh};--x0:${c.x0};--y0:${c.y0}"><img src="${l.src}" srcset="${l.src} 640w, ${l.orig} 1080w" sizes="${sizes}" width="1080" height="1920" alt="${esc(p.name)}" loading="${eager}" decoding="async"></span>`;
     }
-    const contain = p.cat === 'shoes' ? ' tile__pic--contain' : '';
+    const contain = p.real ? ' tile__pic--pack' : p.cat === 'shoes' ? ' tile__pic--contain' : '';
     return `<img class="tile__pic${contain}" src="${p.img}" width="${p.w}" height="${p.h}" alt="${esc(p.name)}" loading="${eager}" decoding="async">`;
   }
 
