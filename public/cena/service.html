@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f8f7f3">
+<meta name="robots" content="noindex">
+<title>Поверка и калибровка · Цена деления</title>
+<meta name="description" content="Поверка новых приборов до отгрузки и приём на поверку. Запись в ФГИС «Аршин», цены по типам приборов">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Martian+Mono:wght@400;500&family=Sofia+Sans+Condensed:wght@500;600;700&family=Sofia+Sans+Extra+Condensed:wght@700;800&family=Sofia+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/shop.css">
+<link rel="stylesheet" href="assets/css/pages.css">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body data-page="service">
+<a class="skip" href="#main">К содержимому</a>
+<div data-site-header></div>
+<main id="main" class="sv">
+  <div class="wrap ph">
+    <nav class="crumbs" aria-label="Путь"><a href="index.html">Главная</a><span>Поверка</span></nav>
+    <div class="ph__row">
+      <h1 class="mon" data-reveal><span class="ln"><span>Поверка</span></span><span class="ln" style="--d:90ms"><span>и калибровка</span></span></h1>
+      <p class="lead rv" data-reveal style="--d:200ms">Поверяем новые приборы до отгрузки и принимаем ваши. Результат в ФГИС «Аршин», свидетельство по запросу</p>
+    </div>
+  </div>
+
+  <section class="wrap" aria-label="Чем отличаются"><div class="sv__vs">
+    <div class="sv__card rv" data-reveal>
+      <p class="lbl">Поверка</p>
+      <h2 class="h3">Когда результат имеет юридическую силу</h2>
+      <p>Подтверждаем, что прибор соответствует утверждённому типу. Нужна в охране труда, энергетике, торговле и везде, где измерения проверяет государство. Доступна только для приборов из Госреестра СИ</p>
+    </div>
+    <div class="sv__card rv" data-reveal style="--d:90ms">
+      <p class="lbl">Калибровка</p>
+      <h2 class="h3">Когда важно знать реальную точность</h2>
+      <p>Определяем действительные значения характеристик и выдаём протокол с отклонениями по точкам. Подходит для лабораторий, разработки и производства без требований закона</p>
+    </div>
+  </div></section>
+
+  <section class="wrap sv__steps" aria-labelledby="sv-h1">
+    <h2 class="h2" id="sv-h1" data-reveal><span class="ln"><span>Как это проходит</span></span></h2>
+    <ol class="steps" data-reveal>
+      <li style="--d:0ms"><span class="steps__c">Заявка</span><p>Оставляете заявку или отмечаете поверку в карточке прибора</p><small>в день обращения</small></li>
+      <li style="--d:120ms"><span class="steps__c">Приём</span><p>Привозите прибор или отправляем курьера. Новый прибор сразу идёт в лабораторию</p><small>1 день</small></li>
+      <li style="--d:240ms"><span class="steps__c">Измерения</span><p>Метрологи проверяют точки по методике поверки и оформляют протокол</p><small>2 рабочих дня</small></li>
+      <li style="--d:360ms"><span class="steps__c">Аршин</span><p>Вносим результат в ФГИС «Аршин», при желании печатаем свидетельство</p><small>в день поверки</small></li>
+    </ol>
+  </section>
+
+  <section class="wrap sv__price" aria-labelledby="sv-h2">
+    <div class="sec-row"><h2 class="h2" id="sv-h2" data-reveal><span class="ln"><span>Цены</span></span></h2><p class="txt">За один прибор. При пяти и больше скидка 10 %</p></div>
+    <div class="tw"><table class="ptbl">
+      <thead><tr><th scope="col">Тип прибора</th><th scope="col" class="n">Поверка</th><th scope="col" class="n">Калибровка</th><th scope="col" class="n">Срок</th><th scope="col"><span class="sr">Приборы</span></th></tr></thead>
+      <tbody data-sv-tbl></tbody>
+    </table></div>
+  </section>
+
+  <section class="sv__form" aria-labelledby="sv-h3">
+    <div class="wrap sv__fg">
+      <div>
+        <h2 class="h2" id="sv-h3" data-reveal><span class="ln"><span>Заявка</span></span><span class="ln" style="--d:90ms"><span>на поверку</span></span></h2>
+        <p class="txt rv" data-reveal>Ответим в течение рабочего дня и назовём точную дату. Если не уверены, нужна поверка или калибровка, просто опишите задачу</p>
+      </div>
+      <form class="ord" novalidate data-sv-form>
+        <div class="ord__g">
+          <label class="fld"><span>Имя</span><input name="name" autocomplete="name" aria-describedby="s-name"><em id="s-name"></em></label>
+          <label class="fld"><span>Телефон или почта</span><input name="contact" autocomplete="email" aria-describedby="s-contact"><em id="s-contact"></em></label>
+          <label class="fld"><span>Тип прибора</span><select name="type" data-sv-type></select><em></em></label>
+          <label class="fld"><span>Сколько приборов</span><input name="qty" type="number" inputmode="numeric" min="1" max="500" value="1" aria-describedby="s-qty"><em id="s-qty"></em></label>
+          <label class="fld ord__w"><span>Модель и задача</span><textarea name="note" placeholder="Например, два мультиметра для электролаборатории, нужна поверка"></textarea><em></em></label>
+        </div>
+        <button class="btn btn--sig" type="submit"><span>Отправить заявку</span><svg class="ar" width="20" height="10" viewBox="0 0 20 10" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M0 5h19M14.5.8 19 5l-4.5 4.2"/></svg></button>
+        <p class="ord__note">Контакты нужны только для ответа по этой заявке</p>
+      </form>
+    </div>
+  </section>
+</main>
+<div data-site-footer></div>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/drawings.js"></script>
+<script src="assets/js/search.js"></script>
+<script src="assets/js/core.js"></script>
+<script src="assets/js/service.js"></script>
+</body>
+</html>

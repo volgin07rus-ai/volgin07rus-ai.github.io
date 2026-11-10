@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f8f7f3">
+<meta name="robots" content="noindex">
+<title>Подбор стола под задачу · Цена деления</title>
+<meta name="description" content="Выберите задачу, частоту сигнала и бюджет. Подберём минимальный набор приборов и объясним каждый выбор">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Martian+Mono:wght@400;500&family=Sofia+Sans+Condensed:wght@500;600;700&family=Sofia+Sans+Extra+Condensed:wght@700;800&family=Sofia+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/shop.css">
+<link rel="stylesheet" href="assets/css/pages.css">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body data-page="podbor">
+<a class="skip" href="#main">К содержимому</a>
+<div data-site-header></div>
+<main id="main" class="wrap pb">
+  <div class="ph">
+    <nav class="crumbs" aria-label="Путь"><a href="index.html">Главная</a><span>Подбор</span></nav>
+    <div class="ph__row">
+      <h1 class="mon" data-reveal><span class="ln"><span>Стол</span></span><span class="ln" style="--d:90ms"><span>под задачу</span></span></h1>
+      <p class="lead rv" data-reveal style="--d:200ms">Три вопроса вместо сорока вкладок. Берём самый дешёвый прибор, который честно справится, и объясняем почему</p>
+    </div>
+  </div>
+
+  <div class="pb__g">
+    <form class="pb__q" data-pb-form aria-label="Параметры подбора">
+      <fieldset class="pb__f">
+        <legend><span class="pb__no">01</span>Чем занимаетесь</legend>
+        <div class="pb__tasks" data-pb-tasks></div>
+      </fieldset>
+      <fieldset class="pb__f">
+        <legend><span class="pb__no">02</span>Самая высокая частота в сигнале</legend>
+        <output class="pb__big" data-pb-fo></output>
+        <input class="rng" type="range" min="0" max="120" step="1" data-pb-f aria-label="Частота сигнала">
+        <div class="pb__sc" aria-hidden="true"><span>1 кГц</span><span>1 МГц</span><span>1 ГГц</span></div>
+        <p class="pb__h">Для цифровых линий берите не такт, а фронт: 0,35, делённое на время нарастания</p>
+      </fieldset>
+      <fieldset class="pb__f">
+        <legend><span class="pb__no">03</span>Бюджет</legend>
+        <output class="pb__big" data-pb-bo></output>
+        <input class="rng" type="range" min="20000" max="1500000" step="10000" data-pb-b aria-label="Бюджет">
+        <div class="pb__sc" aria-hidden="true"><span>20 тыс</span><span>1,5 млн</span></div>
+      </fieldset>
+    </form>
+
+    <section class="pb__r" aria-labelledby="pb-h" aria-live="polite">
+      <div class="pb__rh"><h2 class="h3" id="pb-h" data-pb-title></h2><p data-pb-sub></p></div>
+      <ol class="bench" data-bench></ol>
+      <div class="pb__tot">
+        <div class="meter" data-meter><i></i><b></b></div>
+        <div class="pb__sum"><span class="lbl">Итого</span><b data-pb-total></b><p data-pb-msg></p></div>
+        <div class="pb__act">
+          <button class="btn" type="button" data-pb-cart><span>Всё в корзину</span></button>
+          <button class="line" type="button" data-pb-share><span>Скопировать ссылку на набор</span></button>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+<div data-site-footer></div>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/drawings.js"></script>
+<script src="assets/js/search.js"></script>
+<script src="assets/js/core.js"></script>
+<script src="assets/js/podbor.js"></script>
+</body>
+</html>

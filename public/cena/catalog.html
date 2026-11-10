@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f8f7f3">
+<meta name="robots" content="noindex">
+<title>Каталог · Цена деления</title>
+<meta name="description" content="Каталог измерительных приборов с поиском по параметрам, фильтрами и сравнением в таблице">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Martian+Mono:wght@400;500&family=Sofia+Sans+Condensed:wght@500;600;700&family=Sofia+Sans+Extra+Condensed:wght@700;800&family=Sofia+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/shop.css">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body data-page="catalog">
+<a class="skip" href="#main">К содержимому</a>
+<div data-site-header></div>
+
+<main id="main" class="wrap cat">
+  <div class="ph">
+    <nav class="crumbs" aria-label="Путь"><a href="index.html">Главная</a><span data-crumb>Каталог</span></nav>
+    <div class="cat__head">
+      <h1 class="mon" data-title>Каталог</h1>
+      <div class="cat__side">
+        <div class="cat__sig" data-sig aria-hidden="true"></div>
+        <p class="cat__lead" data-lead></p>
+      </div>
+    </div>
+  </div>
+
+  <nav class="ctabs" aria-label="Тип прибора" data-ctabs></nav>
+
+  <div class="bar">
+    <form class="bar__q" role="search" data-q-form>
+      <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="6.8" cy="6.8" r="4.8"/><path d="M10.4 10.4 14.5 14.5"/></svg>
+      <label class="sr" for="cq">Поиск по каталогу</label>
+      <input id="cq" type="search" placeholder="200 МГц, CAT IV, 30 В 5 А, до 50 тыс" autocomplete="off" spellcheck="false" data-q>
+      <button type="button" class="bar__x" data-q-clear aria-label="Очистить поиск" hidden><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m1 1 10 10M11 1 1 11"/></svg></button>
+    </form>
+    <button class="bar__f key-btn" type="button" data-f-open aria-controls="flt" aria-expanded="false">Фильтры <b data-f-n hidden></b></button>
+    <label class="bar__sort"><span class="lbl">Порядок</span>
+      <select data-sort>
+        <option value="rel">По совпадению</option>
+        <option value="pop">Сначала популярные</option>
+        <option value="cheap">Сначала дешевле</option>
+        <option value="exp">Сначала дороже</option>
+        <option value="new">Сначала новинки</option>
+        <option value="" hidden>По столбцу таблицы</option>
+      </select>
+    </label>
+    <div class="vt" role="group" aria-label="Вид списка" data-view>
+      <button type="button" aria-pressed="true" data-v="tile">Плитка</button>
+      <button type="button" aria-pressed="false" data-v="table">Таблица</button>
+    </div>
+  </div>
+
+  <div class="chips" data-chips></div>
+
+  <div class="cat__body">
+    <aside class="flt" id="flt" aria-label="Фильтры" data-flt>
+      <div class="flt__h"><b>Фильтры</b><button type="button" class="flt__x" data-f-close aria-label="Закрыть фильтры"><svg width="14" height="14" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m1 1 10 10M11 1 1 11"/></svg></button></div>
+      <div class="flt__in" data-flt-in></div>
+      <div class="flt__foot"><button type="button" class="btn" data-f-apply>Показать</button></div>
+    </aside>
+    <div class="flt__bg" data-f-bg hidden></div>
+    <section class="res" aria-label="Результаты">
+      <p class="res__n" data-n aria-live="polite"></p>
+      <div data-res></div>
+    </section>
+  </div>
+</main>
+
+<div data-site-footer></div>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/drawings.js"></script>
+<script src="assets/js/search.js"></script>
+<script src="assets/js/core.js"></script>
+<script src="assets/js/catalog.js"></script>
+</body>
+</html>
