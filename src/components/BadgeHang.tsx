@@ -59,6 +59,8 @@ export default function BadgeHang({ scene }: { scene: string }) {
         if (dead) return
         await whenCalm(() => instance.load(scene))
         if (dead) return
+        // Пропуск проявляется, когда сцена уже собрана, а не возникает рывком
+        canvas.dataset.ready = ''
 
         // Пропуск целиком висит на пустышке с именем Pass — крутим её.
         // Своё слежение у сцены слабое и почти незаметное, поэтому
@@ -121,11 +123,20 @@ export default function BadgeHang({ scene }: { scene: string }) {
     })
     io.observe(canvas)
 
-    // Сцену и модуль геометрии качаем заранее, в первый спокойный момент:
-    // сеть основную работу страницы не тормозит, а к подвалу всё уже в кэше.
-    // Сам движок заранее не подключаем: его разбор занимает полсекунды
+    // Всё нужное пропуску качаем заранее, в первый спокойный момент: движок,
+    // сцену и модуль геометрии, около 1,2 МБ. Сеть основную работу страницы
+    // не тормозит, а к подвалу всё уже в кэше, даже на медленной связи.
+    // Движок только скачивается, а не подключается: его разбор занимает
+    // полсекунды, это делаем уже у подвала. Имена файлов движка постоянные,
+    // см. vite.config.ts
     whenCalm(() => {
       if (dead || !shown()) return
+      for (const f of ['runtime.js', 'process.js']) {
+        const link = document.createElement('link')
+        link.rel = 'prefetch'
+        link.href = `${import.meta.env.BASE_URL}assets/spline/${f}`
+        document.head.appendChild(link)
+      }
       fetch(scene).catch(() => undefined)
       fetch(`${WASM}/process.wasm`).catch(() => undefined)
     })
@@ -140,7 +151,13 @@ export default function BadgeHang({ scene }: { scene: string }) {
     }
   }, [scene])
 
-  return <canvas ref={host} className="w-full h-full block" aria-hidden="true" />
+  return (
+    <canvas
+      ref={host}
+      className="w-full h-full block opacity-0 transition-opacity duration-1000 data-[ready]:opacity-100"
+      aria-hidden="true"
+    />
+  )
 }
 
 function clamp(v: number, min: number, max: number) {

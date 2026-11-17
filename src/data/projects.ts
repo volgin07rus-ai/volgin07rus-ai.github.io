@@ -29,9 +29,9 @@ const ALL: Project[] = [
   { slug: 'partner-group', title: 'Партнёр Групп', tag: 'site', year: '2026', href: 'https://prgr.pro' },
   { slug: 'domik-cafe', title: 'Домик', tag: 'site', year: '2026', href: 'https://domicafe.ru/' },
   { slug: 'shtorme', title: 'Шторме', tag: 'site', year: '2026', href: 'https://shtorme.ru/', wide: true },
-  { slug: 'lumora', title: 'Lumora', tag: 'site', year: '2026', href: `${SITE}/demo/lumora/index.html`, wide: true },
-  { slug: 'baseline', title: 'Baseline', tag: 'site', year: '2026', href: `${SITE}/demo/baseline/index.html` },
-  { slug: 'mindloop', title: 'Mindloop', tag: 'site', year: '2026', href: `${SITE}/demo/mindloop/index.html` },
+  { slug: 'yat', title: 'Ять', tag: 'site', year: '2026', href: `${SITE}/yat/`, wide: true },
+  { slug: 'deal', title: 'DEAL', tag: 'site', year: '2026', href: `${SITE}/deal/` },
+  { slug: 'lumora', title: 'Lumora', tag: 'site', year: '2026', href: `${SITE}/demo/lumora/index.html` },
   { slug: 'uplift', title: 'Uplift', tag: 'site', year: '2026', href: `${SITE}/uplift/`, wide: true },
   { slug: 'terraelix', title: 'TerraElix', tag: 'site', year: '2026', href: `${SITE}/demo/terraelix/index.html`, wide: true },
   { slug: 'raketa', title: 'Ракета', tag: 'email', year: '2026', href: `${SITE}/demo/raketa/index.html` },
@@ -44,6 +44,8 @@ const ALL: Project[] = [
   { slug: 'linkflow', title: 'LinkFlow', tag: 'site', year: '2026', href: `${SITE}/demo/linkflow/index.html`, wide: true },
   { slug: 'creative-studio', title: 'Кубики', tag: 'site', year: '2026', href: `${SITE}/demo/creative-studio/index.html` },
   { slug: 'veldara', title: 'Veldara', tag: 'site', year: '2026', href: `${SITE}/demo/veldara/index.html`, wide: true },
+  { slug: 'mindloop', title: 'Mindloop', tag: 'site', year: '2026', href: `${SITE}/demo/mindloop/index.html` },
+  { slug: 'baseline', title: 'Baseline', tag: 'site', year: '2026', href: `${SITE}/demo/baseline/index.html` },
   // Скрыта на время, в сетке и на мониторе её нет. Чтобы вернуть, убрать hidden
   { slug: 'simple', title: 'Simple', tag: 'site', year: '2026', href: 'https://simplemind.ru/', wide: true, hidden: true },
 ]
