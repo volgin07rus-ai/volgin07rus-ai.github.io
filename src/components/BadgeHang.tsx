@@ -18,8 +18,17 @@ import { whenCalm } from '../lib/calm'
  * освобождается — за этим следит зависимость эффекта.
  *
  * Загружается лениво: движок Spline весит больше самой страницы, и тянуть
- * его ради подвала при первом открытии незачем.
+ * его ради подвала при первом открытии незачем. Сцена скачивается заранее,
+ * в спокойный момент после загрузки, а движок запускается за пару экранов
+ * до подвала: к концу страницы пропуск уже висит.
+ *
+ * Пока подвал за экраном, сцена стоит на паузе. Раньше она рисовала кадры
+ * без остановки с момента загрузки, и вся страница после этого шла вдвое
+ * тяжелее. Модуль для геометрии лежит у нас в public/spline, а не на unpkg.
+ * Версия файлов там та же, что у @splinetool/runtime: обновишь движок,
+ * возьми их заново с unpkg.com/@splinetool/modelling-wasm и ui-wasm.
  */
+const WASM = `${import.meta.env.BASE_URL}spline`
 export default function BadgeHang({ scene }: { scene: string }) {
   const host = useRef<HTMLCanvasElement>(null)
 
@@ -31,6 +40,13 @@ export default function BadgeHang({ scene }: { scene: string }) {
     let dead = false
     let frame = 0
     let onPointer: ((e: PointerEvent) => void) | null = null
+    let visible = false
+    let started = false
+    let wake: (() => void) | null = null
+    let sleep: (() => void) | null = null
+
+    // На телефоне подвал без пропуска: обёртка скрыта, и тянуть движок незачем
+    const shown = () => canvas.getClientRects().length > 0
 
     const start = async () => {
       try {
@@ -38,7 +54,7 @@ export default function BadgeHang({ scene }: { scene: string }) {
         // момент (lib/calm.ts): разом они замораживали прокрутку больше чем на секунду
         const { Application } = await whenCalm(() => import('@splinetool/runtime'))
         if (dead) return
-        const instance = await whenCalm(() => new Application(canvas))
+        const instance = await whenCalm(() => new Application(canvas, { wasmPath: WASM }))
         app = instance
         if (dead) return
         await whenCalm(() => instance.load(scene))
@@ -59,6 +75,7 @@ export default function BadgeHang({ scene }: { scene: string }) {
         }
         window.addEventListener('pointermove', onPointer, { passive: true })
 
+        const moves = !matchMedia('(prefers-reduced-motion: reduce)').matches
         const loop = () => {
           // Догоняем цель плавно: иначе пропуск дёргается на каждом
           // событии мыши, а он висит на шнурке и должен запаздывать
@@ -67,29 +84,58 @@ export default function BadgeHang({ scene }: { scene: string }) {
           pass.rotation.z += (base.z + aimX * 0.16 - pass.rotation.z) * 0.035
           frame = requestAnimationFrame(loop)
         }
-        if (!matchMedia('(prefers-reduced-motion: reduce)').matches) loop()
+        wake = () => {
+          instance.play()
+          cancelAnimationFrame(frame)
+          if (moves) loop()
+        }
+        sleep = () => {
+          cancelAnimationFrame(frame)
+          instance.stop()
+        }
+        if (visible) wake()
+        else sleep()
       } catch {
         // Сцена не загрузилась — подвал просто останется без пропуска
       }
     }
 
-    // Начинаем, когда до подвала остаётся около экрана: запуск всё равно
-    // ждёт паузы в прокрутке, и запас даёт ему успеть до самого подвала
-    const io = new IntersectionObserver(
+    // Запускаем за пару экранов до подвала: запуск ждёт паузы в прокрутке,
+    // и запас даёт ему успеть
+    const near = new IntersectionObserver(
       ([e]) => {
-        if (!e.isIntersecting) return
-        io.disconnect()
+        if (!e.isIntersecting || started || !shown()) return
+        started = true
+        near.disconnect()
         start()
       },
-      { rootMargin: '1000px 0px' }
+      { rootMargin: '2400px 0px' }
     )
+    near.observe(canvas)
+
+    // Рисуем, только пока подвал на экране
+    const io = new IntersectionObserver(([e]) => {
+      visible = e.isIntersecting
+      if (visible) wake?.()
+      else sleep?.()
+    })
     io.observe(canvas)
+
+    // Сцену и модуль геометрии качаем заранее, в первый спокойный момент:
+    // сеть основную работу страницы не тормозит, а к подвалу всё уже в кэше.
+    // Сам движок заранее не подключаем: его разбор занимает полсекунды
+    whenCalm(() => {
+      if (dead || !shown()) return
+      fetch(scene).catch(() => undefined)
+      fetch(`${WASM}/process.wasm`).catch(() => undefined)
+    })
 
     return () => {
       dead = true
       cancelAnimationFrame(frame)
       if (onPointer) window.removeEventListener('pointermove', onPointer)
       io.disconnect()
+      near.disconnect()
       app?.dispose()
     }
   }, [scene])
